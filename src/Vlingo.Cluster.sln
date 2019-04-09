@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlingo.Cluster", "Vlingo.Cluster\Vlingo.Cluster.csproj", "{EB3C37A3-544E-42B7-9B68-00E6C0E65EAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlingo.Cluster.Tests", "Vlingo.Cluster.Tests\Vlingo.Cluster.Tests.csproj", "{0154307E-1F16-4F88-8F0E-A5D4AEBCCD5A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB3C37A3-544E-42B7-9B68-00E6C0E65EAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB3C37A3-544E-42B7-9B68-00E6C0E65EAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB3C37A3-544E-42B7-9B68-00E6C0E65EAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB3C37A3-544E-42B7-9B68-00E6C0E65EAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0154307E-1F16-4F88-8F0E-A5D4AEBCCD5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0154307E-1F16-4F88-8F0E-A5D4AEBCCD5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0154307E-1F16-4F88-8F0E-A5D4AEBCCD5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0154307E-1F16-4F88-8F0E-A5D4AEBCCD5A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
