@@ -21,6 +21,19 @@ namespace Vlingo.Cluster.Model.Attribute
             return new Attribute<T>(name, typedValue, attributeType);
         }
 
+        public static AttributeType TypeOfAttribute(string fullName)
+        {
+            try
+            {
+                var type = System.Type.GetType(fullName);
+                return TypeOf(type);
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException($"The type '{fullName}' is not recognized.", e);
+            }
+        }
+
         public Attribute(string name, T value, AttributeType attributeType)
         {
             Name = name;
@@ -33,6 +46,8 @@ namespace Vlingo.Cluster.Model.Attribute
         public AttributeType Type { get; }
         
         public T Value { get; }
+
+        public bool IsUndefined => Equals(Undefined);
 
         public override bool Equals(object obj)
         {
@@ -49,6 +64,8 @@ namespace Vlingo.Cluster.Model.Attribute
 
         public override int GetHashCode() => 31 * Name.GetHashCode() + Value.GetHashCode() + Type.GetHashCode();
 
+        public override string ToString() => $"Attribute[name={Name}, value={Value}, type={Type}]";
+
         private static AttributeType TypeOf(Type type)
         {
             switch (type.FullName)
@@ -58,6 +75,16 @@ namespace Vlingo.Cluster.Model.Attribute
                 default:
                     throw new ArgumentException($"The type '{type.FullName}' is not recognized.");
             }
+        }
+
+        public Attribute<T> ReplacingValueWith(Attribute<T> other)
+        {
+            if (Type != other.Type)
+            {
+                throw new ArgumentException("Source and target attributes have different types.");
+            }
+            
+            return new Attribute<T>(Name, Value, Type);
         }
 
         private static T TypeValue(AttributeType attributeType, T value)
