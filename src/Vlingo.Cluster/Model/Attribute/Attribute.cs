@@ -15,10 +15,10 @@ namespace Vlingo.Cluster.Model.Attribute
 
         public static Attribute<T> From(string name, T value) => new Attribute<T>(name, value, TypeOf(typeof(T)));
 
-        public static Attribute<T> From(string name, AttributeType attributeType, T value)
+        public static Attribute<T> From(string name, AttributeType attributeType, string value)
         {
             var typedValue = TypeValue(attributeType, value);
-            return new Attribute<T>(name, typedValue, attributeType);
+            return new Attribute<T>(name, (T)typedValue, attributeType);
         }
 
         public static AttributeType TypeOfAttribute(string fullName)
@@ -72,6 +72,24 @@ namespace Vlingo.Cluster.Model.Attribute
             {
                 case "System.String":
                     return AttributeType.String;
+                case "System.Int32":
+                    return AttributeType.Integer;
+                case "System.Int64":
+                    return AttributeType.Long;
+                case "System.Boolean":
+                    return AttributeType.Boolean;
+                case "System.Byte":
+                    return AttributeType.Byte;
+                case "System.Double":
+                    return AttributeType.Double;
+                case "System.Single":
+                    return AttributeType.Float;
+                case "System.Int16":
+                    return AttributeType.Short;
+                case "System.Char":
+                    return AttributeType.Character;
+                case "System.Decimal":
+                    return AttributeType.Decimal;
                 default:
                     throw new ArgumentException($"The type '{type.FullName}' is not recognized.");
             }
@@ -87,12 +105,30 @@ namespace Vlingo.Cluster.Model.Attribute
             return new Attribute<T>(Name, Value, Type);
         }
 
-        private static T TypeValue(AttributeType attributeType, T value)
+        private static object TypeValue(AttributeType attributeType, string value)
         {
             switch (attributeType)
             {
                 case AttributeType.String:
                     return value;
+                case AttributeType.Integer:
+                    return int.Parse(value);
+                case AttributeType.Long:
+                    return long.Parse(value);
+                case AttributeType.Boolean:
+                    return bool.Parse(value);
+                case AttributeType.Byte:
+                    return byte.Parse(value);
+                case AttributeType.Double:
+                    return double.Parse(value);
+                case AttributeType.Float:
+                    return float.Parse(value);
+                case AttributeType.Short:
+                    return short.Parse(value);
+                case AttributeType.Character:
+                    return char.Parse(value);
+                case AttributeType.Decimal: 
+                    return decimal.Parse(value);
                 default:
                     throw new ArgumentException();
             }
@@ -110,6 +146,7 @@ namespace Vlingo.Cluster.Model.Attribute
         Float,
         Double,
         Boolean,
-        String
+        String,
+        Decimal
     }
 }
