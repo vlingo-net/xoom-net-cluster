@@ -35,6 +35,8 @@ namespace Vlingo.Cluster.Model.Attribute
         
         public TrackedAttribute<T> WithAttribute(Attribute<T> attribute) => new TrackedAttribute<T>(Id, attribute, false);
         
+        public TrackedAttribute<T> AsDistributed() => new TrackedAttribute<T>(Id, Attribute, true);
+        
         public override bool Equals(object obj)
         {
             if (obj == null || obj.GetType() != typeof(TrackedAttribute<T>))

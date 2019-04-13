@@ -29,5 +29,49 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
             Assert.Equal(attr2, tracked2.Attribute);
             Assert.Equal(tracked1, tracked2);
         }
+
+        [Fact]
+        public void TestAsDistributed()
+        {
+            var attr1 = Attribute<int>.From("attr1", 1);
+            var tracked1 = TrackedAttribute<int>.Of(_set, attr1);
+            
+            Assert.False(tracked1.Distributed);
+
+            var tracked2 = tracked1.AsDistributed();
+            
+            Assert.True(tracked2.Distributed);
+            
+            Assert.Equal(tracked1.Attribute, tracked2.Attribute);
+            Assert.Equal(tracked1.Id, tracked2.Id);
+        }
+
+        [Fact]
+        public void TestAbsentPresent()
+        {
+            var attr1 = Attribute<int>.From("attr1", 1);
+            var tracked1 = TrackedAttribute<int>.Of(_set, attr1);
+            
+            Assert.False(tracked1.IsAbsent);
+            Assert.True(tracked1.IsPresent);
+            
+            Assert.True(TrackedAttribute<int>.Absent.IsAbsent);
+            Assert.False(TrackedAttribute<int>.Absent.IsPresent);
+        }
+
+        [Fact]
+        public void TestWithAttribute()
+        {
+            var attr1 = Attribute<int>.From("attr1", 1);
+            var tracked1 = TrackedAttribute<int>.Of(_set, attr1);
+            var attr1ValueModified = Attribute<int>.From("attr1", 2);
+            var tracked2 = tracked1.WithAttribute(attr1ValueModified);
+            
+            Assert.NotEqual(attr1, tracked2.Attribute);
+            Assert.NotEqual(tracked1.Attribute, tracked2.Attribute);
+            Assert.Equal(attr1ValueModified, tracked2.Attribute);
+            Assert.Equal(tracked1.Distributed, tracked2.Distributed);
+            Assert.Equal(tracked1.Id, tracked2.Id);
+        }
     }
 }
