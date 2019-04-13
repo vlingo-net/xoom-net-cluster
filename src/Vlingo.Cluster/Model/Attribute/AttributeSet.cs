@@ -9,20 +9,20 @@ using System.Collections.Concurrent;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
-    public sealed class AttributeSet
+    public sealed class AttributeSet<T>
     {
-        private readonly ConcurrentDictionary<string, TrackedAttribute> _attributes;
+        private readonly ConcurrentDictionary<string, TrackedAttribute<T>> _attributes;
         
-        public static AttributeSet None => Named("__none");
+        public static AttributeSet<T> None => Named("__none");
         
-        public static AttributeSet Named(string name) => new AttributeSet(name);
+        public static AttributeSet<T> Named(string name) => new AttributeSet<T>(name);
 
         public string Name { get; }
 
         private AttributeSet(string name)
         {
             Name = name;
-            _attributes = new ConcurrentDictionary<string, TrackedAttribute>(16, 128);
+            _attributes = new ConcurrentDictionary<string, TrackedAttribute<T>>(16, 128);
         }
     }
 }

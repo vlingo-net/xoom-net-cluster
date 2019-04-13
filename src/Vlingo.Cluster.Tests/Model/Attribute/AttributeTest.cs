@@ -131,7 +131,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var attribute1 = Attribute<bool>.From("bool1", true);
             
-            Assert.Equal(true, attribute1.Value);
+            Assert.True(attribute1.Value);
             Assert.Equal(AttributeType.Boolean, attribute1.Type);
             
             var attribute2 = Attribute<bool>.From("bool2", false);
