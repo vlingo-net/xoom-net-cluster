@@ -57,7 +57,7 @@ namespace Vlingo.Cluster.Model.Attribute
             return target;
         }
 
-        public TrackedAttribute Remove<T>(Attribute<T> attribute)
+        public TrackedAttribute Remove(Attribute attribute)
         {
             var maybeAttribute = Find(attribute);
 
