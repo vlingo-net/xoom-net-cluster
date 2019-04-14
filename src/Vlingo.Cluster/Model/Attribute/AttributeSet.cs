@@ -11,38 +11,41 @@ using System.Text;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
-    public sealed class AttributeSet<T>
+    public sealed class AttributeSet
     {
-        private readonly ConcurrentDictionary<string, TrackedAttribute<T>> _attributes;
+        private readonly ConcurrentDictionary<string, TrackedAttribute> _attributes;
         
-        public static AttributeSet<T> None => Named("__none");
+        public static AttributeSet None => Named("__none");
         
-        public static AttributeSet<T> Named(string name) => new AttributeSet<T>(name);
+        public static AttributeSet Named(string name) => new AttributeSet(name);
 
         public string Name { get; }
 
-        public IEnumerable<TrackedAttribute<T>> All => _attributes.Values;
+        public IEnumerable<TrackedAttribute> All => _attributes.Values;
 
         public bool IsDefined => !IsNone;
 
         public bool IsNone => Equals(this, None);
 
-        public TrackedAttribute<T> AddIfAbsent(Attribute<T> attribute)
+        public TrackedAttribute AddIfAbsent<T>(Attribute<T> attribute)
         {
             var maybeAttribute = Find(attribute);
 
             if (maybeAttribute.IsAbsent)
             {
-                var nowPresent = TrackedAttribute<T>.Of(this, attribute);
-                return _attributes.AddOrUpdate(nowPresent.Id, nowPresent, (id, trackedAttribute) => nowPresent);
+                var nowPresent = TrackedAttribute.Of(this, attribute);
+                return _attributes.AddOrUpdate(
+                    nowPresent.Id,
+                    nowPresent, 
+                    (id, trackedAttribute) => nowPresent);
             }
 
             return maybeAttribute;
         }
 
-        public TrackedAttribute<T> AttributeNamed(string name) => Find(name);
+        public TrackedAttribute AttributeNamed<T>(string name) => Find<T>(name);
 
-        public AttributeSet<T> Copy(AttributeSet<T> source)
+        public AttributeSet Copy(AttributeSet source)
         {
             var target = Named(source.Name);
 
@@ -54,20 +57,20 @@ namespace Vlingo.Cluster.Model.Attribute
             return target;
         }
 
-        public TrackedAttribute<T> Remove(Attribute<T> attribute)
+        public TrackedAttribute Remove<T>(Attribute<T> attribute)
         {
             var maybeAttribute = Find(attribute);
 
             if (maybeAttribute.IsPresent)
             {
-                _attributes.TryRemove(maybeAttribute.Id, out maybeAttribute);
-                return maybeAttribute;
+                _attributes.TryRemove(maybeAttribute.Id, out var removedAttribute);
+                return removedAttribute;
             }
 
             return maybeAttribute;
         }
 
-        public TrackedAttribute<T> Replace(Attribute<T> attribute)
+        public TrackedAttribute Replace(Attribute<object> attribute)
         {
             var maybeAttribute = Find(attribute);
             
@@ -84,12 +87,12 @@ namespace Vlingo.Cluster.Model.Attribute
 
         public override bool Equals(object obj)
         {
-            if (obj == null || obj.GetType() != typeof(AttributeSet<T>))
+            if (obj == null || obj.GetType() != typeof(AttributeSet))
             {
                 return false;
             }
 
-            var otherAttribute = (AttributeSet<T>) obj;
+            var otherAttribute = (AttributeSet) obj;
 
             if (_attributes.Count != otherAttribute._attributes.Count)
             {
@@ -138,12 +141,12 @@ namespace Vlingo.Cluster.Model.Attribute
         private AttributeSet(string name)
         {
             Name = name;
-            _attributes = new ConcurrentDictionary<string, TrackedAttribute<T>>(16, 128);
+            _attributes = new ConcurrentDictionary<string, TrackedAttribute>(16, 128);
         }
 
-        private TrackedAttribute<T> Find(Attribute<T> attribute) => Find(attribute.Name);
+        private TrackedAttribute Find<T>(Attribute<T> attribute) => Find<T>(attribute.Name);
 
-        private TrackedAttribute<T> Find(string name)
+        private TrackedAttribute Find<T>(string name)
         {
             foreach (var id in _attributes.Values)
             {
@@ -153,7 +156,7 @@ namespace Vlingo.Cluster.Model.Attribute
                 }
             }
 
-            return TrackedAttribute<T>.Absent;
+            return TrackedAttribute.Absent;
         }
     }
 }

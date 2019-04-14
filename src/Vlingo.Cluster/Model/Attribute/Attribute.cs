@@ -9,7 +9,12 @@ using System;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
-    public sealed class Attribute<T>
+    public abstract class Attribute
+    {
+        public string Name { get; protected set; }
+    }
+    
+    public sealed class Attribute<T> : Attribute
     {
         public static Attribute<T> Undefined => From("__undefined", AttributeType.String, default);
 
@@ -40,8 +45,6 @@ namespace Vlingo.Cluster.Model.Attribute
             Value = value;
             Type = attributeType;
         }
-        
-        public string Name { get; }
         
         public AttributeType Type { get; }
         

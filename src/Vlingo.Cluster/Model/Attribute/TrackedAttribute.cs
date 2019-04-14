@@ -7,17 +7,17 @@
 
 namespace Vlingo.Cluster.Model.Attribute
 {
-    public sealed class TrackedAttribute<T>
+    public sealed class TrackedAttribute
     {
-        public static readonly TrackedAttribute<T> Absent = new TrackedAttribute<T>(null, null);
+        public static readonly TrackedAttribute Absent = new TrackedAttribute(null, null);
         
-        public static TrackedAttribute<T> Of(AttributeSet<T> set, Attribute<T> attribute)
+        public static TrackedAttribute Of<T>(AttributeSet set, Attribute<T> attribute)
         {
             var tid = TrackedIdFor(set, attribute);
-            return new TrackedAttribute<T>(tid, attribute);
+            return new TrackedAttribute(tid, attribute);
         }
         
-        public Attribute<T> Attribute { get; }
+        public Attribute Attribute { get; }
         
         public bool Distributed { get; }
         
@@ -29,22 +29,22 @@ namespace Vlingo.Cluster.Model.Attribute
         
         public bool IsPresent => !IsAbsent;
 
-        public Attribute<T> ReplacingValueWith(Attribute<T> other) => Attribute.ReplacingValueWith(other);
+        public Attribute ReplacingValueWith<T>(Attribute<T> other) => ((Attribute<T>)Attribute).ReplacingValueWith(other);
 
-        public bool SameAs(Attribute<T> other) => Attribute.Equals(other);
+        public bool SameAs(Attribute<object> other) => Attribute.Equals(other);
         
-        public TrackedAttribute<T> WithAttribute(Attribute<T> attribute) => new TrackedAttribute<T>(Id, attribute, false);
+        public TrackedAttribute WithAttribute<T>(Attribute<T> attribute) => new TrackedAttribute(Id, attribute, false);
         
-        public TrackedAttribute<T> AsDistributed() => new TrackedAttribute<T>(Id, Attribute, true);
+        public TrackedAttribute AsDistributed() => new TrackedAttribute(Id, Attribute, true);
         
         public override bool Equals(object obj)
         {
-            if (obj == null || obj.GetType() != typeof(TrackedAttribute<T>))
+            if (obj == null || obj.GetType() != typeof(TrackedAttribute))
             {
                 return false;
             }
 
-            var otherAttribute = (TrackedAttribute<T>) obj;
+            var otherAttribute = (TrackedAttribute) obj;
             return Attribute.Equals(otherAttribute.Attribute) && 
                    Distributed == otherAttribute.Distributed &&
                    Id.Equals(otherAttribute.Id);
@@ -54,17 +54,17 @@ namespace Vlingo.Cluster.Model.Attribute
 
         public override string ToString() => $"TrackedAttribute[attribute={Attribute}, distributed={Distributed}, id={Id}]";
 
-        private static string TrackedIdFor(AttributeSet<T> set, Attribute<T> attribute) =>
+        private static string TrackedIdFor<T>(AttributeSet set, Attribute<T> attribute) =>
             $"{set.Name}:{attribute.Name}";
 
-        private TrackedAttribute(string id, Attribute<T> attribute)
+        private TrackedAttribute(string id, Attribute attribute)
         {
             Attribute = attribute;
             Distributed = false;
             Id = attribute == null ? null : id;
         }
 
-        private TrackedAttribute(string id, Attribute<T> attribute, bool distributed)
+        private TrackedAttribute(string id, Attribute attribute, bool distributed)
         {
             Attribute = attribute;
             Distributed = distributed;
