@@ -46,5 +46,30 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
             Assert.NotEqual(tracked2, tracked3);
             Assert.Equal(tracked3, tracked3);
         }
+
+        [Fact]
+        public void TestAttributeNamed()
+        {
+            var name = "test";
+            var attrName = "attr1";
+            var set1 = AttributeSet.Named(name);
+            var attribute1 = Attribute<int>.From(attrName, 1);
+            var tracked1 = set1.AddIfAbsent(attribute1);
+            
+            set1.AddIfAbsent(Attribute<int>.From(attrName + "-a", 2));
+            set1.AddIfAbsent(Attribute<int>.From(attrName + "-b", 3));
+            set1.AddIfAbsent(Attribute<int>.From(attrName + "-c", 4));
+            
+            var tracked2 = set1.AttributeNamed(attrName);
+            
+            Assert.Equal(tracked1, tracked2);
+            Assert.True(Equals(tracked1, tracked2));
+            
+            var tracked3 = set1.AttributeNamed(attrName + "+1");
+            
+            Assert.NotEqual(tracked1, tracked3);
+            Assert.True(tracked3.IsAbsent);
+            Assert.False(tracked3.IsPresent);
+        }
     }
 }

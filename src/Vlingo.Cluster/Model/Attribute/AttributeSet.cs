@@ -43,7 +43,7 @@ namespace Vlingo.Cluster.Model.Attribute
             return maybeAttribute;
         }
 
-        public TrackedAttribute AttributeNamed<T>(string name) => Find<T>(name);
+        public TrackedAttribute AttributeNamed(string name) => Find(name);
 
         public AttributeSet Copy(AttributeSet source)
         {
@@ -144,9 +144,9 @@ namespace Vlingo.Cluster.Model.Attribute
             _attributes = new ConcurrentDictionary<string, TrackedAttribute>(16, 128);
         }
 
-        private TrackedAttribute Find<T>(Attribute<T> attribute) => Find<T>(attribute.Name);
+        private TrackedAttribute Find(Attribute attribute) => Find(attribute.Name);
 
-        private TrackedAttribute Find<T>(string name)
+        private TrackedAttribute Find(string name)
         {
             foreach (var id in _attributes.Values)
             {
