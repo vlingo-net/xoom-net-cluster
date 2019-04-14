@@ -94,5 +94,30 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
             Assert.True(set1.AttributeNamed(attrName + "-b").IsPresent);
             Assert.True(set1.AttributeNamed(attrName + "-c").IsPresent);
         }
+
+        [Fact]
+        public void TestReplace()
+        {
+            var name = "test";
+            var attrName = "attr1";
+            var set1 = AttributeSet.Named(name);
+            var attribute1 = Attribute<int>.From(attrName, 1);
+            var tracked1 = set1.AddIfAbsent(attribute1);
+            
+            set1.AddIfAbsent(Attribute<int>.From(attrName + "-a", 2));
+            set1.AddIfAbsent(Attribute<int>.From(attrName + "-b", 3));
+            set1.AddIfAbsent(Attribute<int>.From(attrName + "-c", 4));
+            
+            var tracked2 = set1.Replace(Attribute<int>.From(attrName, 2));
+            
+            Assert.NotEqual(tracked1, tracked2);
+
+            Assert.Equal(tracked2, set1.AttributeNamed(attrName));
+
+            Assert.True(set1.AttributeNamed(attrName).IsPresent);
+            Assert.True(set1.AttributeNamed(attrName + "-a").IsPresent);
+            Assert.True(set1.AttributeNamed(attrName + "-b").IsPresent);
+            Assert.True(set1.AttributeNamed(attrName + "-c").IsPresent);
+        }
     }
 }

@@ -70,7 +70,7 @@ namespace Vlingo.Cluster.Model.Attribute
             return maybeAttribute;
         }
 
-        public TrackedAttribute Replace(Attribute<object> attribute)
+        public TrackedAttribute Replace(Attribute attribute)
         {
             var maybeAttribute = Find(attribute);
             

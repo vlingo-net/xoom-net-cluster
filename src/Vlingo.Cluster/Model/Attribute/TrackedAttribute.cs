@@ -33,7 +33,7 @@ namespace Vlingo.Cluster.Model.Attribute
 
         public bool SameAs(Attribute<object> other) => Attribute.Equals(other);
         
-        public TrackedAttribute WithAttribute<T>(Attribute<T> attribute) => new TrackedAttribute(Id, attribute, false);
+        public TrackedAttribute WithAttribute(Attribute attribute) => new TrackedAttribute(Id, attribute, false);
         
         public TrackedAttribute AsDistributed() => new TrackedAttribute(Id, Attribute, true);
         
