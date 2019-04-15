@@ -17,80 +17,38 @@ namespace Vlingo.Cluster.Model.Application
     {
         public override bool IsStopped => false;
 
-        public override void Start()
-        {
-        }
+        public abstract void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder);
 
-        public override void Stop()
-        {
-        }
+        public abstract void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster);
 
-        public void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder)
-        {
-        }
+        public abstract void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading);
 
-        public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster)
-        {
-        }
+        public abstract void InformLeaderLost(Id lostLeaderId, bool isHealthyCluster);
 
-        public void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading)
-        {
-        }
+        public abstract void InformLocalNodeShutDown(Id nodeId);
 
-        public void InformLeaderLost(Id lostLeaderId, bool isHealthyCluster)
-        {
-        }
+        public abstract void InformLocalNodeStarted(Id nodeId);
 
-        public void InformLocalNodeShutDown(Id nodeId)
-        {
-        }
+        public abstract void InformNodeIsHealthy(Id nodeId, bool isHealthyCluster);
 
-        public void InformLocalNodeStarted(Id nodeId)
-        {
-        }
+        public abstract void InformNodeJoinedCluster(Id nodeId, bool isHealthyCluster);
 
-        public void InformNodeIsHealthy(Id nodeId, bool isHealthyCluster)
-        {
-        }
+        public abstract void InformNodeLeftCluster(Id nodeId, bool isHealthyCluster);
 
-        public void InformNodeJoinedCluster(Id nodeId, bool isHealthyCluster)
-        {
-        }
+        public abstract void InformQuorumAchieved();
 
-        public void InformNodeLeftCluster(Id nodeId, bool isHealthyCluster)
-        {
-        }
+        public abstract void InformQuorumLost();
 
-        public void InformQuorumAchieved()
-        {
-        }
+        public abstract void InformAttributesClient(IAttributesProtocol client);
 
-        public void InformQuorumLost()
-        {
-        }
+        public abstract void InformAttributeSetCreated(string attributeSetName);
 
-        public void InformAttributesClient(IAttributesProtocol client)
-        {
-        }
+        public abstract void InformAttributeAdded(string attributeSetName, string attributeName);
 
-        public void InformAttributeSetCreated(string attributeSetName)
-        {
-        }
+        public abstract void InformAttributeRemoved(string attributeSetName, string attributeName);
 
-        public void InformAttributeAdded(string attributeSetName, string attributeName)
-        {
-        }
+        public abstract void InformAttributeSetRemoved(string attributeSetName);
 
-        public void InformAttributeRemoved(string attributeSetName, string attributeName)
-        {
-        }
-
-        public void InformAttributeSetRemoved(string attributeSetName)
-        {
-        }
-
-        public void InformAttributeReplaced(string attributeSetName, string attributeName)
-        {
-        }
+        public abstract void InformAttributeReplaced(string attributeSetName, string attributeName);
     }
 }
