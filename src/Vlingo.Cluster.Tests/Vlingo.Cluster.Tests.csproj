@@ -17,4 +17,13 @@
         <ProjectReference Include="..\Vlingo.Cluster\Vlingo.Cluster.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="vlingo-actors.properties">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="vlingo-cluster.properties">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
