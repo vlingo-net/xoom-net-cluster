@@ -8,6 +8,8 @@
 using System.Collections.Generic;
 using Vlingo.Actors;
 using Vlingo.Cluster.Model.Message;
+using Vlingo.Wire.Fdx.Outbound;
+using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Outbound
@@ -41,5 +43,25 @@ namespace Vlingo.Cluster.Model.Outbound
         void Split(Id targetNodeId, Id currentLeaderId);
         
         void Vote(Id targetNodeId);
+    }
+
+    public static class OperationalOutboundStreamFactory
+    {
+        public static IOperationalOutboundStream Instance(
+            Stage stage,
+            Node node,
+            IManagedOutboundChannelProvider provider,
+            ByteBufferPool byteBufferPool)
+        {
+            var definition =
+                    Definition.Has<OperationalOutboundStreamActor>(
+                        Definition.Parameters(node, provider, byteBufferPool),
+            "cluster-operational-outbound-stream");
+            
+            var operationalOutboundStream =
+                stage.ActorFor<IOperationalOutboundStream>(definition);
+    
+            return operationalOutboundStream;
+        }
     }
 }

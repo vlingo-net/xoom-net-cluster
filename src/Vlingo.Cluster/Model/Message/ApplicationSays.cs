@@ -39,9 +39,9 @@ namespace Vlingo.Cluster.Model.Message
                 return false;
             }
 
-            var otherAttribute = (ApplicationSays) obj;
-            return Name.Equals(otherAttribute.Name) && 
-                   Payload.Equals(otherAttribute.Payload);
+            var otherAppSaid = (ApplicationSays) obj;
+            return Name.Equals(otherAppSaid.Name) && 
+                   Payload.Equals(otherAppSaid.Payload);
         }
 
         public override int GetHashCode() => 31 * Name.GetHashCode() + Payload.GetHashCode();

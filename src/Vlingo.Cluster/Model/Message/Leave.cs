@@ -9,15 +9,28 @@ using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Message
 {
-    public class Leave : OperationalMessage
+    public sealed class Leave : OperationalMessage
     {
-        public static Leave From(string content)
-        {
-            return null;
-        }
+        public static Leave From(string content) =>  new Leave(OperationalMessagePartsBuilder.IdFrom(content));
         
         public Leave(Id id) : base(id)
         {
         }
+
+        public override bool IsLeave => true;
+        
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(Leave))
+            {
+                return false;
+            }
+
+            return Id.Equals(((Leave) obj).Id);
+        }
+
+        public override int GetHashCode() => 31 * Id.GetHashCode();
+
+        public override string ToString() => $"Leave[{Id}]";
     }
 }

@@ -5,10 +5,17 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using Vlingo.Actors;
+
 namespace Vlingo.Cluster.Model
 {
-    public class ClusterSnapshotInitializer
+    internal class ClusterSnapshotInitializer
     {
-        
+        private readonly ICommunicationsHub _communicationsHub;
+
+        public ClusterSnapshotInitializer(string name, Properties instance, ILogger worldDefaultLogger)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

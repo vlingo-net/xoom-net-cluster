@@ -9,15 +9,35 @@ using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Message
 {
-    public class Join : OperationalMessage
+    public sealed class Join : OperationalMessage
     {
-        public static Join From(string content)
-        {
-            return null;
-        }
+        private readonly Node _node;
         
-        public Join(Id id) : base(id)
+        public static Join From(string content) => new Join(OperationalMessagePartsBuilder.NodeFrom(content));
+        
+        public Join(Node node) : base(node.Id)
         {
+            _node = node;
         }
+
+        public override bool IsJoin => true;
+        
+        public Node Node => _node;
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(Join))
+            {
+                return false;
+            }
+
+            var join = (Join) obj;
+
+            return Node.Equals(join.Node);
+        }
+
+        public override int GetHashCode() => 31 * _node.GetHashCode();
+
+        public override string ToString() => $"Join[{_node}]";
     }
 }

@@ -121,7 +121,7 @@ namespace Vlingo.Cluster.Model.Message
             return null;
         }
         
-        protected Id Id { get; }
+        public Id Id { get; }
 
         public virtual bool IsApp => false;
 

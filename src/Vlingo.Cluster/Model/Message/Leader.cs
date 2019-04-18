@@ -9,15 +9,28 @@ using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Message
 {
-    public class Leader : OperationalMessage
+    public sealed class Leader : OperationalMessage
     {
-        public static Leader From(string content)
-        {
-            return null;
-        }
+        public static Leader From(string content) => new Leader(OperationalMessagePartsBuilder.IdFrom(content));
         
         public Leader(Id id) : base(id)
         {
         }
+
+        public override bool IsLeader => true;
+        
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(Leader))
+            {
+                return false;
+            }
+
+            return Id.Equals(((Leader) obj).Id);
+        }
+
+        public override int GetHashCode() => 31 * Id.GetHashCode();
+
+        public override string ToString() => $"Leader[{Id}]";
     }
 }

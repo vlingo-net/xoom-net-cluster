@@ -19,6 +19,7 @@ namespace Vlingo.Cluster.Model
     {
         public static Tuple<IClusterSnapshotControl, ILogger> Instance(World world, string name)
         {
+            var initializer = new ClusterSnapshotInitializer(name, Properties.Instance, world.DefaultLogger);
             return null;
         }
     }

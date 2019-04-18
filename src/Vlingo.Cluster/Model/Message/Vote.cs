@@ -9,15 +9,28 @@ using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Message
 {
-    public class Vote : OperationalMessage
+    public sealed class Vote : OperationalMessage
     {
-        public static Vote From(string content)
-        {
-            return null;
-        }
+        public static Vote From(string content) =>  new Vote(OperationalMessagePartsBuilder.IdFrom(content));
         
         public Vote(Id id) : base(id)
         {
         }
+
+        public override bool IsVote => true;
+        
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(Vote))
+            {
+                return false;
+            }
+
+            return Id.Equals(((Vote) obj).Id);
+        }
+
+        public override int GetHashCode() => 31 * Id.GetHashCode();
+
+        public override string ToString() => $"Vote[{Id}]";
     }
 }
