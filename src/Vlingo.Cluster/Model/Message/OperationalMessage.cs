@@ -5,9 +5,9 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System.Collections.Generic;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
+// ReSharper disable InconsistentNaming
 
 namespace Vlingo.Cluster.Model.Message
 {    
