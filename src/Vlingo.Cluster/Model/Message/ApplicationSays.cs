@@ -10,19 +10,44 @@ using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Message
 {
-    public class ApplicationSays : OperationalMessage
+    public sealed class ApplicationSays : OperationalMessage
     {
         public static ApplicationSays From(string content)
         {
-            return null;
+            var id = OperationalMessagePartsBuilder.IdFrom(content);
+            var name = OperationalMessagePartsBuilder.NameFrom(content);
+            var saysId = OperationalMessagePartsBuilder.SaysIdFrom(content);
+            var payload = OperationalMessagePartsBuilder.PayloadFrom(content);
+            
+            return new ApplicationSays(id, name, saysId, payload);
         }
+        
+        public static ApplicationSays From(Id id, Name name, string payload) => new ApplicationSays(id, name, payload);
         
         public Name Name { get; }
         
         public string Payload { get; }
         
         public string SaysId { get; }
-        
+
+        public override bool IsApp => true;
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != typeof(ApplicationSays))
+            {
+                return false;
+            }
+
+            var otherAttribute = (ApplicationSays) obj;
+            return Name.Equals(otherAttribute.Name) && 
+                   Payload.Equals(otherAttribute.Payload);
+        }
+
+        public override int GetHashCode() => 31 * Name.GetHashCode() + Payload.GetHashCode();
+
+        public override string ToString() => $"ApplicationSays[{Id},{Name},{Payload}]";
+
         private ApplicationSays(Id id, Name name, string payload) : base(id)
         {
             Name = name;
