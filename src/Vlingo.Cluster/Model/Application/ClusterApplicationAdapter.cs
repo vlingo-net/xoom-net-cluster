@@ -9,10 +9,11 @@ using System.Collections.Generic;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Application
 {
+    using Vlingo.Wire.Node;
+    
     public abstract class ClusterApplicationAdapter : ClusterApplicationActor, IClusterApplication
     {
         public override bool IsStopped => false;

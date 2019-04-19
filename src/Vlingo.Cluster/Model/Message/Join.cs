@@ -5,10 +5,10 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using Vlingo.Wire.Node;
-
 namespace Vlingo.Cluster.Model.Message
 {
+    using Vlingo.Wire.Node;
+    
     public sealed class Join : OperationalMessage
     {
         private readonly Node _node;

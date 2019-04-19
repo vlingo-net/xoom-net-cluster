@@ -6,12 +6,16 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Actors;
+using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model
 {
     internal class ClusterSnapshotInitializer
     {
         private readonly ICommunicationsHub _communicationsHub;
+        private readonly IConfiguration _configuration;
+        private readonly Wire.Node.Node _localNode;
+        private readonly Id _localNodeId;
 
         public ClusterSnapshotInitializer(string name, Properties instance, ILogger worldDefaultLogger)
         {

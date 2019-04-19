@@ -10,10 +10,11 @@ using Vlingo.Actors;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Application
 {
+    using Vlingo.Wire.Node;
+    
     public interface IClusterApplication : IStartable, IStoppable
     {
         void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder);

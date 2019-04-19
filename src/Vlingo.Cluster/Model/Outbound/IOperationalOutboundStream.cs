@@ -11,10 +11,11 @@ using Vlingo.Actors;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Outbound
 {
+    using Vlingo.Wire.Node;
+    
     public interface IOperationalOutboundStream : IStoppable
     {
         void Close(Id id);

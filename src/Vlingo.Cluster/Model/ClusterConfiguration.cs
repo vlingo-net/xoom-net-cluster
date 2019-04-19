@@ -11,29 +11,32 @@ using System.Text;
 using Vlingo.Actors;
 using Vlingo.Wire.Node;
 
+
 namespace Vlingo.Cluster.Model
 {
+    
+    
     public class ClusterConfiguration : IConfiguration
     {
         private readonly ILogger _logger;
-        private readonly IList<Node> _nodes;
+        private readonly IList<Wire.Node.Node> _nodes;
 
         public ClusterConfiguration(ILogger logger)
         {
             _logger = logger;
-            _nodes = new List<Node>();
+            _nodes = new List<Wire.Node.Node>();
 
             InitializeConfiguredNodeEntries(Properties.Instance);
         }
         
-        public IEnumerable<Node> AllNodesOf(IEnumerable<Id> ids)
+        public IEnumerable<Wire.Node.Node> AllNodesOf(IEnumerable<Id> ids)
         {
             throw new System.NotImplementedException("Currently not used.");
         }
 
-        public IEnumerable<Node> AllGreaterNodes(Id nodeId)
+        public IEnumerable<Wire.Node.Node> AllGreaterNodes(Id nodeId)
         {
-            var greater = new List<Node>();
+            var greater = new List<Wire.Node.Node>();
             foreach (var node in _nodes)
             {
                 if (node.Id.GreaterThan(nodeId))
@@ -45,9 +48,9 @@ namespace Vlingo.Cluster.Model
             return greater;
         }
 
-        public IEnumerable<Node> AllOtherNodes(Id nodeId)
+        public IEnumerable<Wire.Node.Node> AllOtherNodes(Id nodeId)
         {
-            var except = new List<Node>();
+            var except = new List<Wire.Node.Node>();
             foreach (var node in _nodes)
             {
                 if (!node.Id.Equals(nodeId))
@@ -70,11 +73,11 @@ namespace Vlingo.Cluster.Model
             return ids;
         }
 
-        public Node NodeMatching(Id nodeId) => _nodes.SingleOrDefault(n => n.Id.Equals(nodeId)) ?? Node.NoNode;
+        public Wire.Node.Node NodeMatching(Id nodeId) => _nodes.SingleOrDefault(n => n.Id.Equals(nodeId)) ?? Wire.Node.Node.NoNode;
 
         public bool HasNode(Id nodeId) => _nodes.Any(n => n.Id.Equals(nodeId));
 
-        public IEnumerable<Node> AllNodes => _nodes;
+        public IEnumerable<Wire.Node.Node> AllNodes => _nodes;
 
         public IEnumerable<string> AllNodeNames => _nodes.Select(n => n.Name.Value);
 
@@ -142,7 +145,7 @@ namespace Vlingo.Cluster.Model
         internal ClusterConfiguration(Properties properties, ILogger logger)
         {
             _logger = logger;
-            _nodes = new List<Node>();
+            _nodes = new List<Wire.Node.Node>();
             
             InitializeConfiguredNodeEntries(properties);
         }
@@ -157,7 +160,7 @@ namespace Vlingo.Cluster.Model
                 var opNodeAddress = Address.From(host, properties.OperationalPort(configuredNodeName), AddressType.Op);
                 var appNodeAddress = Address.From(host, properties.ApplicationPort(configuredNodeName), AddressType.App);
                 
-                _nodes.Add(new Node(nodeId, nodeName, opNodeAddress, appNodeAddress));
+                _nodes.Add(new Wire.Node.Node(nodeId, nodeName, opNodeAddress, appNodeAddress));
             }
         }
     }

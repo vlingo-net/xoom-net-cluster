@@ -8,10 +8,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Message
 {
+    using Vlingo.Wire.Node;
+    
     public sealed class Directory : OperationalMessage
     {
         private readonly Name _name;

@@ -17,7 +17,7 @@ namespace Vlingo.Cluster.Model
     {
         void Close();
 
-        void Open(Stage stage, Node node, IInboundStreamInterest interest, IConfiguration configuration);
+        void Open(Stage stage, Wire.Node.Node node, IInboundStreamInterest interest, IConfiguration configuration);
 
         IInboundStream ApplicationInboundStream { get; }
 

@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 using Vlingo.Actors;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Outbound
 {
     using Vlingo.Wire.Fdx.Outbound;
+    using Vlingo.Wire.Node;
     
     public class OperationalOutboundStreamActor : Actor, IOperationalOutboundStream
     {

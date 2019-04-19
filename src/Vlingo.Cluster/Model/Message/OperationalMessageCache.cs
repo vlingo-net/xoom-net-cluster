@@ -9,10 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Message
 {
+    using Vlingo.Wire.Node;
+    
     public class OperationalMessageCache
     {
         private readonly Dictionary<string, RawMessage> _messages;

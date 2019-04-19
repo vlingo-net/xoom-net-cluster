@@ -7,10 +7,11 @@
 
 using System.Collections.Generic;
 using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Message
 {
+    using Vlingo.Wire.Node;
+    
     internal class OperationalMessagePartsBuilder
     {
         internal static string PayloadFrom(string content)
