@@ -13,23 +13,16 @@ namespace Vlingo.Cluster.Model.Node
     
     public class RegisteredNodeStatus
     {
-        private static readonly DateTime Jan1st1970 = new DateTime
-            (1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         private bool _confirmedByLeader;
         private long _lastHealthIndication;
         private bool _leader;
         private readonly Node _node;
-        
-        public static long CurrentTimeMillis()
-        {
-            return (long) (DateTime.UtcNow - Jan1st1970).TotalMilliseconds;
-        }
 
         public RegisteredNodeStatus(Node node, bool isLeader, bool confirmedByLeader)
         {
             _node = node;
             _leader = isLeader;
-            _lastHealthIndication = CurrentTimeMillis();
+            _lastHealthIndication = DateTimeHelper.CurrentTimeMillis();
             _confirmedByLeader = confirmedByLeader;
         }
 
@@ -41,7 +34,7 @@ namespace Vlingo.Cluster.Model.Node
             return timeOutTime < currentTime;
         }
 
-        public void UpdateLastHealthIndication() => _lastHealthIndication = CurrentTimeMillis();
+        public void UpdateLastHealthIndication() => _lastHealthIndication = DateTimeHelper.CurrentTimeMillis();
 
         public void SetLastHealthIndication(long millis) => _lastHealthIndication = millis;
 

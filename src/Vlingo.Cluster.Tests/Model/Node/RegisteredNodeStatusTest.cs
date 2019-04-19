@@ -44,8 +44,8 @@ namespace Vlingo.Cluster.Tests.Model.Node
 
             var status = new RegisteredNodeStatus(node1, true, true);
     
-            Assert.False(status.IsTimedOut(RegisteredNodeStatus.CurrentTimeMillis(), 100L));
-            Assert.True(status.IsTimedOut(RegisteredNodeStatus.CurrentTimeMillis() + 4001L, 4000L));
+            Assert.False(status.IsTimedOut(DateTimeHelper.CurrentTimeMillis(), 100L));
+            Assert.True(status.IsTimedOut(DateTimeHelper.CurrentTimeMillis() + 4001L, 4000L));
         }
     }
 }
