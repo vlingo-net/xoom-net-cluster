@@ -35,7 +35,7 @@
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Vlingo.Actors" Version="0.3.0" />
-      <PackageReference Include="Vlingo.Wire" Version="0.2.2" />
+      <PackageReference Include="Vlingo.Wire" Version="0.3.0" />
     </ItemGroup>
 
 </Project>
