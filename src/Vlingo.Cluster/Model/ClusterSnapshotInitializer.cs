@@ -6,6 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Actors;
+using Vlingo.Cluster.Model.Node;
 using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model
@@ -16,10 +17,25 @@ namespace Vlingo.Cluster.Model
         private readonly IConfiguration _configuration;
         private readonly Wire.Node.Node _localNode;
         private readonly Id _localNodeId;
+        private readonly IRegistry _registry;
 
-        public ClusterSnapshotInitializer(string name, Properties instance, ILogger worldDefaultLogger)
+        internal ClusterSnapshotInitializer(string nodeNameText, Properties properties, ILogger logger)
         {
-            throw new System.NotImplementedException();
+            _localNodeId = Id.Of(properties.NodeId(nodeNameText));
+            _configuration = new ClusterConfiguration(logger);
+            _localNode = _configuration.NodeMatching(_localNodeId);
+            _communicationsHub = new NetworkCommunicationsHub();
+            _registry = new LocalRegistry(_localNode, _configuration, logger);
         }
+
+        internal ICommunicationsHub CommunicationsHub => _communicationsHub;
+
+        internal IConfiguration Configuration => _configuration;
+
+        public Wire.Node.Node LocalNode => _localNode;
+
+        public Id LocalNodeId => _localNodeId;
+
+        public IRegistry Registry => _registry;
     }
 }
