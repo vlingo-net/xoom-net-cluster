@@ -11,15 +11,13 @@ namespace Vlingo.Cluster.Model.Attribute.Message
 {
     using Vlingo.Wire.Node;
     
-    public sealed class RemoveAttributeSet : ApplicationMessage
-    {
-        public static RemoveAttributeSet From(Node node, AttributeSet set) => new RemoveAttributeSet(node, set);
-        
-        public RemoveAttributeSet(Node node, AttributeSet set)
+    public sealed class ConfirmCreateAttributeSet : ApplicationMessage
+    {        
+        public ConfirmCreateAttributeSet(string correlatingMessageId, Node node, AttributeSet set)
             : base(
-                NoCorrelatingMessageId,
-                ApplicationMessageType.RemoveAttributeSet,
-                TrackingIdFor(node, ApplicationMessageType.RemoveAttributeSet, set.Name))
+                correlatingMessageId,
+                ApplicationMessageType.ConfirmCreateAttributeSet,
+                TrackingIdFor(node, ApplicationMessageType.ConfirmCreateAttributeSet, set.Name))
         {
             AttributeSetName = set.Name;
         }
@@ -32,6 +30,8 @@ namespace Vlingo.Cluster.Model.Attribute.Message
             
             builder
                 .Append(GetType().Name)
+                .Append("\n")
+                .Append(CorrelatingMessageId)
                 .Append("\n")
                 .Append(TrackingId)
                 .Append("\n")
