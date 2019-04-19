@@ -6,11 +6,12 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Cluster.Model.Message;
-using Vlingo.Wire.Node;
 using Xunit;
 
 namespace Vlingo.Cluster.Tests.Model.Message
 {
+    using Vlingo.Wire.Node;
+    
     public class OperationalMessageCacheTest
     {
         [Fact]

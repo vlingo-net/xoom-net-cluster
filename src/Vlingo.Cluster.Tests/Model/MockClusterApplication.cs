@@ -14,7 +14,7 @@ using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Tests.Model
-{
+{   
     public class MockClusterApplication : IClusterApplication
     {
         public IAttributesProtocol AttributesClient { get; private set; }
@@ -66,7 +66,7 @@ namespace Vlingo.Cluster.Tests.Model
         public void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder) =>
             HandleApplicationMessageCheck.IncrementAndGet();
 
-        public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster) =>
+        public void InformAllLiveNodes(IEnumerable<Wire.Node.Node> liveNodes, bool isHealthyCluster) =>
             AllLiveNodes.IncrementAndGet();
 
         public void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading) =>
