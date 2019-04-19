@@ -12,6 +12,10 @@ namespace Vlingo.Cluster.Model.Attribute
     public abstract class Attribute
     {
         public string Name { get; protected set; }
+        
+        public AttributeType Type { get; protected set; }
+
+        public abstract string ToStringValue();
     }
     
     public sealed class Attribute<T> : Attribute
@@ -46,11 +50,11 @@ namespace Vlingo.Cluster.Model.Attribute
             Type = attributeType;
         }
         
-        public AttributeType Type { get; }
-        
         public T Value { get; }
 
         public bool IsUndefined => Equals(Undefined);
+
+        public override string ToStringValue() => Value.ToString();
 
         public override bool Equals(object obj)
         {
