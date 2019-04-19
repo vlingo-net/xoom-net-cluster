@@ -7,6 +7,7 @@
 
 using System;
 using Vlingo.Actors;
+using Vlingo.Cluster.Model.Application;
 
 namespace Vlingo.Cluster.Model
 {
@@ -20,7 +21,17 @@ namespace Vlingo.Cluster.Model
         public static Tuple<IClusterSnapshotControl, ILogger> Instance(World world, string name)
         {
             var initializer = new ClusterSnapshotInitializer(name, Properties.Instance, world.DefaultLogger);
-            return null;
+            
+            var application = ClusterApplicationFactory.Instance(world, initializer.LocalNode);
+            
+            var definition =
+                    Definition.Has<ClusterSnapshotActor>(
+                        Definition.Parameters(initializer, application),
+                        "cluster-snapshot-" + name);
+            
+            var control = world.ActorFor<IClusterSnapshotControl>(definition);
+            
+            return new Tuple<IClusterSnapshotControl, ILogger>(control, world.DefaultLogger);
         }
     }
 }
