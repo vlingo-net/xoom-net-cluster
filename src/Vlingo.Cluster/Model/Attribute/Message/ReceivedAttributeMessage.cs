@@ -39,7 +39,7 @@ namespace Vlingo.Cluster.Model.Attribute.Message
             _payloadMap = ParsePayload(message);
         }
 
-        public Attribute Attribute()
+        public Attribute<string> Attribute()
         {
             Enum.TryParse<AttributeType>(AttributeType, out var type);
             return Attribute<string>.From(AttributeName, type, AttributeValue);
