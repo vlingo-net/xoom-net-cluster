@@ -29,7 +29,12 @@ namespace Vlingo.Cluster.Model.Message
         public Directory(Id id, Name name, IEnumerable<Node> nodes) : base(id)
         {
             _name = name;
-            nodes = nodes.OrderBy(n => n.Id).ThenBy(n => n.Name).ThenBy(n => n.OperationalAddress).ThenBy(n => n.ApplicationAddress);
+            _nodes = nodes
+                .OrderBy(n => n.Id)
+                .ThenBy(n => n.Name)
+                .ThenBy(n => n.OperationalAddress)
+                .ThenBy(n => n.ApplicationAddress)
+                .ToList();
         }
 
         public override bool IsDirectory => true;

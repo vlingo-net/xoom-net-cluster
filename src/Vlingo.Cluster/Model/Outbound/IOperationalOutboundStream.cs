@@ -6,6 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Vlingo.Actors;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Wire.Fdx.Outbound;
@@ -18,31 +19,31 @@ namespace Vlingo.Cluster.Model.Outbound
     {
         void Close(Id id);
         
-        void Application(ApplicationSays says, IEnumerable<Node> unconfirmedNodes);
+        Task Application(ApplicationSays says, IEnumerable<Node> unconfirmedNodes);
         
-        void Directory(IEnumerable<Node> allLiveNodes);
+        Task Directory(IEnumerable<Node> allLiveNodes);
         
-        void Elect(IEnumerable<Node> allGreaterNodes);
+        Task Elect(IEnumerable<Node> allGreaterNodes);
         
-        void Join();
+        Task Join();
         
-        void Leader();
+        Task Leader();
         
-        void Leader(Id id);
+        Task Leader(Id id);
         
-        void Leave();
+        Task Leave();
         
         void Open(Id id);
         
-        void Ping(Id targetNodeId);
+        Task Ping(Id targetNodeId);
         
-        void Pulse(Id targetNodeId);
+        Task Pulse(Id targetNodeId);
         
-        void Pulse();
+        Task Pulse();
         
-        void Split(Id targetNodeId, Id currentLeaderId);
+        Task Split(Id targetNodeId, Id currentLeaderId);
         
-        void Vote(Id targetNodeId);
+        Task Vote(Id targetNodeId);
     }
 
     public static class OperationalOutboundStreamFactory

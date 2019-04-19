@@ -14,7 +14,7 @@ namespace Vlingo.Cluster.Model.Message
 {
     public static class MessageConverters
     {
-        public static void MessageToBytes(ApplicationSays app, MemoryStream buffer)
+        public static void MessageToBytes(ApplicationSays app, Stream buffer)
         {
             var builder = new StringBuilder(OperationalMessage.APP).Append("\n");
             
@@ -29,7 +29,7 @@ namespace Vlingo.Cluster.Model.Message
             buffer.Write(bytes, 0, bytes.Length);
         }
 
-        public static void MessageToBytes(Directory dir, MemoryStream buffer)
+        public static void MessageToBytes(Directory dir, Stream buffer)
         {
             var builder = new StringBuilder(OperationalMessage.DIR).Append("\n");
             
@@ -56,9 +56,9 @@ namespace Vlingo.Cluster.Model.Message
             buffer.Write(bytes, 0, bytes.Length);
         }
 
-        public static void MessageToBytes(Elect elect, MemoryStream buffer) => BasicMessageToBytes(elect, OperationalMessage.ELECT, buffer);
+        public static void MessageToBytes(Elect elect, Stream buffer) => BasicMessageToBytes(elect, OperationalMessage.ELECT, buffer);
 
-        public static void MessageToBytes(Join join, MemoryStream buffer)
+        public static void MessageToBytes(Join join, Stream buffer)
         {
             var builder =
                 new StringBuilder(OperationalMessage.JOIN)
@@ -81,19 +81,19 @@ namespace Vlingo.Cluster.Model.Message
             buffer.Write(bytes, 0, bytes.Length);
         }
 
-        public static void MessageToBytes(Leader leader, MemoryStream buffer) => BasicMessageToBytes(leader, OperationalMessage.LEADER, buffer);
+        public static void MessageToBytes(Leader leader, Stream buffer) => BasicMessageToBytes(leader, OperationalMessage.LEADER, buffer);
         
-        public static void MessageToBytes(Leave leave, MemoryStream buffer) => BasicMessageToBytes(leave, OperationalMessage.LEAVE, buffer);
+        public static void MessageToBytes(Leave leave, Stream buffer) => BasicMessageToBytes(leave, OperationalMessage.LEAVE, buffer);
         
-        public static void MessageToBytes(Ping ping, MemoryStream buffer) => BasicMessageToBytes(ping, OperationalMessage.PING, buffer);
+        public static void MessageToBytes(Ping ping, Stream buffer) => BasicMessageToBytes(ping, OperationalMessage.PING, buffer);
         
-        public static void MessageToBytes(Pulse pulse, MemoryStream buffer) => BasicMessageToBytes(pulse, OperationalMessage.PULSE, buffer);
+        public static void MessageToBytes(Pulse pulse, Stream buffer) => BasicMessageToBytes(pulse, OperationalMessage.PULSE, buffer);
         
-        public static void MessageToBytes(Split split, MemoryStream buffer) => BasicMessageToBytes(split, OperationalMessage.SPLIT, buffer);
+        public static void MessageToBytes(Split split, Stream buffer) => BasicMessageToBytes(split, OperationalMessage.SPLIT, buffer);
         
-        public static void MessageToBytes(Vote vote, MemoryStream buffer) => BasicMessageToBytes(vote, OperationalMessage.VOTE, buffer);
+        public static void MessageToBytes(Vote vote, Stream buffer) => BasicMessageToBytes(vote, OperationalMessage.VOTE, buffer);
 
-        private static void BasicMessageToBytes(OperationalMessage message, string type, MemoryStream buffer)
+        private static void BasicMessageToBytes(OperationalMessage message, string type, Stream buffer)
         {
             var builder =
                 new StringBuilder(type)
@@ -103,7 +103,11 @@ namespace Vlingo.Cluster.Model.Message
             
             var bytes = Converters.TextToBytes(builder.ToString());
 
-            buffer.Clear();
+            if (buffer is MemoryStream stream)
+            {
+                stream.Clear();    
+            }
+            
             buffer.Write(bytes, 0, bytes.Length);
         }
     }
