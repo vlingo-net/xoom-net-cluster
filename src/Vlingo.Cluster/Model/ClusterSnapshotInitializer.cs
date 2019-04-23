@@ -11,7 +11,7 @@ using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model
 {
-    internal class ClusterSnapshotInitializer
+    public class ClusterSnapshotInitializer
     {
         private readonly ICommunicationsHub _communicationsHub;
         private readonly IConfiguration _configuration;

@@ -7,12 +7,13 @@
 
 using System;
 using Vlingo.Actors.TestKit;
-using Vlingo.Cluster.Model;
 using Vlingo.Common;
 using Xunit.Abstractions;
 
 namespace Vlingo.Cluster.Tests.Model
 {
+    using Vlingo.Cluster.Model;
+    
     public class AbstractClusterTest : AbstractMessageTool, IDisposable
     {
         private static readonly Random Random = new Random();
@@ -31,7 +32,7 @@ namespace Vlingo.Cluster.Tests.Model
         public void Dispose()
         {
             TestWorld?.Terminate();
-            // Cluster.Reset();
+            Cluster.Reset();
         }
     }
 }
