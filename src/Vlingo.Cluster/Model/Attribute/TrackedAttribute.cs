@@ -31,7 +31,7 @@ namespace Vlingo.Cluster.Model.Attribute
 
         public Attribute ReplacingValueWith<T>(Attribute<T> other) => ((Attribute<T>)Attribute).ReplacingValueWith(other);
 
-        public bool SameAs(Attribute<object> other) => Attribute.Equals(other);
+        public bool SameAs(Attribute other) => Attribute.Equals(other);
         
         public TrackedAttribute WithAttribute(Attribute attribute) => new TrackedAttribute(Id, attribute, false);
         
