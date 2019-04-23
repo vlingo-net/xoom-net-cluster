@@ -7,15 +7,24 @@
 
 using System.Collections.Generic;
 using Vlingo.Actors;
+using Vlingo.Cluster.Model.Application;
+using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Cluster.Model.Node;
 using Vlingo.Wire.Fdx.Inbound;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model
-{
+{   
     public class ClusterSnapshotActor : Actor, IClusterSnapshot, IClusterSnapshotControl, IInboundStreamInterest, IRegistryInterest
     {
+        private readonly IAttributesAgent _attributesAgent;
+        private readonly IClusterApplication _clusterApplication;
+        private readonly ClusterApplicationBroadcaster _broadcaster;
+        private readonly ICommunicationsHub _communicationsHub;
+        private readonly ILocalLiveNode _localLiveNode;
+        private readonly Vlingo.Wire.Node.Node _localNode;
+        
         public void QuorumAchieved()
         {
             throw new System.NotImplementedException();
