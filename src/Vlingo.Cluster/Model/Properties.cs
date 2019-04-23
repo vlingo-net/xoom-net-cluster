@@ -24,10 +24,12 @@ namespace Vlingo.Cluster.Model
         private readonly IDictionary<string, string> _dictionary;
 
         public static Properties Instance => SingleInstance.Value;
+        
+        public static Properties OpenForTest(Dictionary<string, string> properties) => new Properties(properties);
 
         public static Properties Open()
         {
-            var props = new Properties();
+            var props = new Properties(new Dictionary<string, string>());
             props.Load(new FileInfo(_propertiesFile));
             return props;
         }
@@ -299,9 +301,9 @@ namespace Vlingo.Cluster.Model
             ClusterApplicationTypeName();
         }
 
-        private Properties()
+        private Properties(Dictionary<string, string> properties)
         {
-            _dictionary = new Dictionary<string, string>();
+            _dictionary = properties;
         }
         
         private string GetProperty(string key) => GetProperty(key, null);
