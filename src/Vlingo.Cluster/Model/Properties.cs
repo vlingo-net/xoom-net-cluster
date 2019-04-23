@@ -15,7 +15,7 @@ namespace Vlingo.Cluster.Model
 {
     public sealed class Properties
     {
-        private static readonly string _propertiesFile = "/vlingo-cluster.properties";
+        private static readonly string _propertiesFile = "vlingo-cluster.properties";
 
         private static Func<Properties> _factory = () => Open();
 

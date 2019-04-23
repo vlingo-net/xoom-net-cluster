@@ -17,9 +17,14 @@ namespace Vlingo.Cluster.Tests.Model
 {   
     public class MockClusterApplication : IClusterApplication
     {
+        public MockClusterApplication()
+        {
+            AllLiveNodes = new AtomicInteger(0);
+        }
+        
         public IAttributesProtocol AttributesClient { get; private set; }
   
-        public AtomicInteger AllLiveNodes => new AtomicInteger(0);
+        public AtomicInteger AllLiveNodes { get; }
         
         public AtomicInteger HandleApplicationMessageCheck => new AtomicInteger(0);
   

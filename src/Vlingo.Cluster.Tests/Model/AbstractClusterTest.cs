@@ -22,7 +22,6 @@ namespace Vlingo.Cluster.Tests.Model
         private static AtomicInteger _portToUse = new AtomicInteger(10_000 + Random.Next(50_000));
         
         protected MockClusterApplication Application;
-        protected ClusterConfiguration Config;
         protected Properties Properties;
         protected TestWorld TestWorld;
 
