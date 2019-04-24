@@ -51,7 +51,7 @@ namespace Vlingo.Cluster.Tests.Model
     
             properties.Add("cluster.msg.charset", "UTF-8");
     
-            properties.Add("cluster.app.class", "io.vlingo.cluster.model.application.FakeClusterApplicationActor");
+            properties.Add("cluster.app.class", "Vlingo.Cluster.Model.Application.FakeClusterApplicationActor");
     
             properties.Add("cluster.health.check.interval", "2000");
             properties.Add("cluster.live.node.timeout", "20000");
