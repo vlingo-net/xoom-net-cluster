@@ -69,9 +69,7 @@ namespace Vlingo.Cluster.Model.Node
 
         public bool IsConfirmedByLeader(Id id)
         {
-            var status = _registry[id];
-            
-            if (status != null)
+            if (_registry.TryGetValue(id, out var status))
             {
                 return status.IsConfirmedByLeader;
             }
@@ -81,9 +79,7 @@ namespace Vlingo.Cluster.Model.Node
 
         public void DeclareLeaderAs(Id id)
         {
-            var status = _registry[id];
-            
-            if (status != null)
+            if (_registry.TryGetValue(id, out var status))
             {
                 status.Lead(true);
                 status.UpdateLastHealthIndication();
@@ -98,9 +94,7 @@ namespace Vlingo.Cluster.Model.Node
 
         public void DemoteLeaderOf(Id id)
         {
-            var status = _registry[id];
-            
-            if (status != null && status.IsLeader)
+            if (_registry.TryGetValue(id, out var status) && status.IsLeader)
             {
                 status.Lead(false);
                 _broadcaster.InformLeaderDemoted(status.Node, IsClusterHealthy());
@@ -108,10 +102,8 @@ namespace Vlingo.Cluster.Model.Node
         }
 
         public bool IsLeader(Id id)
-        {
-            var status = _registry[id];
-            
-            if (status != null)
+        { 
+            if (_registry.TryGetValue(id, out var status))
             {
                 return status.IsLeader;
             }
@@ -133,10 +125,9 @@ namespace Vlingo.Cluster.Model.Node
 
         public void Leave(Id id)
         {
-            var status = _registry[id];
-            _registry.Remove(id);
-            if (status != null)
+            if (_registry.TryGetValue(id, out var status))
             {
+                _registry.Remove(id);
                 DemoteLeaderOf(id);
                 _broadcaster.InformNodeLeftCluster(status.Node, IsClusterHealthy());
                 _broadcaster.InformAllLiveNodes(LiveNodes, IsClusterHealthy());
@@ -212,9 +203,7 @@ namespace Vlingo.Cluster.Model.Node
 
         public void UpdateLastHealthIndication(Id id)
         {
-            var status = _registry[id];
-            
-            if (status != null)
+            if (_registry.TryGetValue(id, out var status))
             {
                 status.UpdateLastHealthIndication();
                 _broadcaster.InformNodeIsHealthy(status.Node, IsClusterHealthy());
