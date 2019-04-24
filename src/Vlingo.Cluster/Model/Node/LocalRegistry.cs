@@ -264,7 +264,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
         
-        internal RegisteredNodeStatus RegisteredNodeStatusOf(Id id) => _registry.[id];
+        internal RegisteredNodeStatus RegisteredNodeStatusOf(Id id) => _registry[id];
 
         private bool IsClusterHealthy()
         {
