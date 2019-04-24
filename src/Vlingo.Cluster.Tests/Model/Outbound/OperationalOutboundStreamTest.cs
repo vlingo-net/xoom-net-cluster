@@ -6,6 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Vlingo.Actors;
 using Vlingo.Actors.TestKit;
 using Vlingo.Cluster.Model.Message;
@@ -29,7 +30,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         private TestWorld _world;
 
         [Fact]
-        public async void TestDirectory()
+        public async Task TestDirectory()
         {
             await _outboundStream.Actor.Directory(new HashSet<Node>(Config.AllNodes));
 
@@ -42,7 +43,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async void TestElect()
+        public async Task TestElect()
         {
             await _outboundStream.Actor.Elect(Config.AllGreaterNodes(_localNodeId));
 
@@ -55,7 +56,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async void TestJoin()
+        public async Task TestJoin()
         {
             await _outboundStream.Actor.Join();
 
@@ -68,7 +69,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async void TestLeader()
+        public async Task TestLeader()
         {
             await _outboundStream.Actor.Leader();
 
@@ -81,7 +82,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async void TestLeaderOfId()
+        public async Task TestLeaderOfId()
         {
             var targetId = Id.Of(3);
             
@@ -94,7 +95,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async void TestLeave()
+        public async Task TestLeave()
         {
             await _outboundStream.Actor.Leave();
 
@@ -107,7 +108,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async void TestPing()
+        public async Task TestPing()
         {
             var targetId = Id.Of(3);
             
@@ -120,7 +121,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async void TestPulseToTarget()
+        public async Task TestPulseToTarget()
         {
             var targetId = Id.Of(3);
             
@@ -133,7 +134,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async void TestPulse()
+        public async Task TestPulse()
         {
             await _outboundStream.Actor.Pulse();
 
@@ -146,7 +147,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async void TestSplit()
+        public async Task TestSplit()
         {
             var targetNodeId = Id.Of(2);
             var currentLeaderId = Id.Of(3);
@@ -160,7 +161,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async void TestVote()
+        public async Task TestVote()
         {
             var targetNodeId = Id.Of(2);
             
