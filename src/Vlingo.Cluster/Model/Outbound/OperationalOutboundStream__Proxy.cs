@@ -77,7 +77,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ApplicationRepresentation2));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public Task Directory(IEnumerable<Node> allLiveNodes)
@@ -100,7 +100,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, DirectoryRepresentation3));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public Task Elect(IEnumerable<Node> allGreaterNodes)
@@ -122,7 +122,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ElectRepresentation4));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public Task Join()
@@ -144,7 +144,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, JoinRepresentation5));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public Task Leader()
@@ -166,7 +166,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, LeaderRepresentation6));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public Task Leader(Id id)
@@ -188,7 +188,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, LeaderRepresentation7));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public Task Leave()
@@ -210,7 +210,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, LeaveRepresentation8));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public void Open(Id id)
@@ -252,7 +252,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, PingRepresentation10));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public Task Pulse(Id targetNodeId)
@@ -274,7 +274,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, PulseRepresentation11));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public Task Pulse()
@@ -296,7 +296,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, PulseRepresentation12));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public Task Split(Id targetNodeId, Id currentLeaderId)
@@ -318,7 +318,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, SplitRepresentation13));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public Task Vote(Id targetNodeId)
@@ -340,7 +340,7 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, VoteRepresentation14));
             }
 
-            return null;
+            return Task.CompletedTask;
         }
 
         public void Stop()
