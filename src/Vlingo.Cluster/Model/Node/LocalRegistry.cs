@@ -19,7 +19,7 @@ namespace Vlingo.Cluster.Model.Node
         private readonly Node _localNode;
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
-        private Dictionary<Id, RegisteredNodeStatus> _registry;
+        private SortedDictionary<Id, RegisteredNodeStatus> _registry;
 
         public LocalRegistry(Node localNode, IConfiguration confirguration, ILogger logger)
         {
@@ -27,7 +27,7 @@ namespace Vlingo.Cluster.Model.Node
             _configuration = confirguration;
             _logger = logger;
             _broadcaster = new RegistryInterestBroadcaster(logger);
-            _registry = new Dictionary<Id, RegisteredNodeStatus>();
+            _registry = new SortedDictionary<Id, RegisteredNodeStatus>();
         }
         
         //======================================
@@ -39,7 +39,7 @@ namespace Vlingo.Cluster.Model.Node
             var currentTime = DateTimeHelper.CurrentTimeMillis();
             var liveNodeTimeout = Properties.Instance.ClusterLiveNodeTimeout();
             
-            var nodesToKeep = new Dictionary<Id, RegisteredNodeStatus>();
+            var nodesToKeep = new SortedDictionary<Id, RegisteredNodeStatus>();
 
             foreach (var status in _registry.Values)
             {
@@ -140,8 +140,8 @@ namespace Vlingo.Cluster.Model.Node
 
         public void MergeAllDirectoryEntries(IEnumerable<Node> leaderRegisteredNodes)
         {
-            var result = new List<MergeResult>();
-            var mergedNodes = new Dictionary<Id, RegisteredNodeStatus>();
+            var result = new SortedSet<MergeResult>();
+            var mergedNodes = new SortedDictionary<Id, RegisteredNodeStatus>();
 
             foreach (var node in leaderRegisteredNodes)
             {
@@ -164,7 +164,7 @@ namespace Vlingo.Cluster.Model.Node
                     result.Add(new MergeResult(status.Node, false));
                 }
             }
-            
+
             _registry = mergedNodes;
     
             _broadcaster.InformMergedAllDirectoryEntries(LiveNodes, result, IsClusterHealthy());
