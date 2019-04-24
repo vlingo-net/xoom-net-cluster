@@ -87,7 +87,7 @@ namespace Vlingo.Cluster.Tests.Model
             Application = new MockClusterApplication();
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             TestWorld?.Terminate();
             Cluster.Reset();
