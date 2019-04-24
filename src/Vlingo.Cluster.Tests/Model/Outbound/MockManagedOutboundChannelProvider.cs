@@ -6,10 +6,11 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
+using Vlingo.Cluster.Tests.Model.Node;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Node;
 
-namespace Vlingo.Cluster.Tests.Model.Node
+namespace Vlingo.Cluster.Tests.Model.Outbound
 {
     public class MockManagedOutboundChannelProvider : IManagedOutboundChannelProvider
     {

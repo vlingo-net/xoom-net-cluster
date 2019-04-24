@@ -15,7 +15,7 @@ using Vlingo.Wire.Node;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Vlingo.Cluster.Tests.Model.Node
+namespace Vlingo.Cluster.Tests.Model.Outbound
 {
     public class ApplicationOutboundStreamTest : AbstractClusterTest
     {

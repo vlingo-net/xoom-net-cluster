@@ -69,8 +69,8 @@ namespace Vlingo.Cluster.Tests.Model
         {
             Assert.Equal(3, Config.AllGreaterNodes(Id.Of(0)).Count());
             Assert.Equal(2, Config.AllGreaterNodes(Id.Of(1)).Count());
-            Assert.Equal(1, Config.AllGreaterNodes(Id.Of(2)).Count());
-            Assert.Equal(0, Config.AllGreaterNodes(Id.Of(3)).Count());
+            Assert.Single(Config.AllGreaterNodes(Id.Of(2)));
+            Assert.Empty(Config.AllGreaterNodes(Id.Of(3)));
         }
         
         [Fact]

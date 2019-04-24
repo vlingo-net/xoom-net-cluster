@@ -5,7 +5,6 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
 
-namespace Vlingo.Cluster.Tests.Model.Node
+namespace Vlingo.Cluster.Tests.Model.Outbound
 {
     public class MockManagedOutboundChannel : IManagedOutboundChannel
     {
