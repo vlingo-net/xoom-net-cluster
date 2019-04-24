@@ -20,45 +20,62 @@ namespace Vlingo.Cluster.Tests.Model
         public MockClusterApplication()
         {
             AllLiveNodes = new AtomicInteger(0);
+            HandleApplicationMessageCheck = new AtomicInteger(0);
+            InformLeaderElectedCheck = new AtomicInteger(0);
+            InformLeaderLostCheck = new AtomicInteger(0);
+            InformLocalNodeShutDownCheck = new AtomicInteger(0);
+            InformLocalNodeStartedCheck = new AtomicInteger(0);
+            InformNodeIsHealthyCheck = new AtomicInteger(0);
+            InformNodeJoinedClusterCheck = new AtomicInteger(0);
+            InformNodeLeftClusterCheck = new AtomicInteger(0);
+            InformQuorumAchievedCheck = new AtomicInteger(0);
+            InformQuorumLostCheck = new AtomicInteger(0);
+            InformAttributesClientCheck = new AtomicInteger(0);
+            InformAttributeSetCreatedCheck = new AtomicInteger(0);
+            InformAttributeAddedCheck = new AtomicInteger(0);
+            InformAttributeRemovedCheck = new AtomicInteger(0);
+            InformAttributeReplacedCheck = new AtomicInteger(0);
+            InformAttributeSetRemovedCheck = new AtomicInteger(0);
+            StopCheck = new AtomicInteger(0);
         }
         
         public IAttributesProtocol AttributesClient { get; private set; }
   
         public AtomicInteger AllLiveNodes { get; }
         
-        public AtomicInteger HandleApplicationMessageCheck => new AtomicInteger(0);
+        public AtomicInteger HandleApplicationMessageCheck { get; }
   
-        public AtomicInteger InformLeaderElectedCheck => new AtomicInteger(0);
+        public AtomicInteger InformLeaderElectedCheck { get; }
         
-        public AtomicInteger InformLeaderLostCheck => new AtomicInteger(0);
+        public AtomicInteger InformLeaderLostCheck { get; }
         
-        public AtomicInteger InformLocalNodeShutDownCheck => new AtomicInteger(0);
+        public AtomicInteger InformLocalNodeShutDownCheck { get; }
         
-        public AtomicInteger InformLocalNodeStartedCheck => new AtomicInteger(0);
+        public AtomicInteger InformLocalNodeStartedCheck { get; }
         
-        public AtomicInteger InformNodeIsHealthyCheck => new AtomicInteger(0);
+        public AtomicInteger InformNodeIsHealthyCheck { get; }
         
-        public AtomicInteger InformNodeJoinedClusterCheck => new AtomicInteger(0);
+        public AtomicInteger InformNodeJoinedClusterCheck { get; }
         
-        public AtomicInteger InformNodeLeftClusterCheck => new AtomicInteger(0);
+        public AtomicInteger InformNodeLeftClusterCheck { get; }
         
-        public AtomicInteger InformQuorumAchievedCheck => new AtomicInteger(0);
+        public AtomicInteger InformQuorumAchievedCheck { get; }
         
-        public AtomicInteger InformQuorumLostCheck => new AtomicInteger(0);
+        public AtomicInteger InformQuorumLostCheck { get; }
   
-        public AtomicInteger InformAttributesClientCheck => new AtomicInteger(0);
+        public AtomicInteger InformAttributesClientCheck { get; }
         
-        public AtomicInteger InformAttributeSetCreatedCheck => new AtomicInteger(0);
+        public AtomicInteger InformAttributeSetCreatedCheck { get; }
         
-        public AtomicInteger InformAttributeAddedCheck => new AtomicInteger(0);
+        public AtomicInteger InformAttributeAddedCheck { get; }
         
-        public AtomicInteger InformAttributeRemovedCheck => new AtomicInteger(0);
+        public AtomicInteger InformAttributeRemovedCheck { get; }
         
-        public AtomicInteger InformAttributeReplacedCheck => new AtomicInteger(0);
+        public AtomicInteger InformAttributeReplacedCheck { get; }
         
-        public AtomicInteger InformAttributeSetRemovedCheck => new AtomicInteger(0);
+        public AtomicInteger InformAttributeSetRemovedCheck { get; }
   
-        public AtomicInteger StopCheck => new AtomicInteger(0);
+        public AtomicInteger StopCheck { get; }
         
         public void Start()
         {

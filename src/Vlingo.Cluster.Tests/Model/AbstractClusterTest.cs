@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Vlingo.Actors.TestKit;
 using Vlingo.Common;
 using Vlingo.Wire.Node;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace Vlingo.Cluster.Tests.Model
@@ -24,6 +25,15 @@ namespace Vlingo.Cluster.Tests.Model
         protected MockClusterApplication Application;
         protected Properties Properties;
         protected TestWorld TestWorld;
+
+        [Fact]
+        public void TestValues()
+        {
+            Assert.NotNull(Application);
+            Assert.NotNull(Config);
+            Assert.NotNull(Properties);
+            Assert.NotNull(TestWorld);
+        }
 
         public AbstractClusterTest(ITestOutputHelper output)
         {
