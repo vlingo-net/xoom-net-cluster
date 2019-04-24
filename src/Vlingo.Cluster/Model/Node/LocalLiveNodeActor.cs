@@ -1,0 +1,418 @@
+// Copyright © 2012-2018 Vaughn Vernon. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Vlingo.Actors;
+using Vlingo.Cluster.Model.Message;
+using Vlingo.Cluster.Model.Outbound;
+
+namespace Vlingo.Cluster.Model.Node
+{
+    using Vlingo.Wire.Node;
+    using Common;
+    
+    public sealed class LocalLiveNodeActor : Actor, ILocalLiveNode, ILiveNodeMaintainer, IScheduled<object>
+    {
+        private readonly ICancellable _cancellable;
+        private readonly CheckHealth _checkHealth;
+        private readonly IConfiguration _configuration;
+        private LiveNodeState _state;
+        private readonly Node _node;
+        private readonly List<INodeSynchronizer> _nodeSynchronizers;
+        private readonly IOperationalOutboundStream _outbound;
+        private bool _quorumAchieved;
+        private readonly ILocalLiveNode _selfLocalLiveNode;
+        private readonly IClusterSnapshot _snapshot;
+        private readonly IRegistry _registry;
+
+        public LocalLiveNodeActor(
+            Node node,
+            IClusterSnapshot snapshot,
+            IRegistry registry,
+            IOperationalOutboundStream outbound,
+            IConfiguration configuration)
+        {
+            _node = node;
+            _snapshot = snapshot;
+            _registry = registry;
+            _outbound = outbound;
+            _configuration = configuration;
+            _nodeSynchronizers = new List<INodeSynchronizer>();
+            _selfLocalLiveNode = SelfAs<ILocalLiveNode>();
+            _checkHealth = new CheckHealth(_node.Id);
+            _cancellable = ScheduleHealthCheck();
+
+            DeclareIdle();
+        }
+        
+        //===================================
+        // LocalLiveNode
+        //===================================
+        
+        public void Handle(OperationalMessage message)
+        {
+            if (message.IsDirectory) _state.Handle((Directory) message);
+            else if (message.IsElect) _state.Handle((Elect) message);
+            else if (message.IsJoin) _state.Handle((Join) message);
+            else if (message.IsLeader) _state.Handle((Leader) message);
+            else if (message.IsLeave) _state.Handle((Leave) message);
+            else if (message.IsPing) _state.Handle((Ping) message);
+            else if (message.IsPulse) _state.Handle((Pulse) message);
+            else if (message.IsSplit) _state.Handle((Split) message);
+            else if (message.IsVote) _state.Handle((Vote) message);
+            else if (message.IsCheckHealth)
+            {
+                var checkHealth = CheckHealth();
+                var informHealth = InformHealth();
+                Task.WaitAll(checkHealth, informHealth);
+            }
+        }
+
+        public void RegisterNodeSynchronizer(INodeSynchronizer nodeSynchronizer) =>
+            _nodeSynchronizers.Add(nodeSynchronizer);
+        
+        //================================================
+        //== LiveNodeMaintainer
+        //================================================
+        
+        #region LiveNodeMaintainer
+
+        public void AssertNewLeadership(Id assertingNodeId)
+        {
+            //--------------------------------------------------------------------------------------------
+            // -- Handles the following kinds of conditions:
+            // --
+            // -- Cluster is {1,2,3} and {3} is the leader so {1} and {2} are followers. A network
+            // -- partition occurs between {2} and {3} and {2} wants to take over as leader because
+            // -- it thinks that {3} died, but {1} and {3} can still see each other. So how does {1}
+            // -- deal with the situation where it is already in a quorum with {1,3} but {2} can’t
+            // -- see node {3} so it tells {1} that it wants to be leader. Of course this can also
+            // -- happen if the network partition occurs before {3} originally declares itself as
+            // -- the leader, but both situations can be dealt with in the same way.
+            // -- 
+            // -- This is a simple solution and may need a better one.
+            //--------------------------------------------------------------------------------------------
+
+            var currentLeader = _registry.CurrentLeader;
+
+            if (currentLeader.IsLeaderOver(assertingNodeId))
+            {
+                _outbound.Split(assertingNodeId, currentLeader.Id).Wait();
+            }
+            else
+            {
+                DeclareFollower();
+                PromoteElectedLeader(assertingNodeId);
+            }
+        }
+
+        public void DeclareLeadership()
+        {
+            var directory = _outbound.Directory(_registry.LiveNodes);
+            var leader = _outbound.Leader();
+            Task.WaitAll(directory, leader);
+        }
+
+        public void DeclareNodeSplit(Id leaderNodeId)
+        {
+            DeclareFollower();
+            PromoteElectedLeader(leaderNodeId);
+        }
+
+        public void DropNode(Id id)
+        {
+            var droppedLeader = _registry.IsLeader(id);
+
+            DropNodeFromCluster(id);
+
+            if (droppedLeader)
+            {
+                _state.LeaderElectionTracker.Start(true);
+                _outbound.Elect(_configuration.AllGreaterNodes(_node.Id)).Wait();
+            }
+
+            if (_state.IsLeader)
+            {
+                DeclareLeadership();
+            }
+        }
+
+        public void EscalateElection(Id electId)
+        {
+            _registry.Join(_node);
+            _registry.Join(_configuration.NodeMatching(electId));
+    
+            if (_node.Id.GreaterThan(electId))
+            {
+                if (!_state.LeaderElectionTracker.HasStarted)
+                {
+                    _state.LeaderElectionTracker.Start(true);
+                    _outbound.Elect(_configuration.AllGreaterNodes(_node.Id)).Wait();
+                }
+                else if (_state.LeaderElectionTracker.HasTimedOut)
+                {
+                    DeclareLeadership();
+                    return;
+                }
+                _outbound.Vote(electId).Wait();
+            }
+        }
+
+        public void Join(Node joiningNode)
+        {
+            _registry.Join(joiningNode);
+            _outbound.Open(joiningNode.Id);
+    
+            if (_state.IsLeader)
+            {
+                DeclareLeadership();
+            }
+
+            Synchronize(joiningNode);
+        }
+
+        public void JoinLocalWith(Wire.Node.Node remoteNode)
+        {
+            Join(_node);
+            Join(remoteNode);
+        }
+
+        public void MergeAllDirectoryEntries(IEnumerable<Node> nodes) => _registry.MergeAllDirectoryEntries(nodes); 
+
+        public void OvertakeLeadership(Id leaderNodeId) => DeclareFollower();
+
+        public void PlaceVote(Id voterId)
+        {
+            // should not happen that nodeId > voterId, unless
+            // there is a late Join or Directory received
+            if (_node.Id.GreaterThan(voterId))
+            {
+                _outbound.Vote(voterId).Wait();
+            }
+            else
+            {
+                _state.LeaderElectionTracker.Clear();
+            }
+        }
+
+        public void ProvidePulseTo(Id id) => _outbound.Pulse(id).Wait();
+        
+        public void Synchronize(Node node)
+        {
+            foreach (var syncher in _nodeSynchronizers)
+            {
+                syncher.Synchronize(node);
+            }
+        }
+
+        public void UpdateLastHealthIndication(Id id) => _registry.UpdateLastHealthIndication(id);
+
+        public void VoteForLocalNode(Id targetNodeId)
+        {
+            _outbound.Vote(targetNodeId).Wait();
+            DeclareLeadership();
+        }
+        
+        #endregion
+        
+        //===================================
+        // Scheduled
+        //===================================
+
+        public void IntervalSignal(IScheduled<object> scheduled, object data)
+        {
+            _registry.CleanTimedOutNodes();
+    
+            _selfLocalLiveNode.Handle(_checkHealth);
+        }
+        
+        //===================================
+        // Stoppable
+        //===================================
+
+        public override void Stop()
+        {
+            _outbound.Leave();
+            _cancellable.Cancel();
+            _registry.Leave(_node.Id);
+            base.Stop();
+        }
+        
+        //===================================
+        // internal implementation
+        //===================================
+        
+        #region internal implementation
+
+        private async Task CheckHealth()
+        {
+            if (_registry.HasQuorum)
+            {
+                await MaintainHealthWithQuorum();
+            }
+            else
+            {
+                MaintainHealthWithNoQuorum();
+            }
+        }
+        
+        private void DeclareFollower() {
+            if (_state == null || !_state.IsIdle)
+            {
+                Logger.Log($"Cluster follower: {_node}");
+      
+                _state = new FollowerState(_node, this, Logger);
+            }
+        }
+        
+        private void DeclareIdle() {
+            if (_state == null || !_state.IsIdle)
+            {
+                Logger.Log($"Cluster idle: {_node}");
+      
+                _state = new IdleState(_node, this, Logger);
+      
+                if (_registry.CurrentLeader.Equals(_node))
+                {
+                    _registry.DemoteLeaderOf(_node.Id);
+                }
+            }
+        }
+
+        private async Task DeclareLeader()
+        {
+            Logger.Log($"Cluster leader: {_node}");
+            
+            _state = new LeaderState(_node, this, Logger);
+
+            PromoteElectedLeader(_node.Id);
+
+            await _outbound.Directory(_registry.LiveNodes);
+
+            await _outbound.Leader();
+        }
+
+        private void DropNodeFromCluster(Id nodeId)
+        {
+            if (_registry.HasMember(nodeId))
+            {
+                _registry.Leave(nodeId);
+                _outbound.Close(nodeId);
+            }
+        }
+
+        private async Task InformHealth()
+        {
+            await _outbound.Pulse();
+            
+            if (_registry.HasMember(_node.Id))
+            {
+                _registry.UpdateLastHealthIndication(_node.Id);
+            }
+
+            if (_state.IsIdle || !_registry.IsConfirmedByLeader(_node.Id))
+            {
+                await _outbound.Join();
+            }
+        }
+
+        private void MaintainHealthWithNoQuorum()
+        {
+            _state.LeaderElectionTracker.Reset();
+
+            _state.NoQuorumTracker.Start();
+
+            WatchForQuorumRelinquished();
+
+            if (_state.NoQuorumTracker.HasTimedOut)
+            {
+                Logger.Log("No quorum; leaving cluster to become idle node.");
+                _registry.Leave(_node.Id);
+                DeclareIdle();
+            }
+        }
+
+        private async Task MaintainHealthWithQuorum()
+        {
+            _state.NoQuorumTracker.Reset();
+
+            WatchForQuorumAchievement();
+
+            if (!_registry.HasLeader)
+            {
+                if (!_state.LeaderElectionTracker.HasStarted)
+                {
+                    _state.LeaderElectionTracker.Start();
+                    await _outbound.Elect(_configuration.AllGreaterNodes(_node.Id));
+                }
+                else if (_state.LeaderElectionTracker.HasTimedOut)
+                {
+                    await DeclareLeader();
+                }
+            }
+        }
+
+        private void PromoteElectedLeader(Id leaderNodeId)
+        {
+            if (_node.Id.Equals(leaderNodeId))
+            {
+                // I've seen the leader get bumped out of its own
+                // registry during a weird network partition or
+                // something and it can never get back leadership
+                // or even rejoin the cluster because it's missing
+                // from the local registry
+                _registry.Join(_node);
+      
+                _registry.DeclareLeaderAs(leaderNodeId);
+      
+                _registry.ConfirmAllLiveNodesByLeader();
+      
+            }
+            else
+            {
+                if (_registry.IsLeader(_node.Id))
+                {
+                    _registry.DemoteLeaderOf(_node.Id);
+                }
+      
+                if (!_registry.HasMember(leaderNodeId))
+                {
+                    _registry.Join(_configuration.NodeMatching(leaderNodeId));
+                }
+      
+                _registry.DeclareLeaderAs(leaderNodeId);
+            }
+        }
+
+        private ICancellable ScheduleHealthCheck()
+        {
+            return Stage.Scheduler.Schedule(SelfAs<IScheduled<object>>(), null, TimeSpan.FromMilliseconds(1000L),
+                TimeSpan.FromMilliseconds(Properties.Instance.ClusterHealthCheckInterval()));
+        }
+
+        private void WatchForQuorumAchievement()
+        {
+            if (!_quorumAchieved)
+            {
+                _quorumAchieved = true;
+                _snapshot.QuorumAchieved();
+            }
+        }
+        
+        private void WatchForQuorumRelinquished() {
+            if (_quorumAchieved)
+            {
+                _quorumAchieved = false;
+                _snapshot.QuorumLost();
+            }
+        }
+        
+        #endregion
+    }
+}
