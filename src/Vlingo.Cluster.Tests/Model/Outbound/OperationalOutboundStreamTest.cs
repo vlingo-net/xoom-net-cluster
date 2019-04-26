@@ -25,7 +25,6 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         private MockManagedOutboundChannelProvider _channelProvider;
         private Id _localNodeId;
         private Node _localNode;
-        private ByteBufferPool _pool;
         private TestActor<IOperationalOutboundStream> _outboundStream;
         private TestWorld _world;
 
