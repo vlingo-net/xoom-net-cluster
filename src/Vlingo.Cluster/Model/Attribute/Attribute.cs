@@ -109,7 +109,7 @@ namespace Vlingo.Cluster.Model.Attribute
                 throw new ArgumentException("Source and target attributes have different types.");
             }
             
-            return new Attribute<T>(Name, Value, Type);
+            return new Attribute<T>(Name, other.Value, Type);
         }
 
         private static object TypeValue(AttributeType attributeType, string value)
