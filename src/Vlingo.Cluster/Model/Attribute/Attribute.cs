@@ -64,6 +64,13 @@ namespace Vlingo.Cluster.Model.Attribute
             }
 
             var otherAttribute = (Attribute<T>) obj;
+
+            if (Value == null && otherAttribute.Value == null)
+            {
+                return Name.Equals(otherAttribute.Name) && 
+                       Type == otherAttribute.Type;
+            }
+            
             return Name.Equals(otherAttribute.Name) && 
                    Value.Equals(otherAttribute.Value) &&
                    Type == otherAttribute.Type;
