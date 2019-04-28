@@ -39,6 +39,6 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         
         public List<string> Writes { get; }
         
-        public TestUntil Until { get; }
+        public TestUntil Until { get; set; }
     }
 }
