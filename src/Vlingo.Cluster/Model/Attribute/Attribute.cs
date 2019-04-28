@@ -64,6 +64,13 @@ namespace Vlingo.Cluster.Model.Attribute
             }
 
             var otherAttribute = (Attribute<T>) obj;
+
+            if (Value == null && otherAttribute.Value == null)
+            {
+                return Name.Equals(otherAttribute.Name) && 
+                       Type == otherAttribute.Type;
+            }
+            
             return Name.Equals(otherAttribute.Name) && 
                    Value.Equals(otherAttribute.Value) &&
                    Type == otherAttribute.Type;
@@ -109,7 +116,7 @@ namespace Vlingo.Cluster.Model.Attribute
                 throw new ArgumentException("Source and target attributes have different types.");
             }
             
-            return new Attribute<T>(Name, Value, Type);
+            return new Attribute<T>(Name, other.Value, Type);
         }
 
         private static object TypeValue(AttributeType attributeType, string value)

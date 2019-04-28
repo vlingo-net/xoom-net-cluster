@@ -59,19 +59,19 @@ namespace Vlingo.Cluster.Model.Attribute.Message
             return builder.ToString();
         }
 
-        public Id SourceNodeId => Id.Of(int.Parse(_payloadMap[SourceNodeIdKey]));
+        public Id SourceNodeId => Id.Of(int.Parse(Get(SourceNodeIdKey)));
         
-        public Name SourceNodeName => Name.Of(_payloadMap[SourceNodeNameKey]);
+        public Name SourceNodeName => Name.Of(Get(SourceNodeNameKey));
         
-        public Id SourceNodeOpPort => Id.Of(int.Parse(_payloadMap[SourceNodeOpPortKey]));
+        public Id SourceNodeOpPort => Id.Of(int.Parse(Get(SourceNodeOpPortKey)));
         
-        public Id SourceNodeAppPort => Id.Of(int.Parse(_payloadMap[SourceNodeAppPortKey]));
+        public Id SourceNodeAppPort => Id.Of(int.Parse(Get(SourceNodeAppPortKey)));
         
-        public string ClassOfMessage => _payloadMap[ClassOfMessageKey];
+        public string ClassOfMessage => Get(ClassOfMessageKey);
         
-        public string CorrelatingMessageId => _payloadMap[CorrelatingMessageIdKey];
+        public string CorrelatingMessageId => Get(CorrelatingMessageIdKey);
         
-        public string TrackingId => _payloadMap[TrackingIdKey];
+        public string TrackingId => Get(TrackingIdKey);
 
         public ApplicationMessageType Type
         {
@@ -82,13 +82,13 @@ namespace Vlingo.Cluster.Model.Attribute.Message
             }
         }
         
-        public string AttributeSetName => _payloadMap[AttributeSetNameKey];
+        public string AttributeSetName => Get(AttributeSetNameKey);
         
-        public string AttributeName => _payloadMap[AttributeNameKey];
+        public string AttributeName => Get(AttributeNameKey);
         
-        public string AttributeType => _payloadMap[AttributeTypeKey];
+        public string AttributeType => Get(AttributeTypeKey);
         
-        public string AttributeValue => _payloadMap[AttributeValueKey];
+        public string AttributeValue => Get(AttributeValueKey);
         
         private Dictionary<string,string> ParsePayload(RawMessage message)
         {
@@ -148,6 +148,16 @@ namespace Vlingo.Cluster.Model.Attribute.Message
             }
     
             return map;
+        }
+
+        private string Get(string key)
+        {
+            if (_payloadMap.TryGetValue(key, out var value))
+            {
+                return value;
+            }
+
+            return null;
         }
     }
 }

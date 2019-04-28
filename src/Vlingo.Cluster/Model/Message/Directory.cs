@@ -78,7 +78,7 @@ namespace Vlingo.Cluster.Model.Message
 
             for (var i = 0; i < _nodes.Count; i++)
             {
-                if (_nodes[i] != otherDirectory._nodes[i])
+                if (!_nodes[i].Equals(otherDirectory._nodes[i]))
                 {
                     return false;
                 }
