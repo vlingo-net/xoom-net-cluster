@@ -6,7 +6,7 @@
 
         <!-- NuGet Metadata -->
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.2.1</PackageVersion>
+        <PackageVersion>0.2.2</PackageVersion>
         <PackageId>Vlingo.Cluster</PackageId>
         <Authors>Vlingo</Authors>
         <Description>
@@ -35,7 +35,7 @@
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Vlingo.Actors" Version="0.3.4" />
-      <PackageReference Include="Vlingo.Wire" Version="0.3.6" />
+      <PackageReference Include="Vlingo.Wire" Version="0.3.7" />
     </ItemGroup>
 
 </Project>
