@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Vlingo.Actors;
-using System.Threading.Tasks;
 using Vlingo.Cluster.Model.Message;
 
 namespace Vlingo.Cluster.Model.Outbound
@@ -57,11 +56,11 @@ namespace Vlingo.Cluster.Model.Outbound
             }
         }
 
-        public Task Application(ApplicationSays says, IEnumerable<Node> unconfirmedNodes)
+        public void Application(ApplicationSays says, IEnumerable<Node> unconfirmedNodes)
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Application(says, unconfirmedNodes).Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Application(says, unconfirmedNodes);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, ApplicationRepresentation2);
@@ -77,14 +76,13 @@ namespace Vlingo.Cluster.Model.Outbound
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ApplicationRepresentation2));
             }
 
-            return Task.CompletedTask;
         }
 
-        public Task Directory(IEnumerable<Node> allLiveNodes)
+        public void Directory(IEnumerable<Node> allLiveNodes)
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Directory(allLiveNodes).Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Directory(allLiveNodes);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, DirectoryRepresentation3);
@@ -99,15 +97,13 @@ namespace Vlingo.Cluster.Model.Outbound
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, DirectoryRepresentation3));
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task Elect(IEnumerable<Node> allGreaterNodes)
+        public void Elect(IEnumerable<Node> allGreaterNodes)
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Elect(allGreaterNodes).Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Elect(allGreaterNodes);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, ElectRepresentation4);
@@ -121,15 +117,13 @@ namespace Vlingo.Cluster.Model.Outbound
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ElectRepresentation4));
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task Join()
+        public void Join()
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Join().Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Join();
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, JoinRepresentation5);
@@ -143,15 +137,13 @@ namespace Vlingo.Cluster.Model.Outbound
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, JoinRepresentation5));
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task Leader()
+        public void Leader()
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Leader().Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Leader();
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, LeaderRepresentation6);
@@ -165,15 +157,13 @@ namespace Vlingo.Cluster.Model.Outbound
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, LeaderRepresentation6));
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task Leader(Id id)
+        public void Leader(Id id)
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Leader(id).Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Leader(id);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, LeaderRepresentation7);
@@ -187,15 +177,13 @@ namespace Vlingo.Cluster.Model.Outbound
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, LeaderRepresentation7));
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task Leave()
+        public void Leave()
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Leave().Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Leave();
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, LeaveRepresentation8);
@@ -209,8 +197,6 @@ namespace Vlingo.Cluster.Model.Outbound
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, LeaveRepresentation8));
             }
-
-            return Task.CompletedTask;
         }
 
         public void Open(Id id)
@@ -233,11 +219,11 @@ namespace Vlingo.Cluster.Model.Outbound
             }
         }
 
-        public Task Ping(Id targetNodeId)
+        public void Ping(Id targetNodeId)
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Ping(targetNodeId).Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Ping(targetNodeId);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, PingRepresentation10);
@@ -251,15 +237,13 @@ namespace Vlingo.Cluster.Model.Outbound
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, PingRepresentation10));
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task Pulse(Id targetNodeId)
+        public void Pulse(Id targetNodeId)
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Pulse(targetNodeId).Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Pulse(targetNodeId);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, PulseRepresentation11);
@@ -273,15 +257,13 @@ namespace Vlingo.Cluster.Model.Outbound
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, PulseRepresentation11));
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task Pulse()
+        public void Pulse()
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Pulse().Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Pulse();
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, PulseRepresentation12);
@@ -295,15 +277,13 @@ namespace Vlingo.Cluster.Model.Outbound
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, PulseRepresentation12));
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task Split(Id targetNodeId, Id currentLeaderId)
+        public void Split(Id targetNodeId, Id currentLeaderId)
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Split(targetNodeId, currentLeaderId).Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Split(targetNodeId, currentLeaderId);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, SplitRepresentation13);
@@ -317,15 +297,13 @@ namespace Vlingo.Cluster.Model.Outbound
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, SplitRepresentation13));
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task Vote(Id targetNodeId)
+        public void Vote(Id targetNodeId)
         {
             if (!actor.IsStopped)
             {
-                Action<IOperationalOutboundStream> consumer = x => x.Vote(targetNodeId).Wait();
+                Action<IOperationalOutboundStream> consumer = x => x.Vote(targetNodeId);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, VoteRepresentation14);
@@ -339,8 +317,6 @@ namespace Vlingo.Cluster.Model.Outbound
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, VoteRepresentation14));
             }
-
-            return Task.CompletedTask;
         }
 
         public void Stop()

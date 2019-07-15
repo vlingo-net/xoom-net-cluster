@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
 using Xunit;
@@ -28,7 +27,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         private readonly Outbound _outbound;
 
         [Fact]
-        public async Task TestBroadcast()
+        public void TestBroadcast()
         {
             var buffer = new MemoryStream(Properties.OperationalBufferSize());
     
@@ -36,9 +35,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
             var rawMessage2 = BuildRawMessageBuffer(buffer, _message2);
             var rawMessage3 = BuildRawMessageBuffer(buffer, _message3);
     
-            await _outbound.Broadcast(rawMessage1);
-            await _outbound.Broadcast(rawMessage2);
-            await _outbound.Broadcast(rawMessage3);
+            _outbound.Broadcast(rawMessage1);
+            _outbound.Broadcast(rawMessage2);
+            _outbound.Broadcast(rawMessage3);
 
             foreach (var channel in _channelProvider.AllOtherNodeChannels.Values)
             {
@@ -51,7 +50,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
 
         [Fact]
-        public async Task TestBroadcastPooledByteBuffer()
+        public void TestBroadcastPooledByteBuffer()
         {
             var buffer1 = _pool.Access();
             var buffer2 = _pool.Access();
@@ -64,9 +63,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
             var rawMessage3 = BuildRawMessageBuffer((MemoryStream)buffer3.AsStream(), _message3);
             BytesFrom(rawMessage3, (MemoryStream)buffer3.AsStream());
             
-            await _outbound.Broadcast(buffer1);
-            await _outbound.Broadcast(buffer2);
-            await _outbound.Broadcast(buffer3);
+            _outbound.Broadcast(buffer1);
+            _outbound.Broadcast(buffer2);
+            _outbound.Broadcast(buffer3);
             
             foreach (var channel in _channelProvider.AllOtherNodeChannels.Values)
             {
@@ -79,7 +78,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestBroadcastToSelectNodes()
+        public void TestBroadcastToSelectNodes()
         {
             var buffer = new MemoryStream(Properties.OperationalBufferSize());
     
@@ -90,9 +89,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
             var selectNodes = new List<Wire.Node.Node>();
             selectNodes.Add(Config.NodeMatching(Id.Of(3)));
             
-            await _outbound.Broadcast(selectNodes, rawMessage1);
-            await _outbound.Broadcast(selectNodes, rawMessage2);
-            await _outbound.Broadcast(selectNodes, rawMessage3);
+            _outbound.Broadcast(selectNodes, rawMessage1);
+            _outbound.Broadcast(selectNodes, rawMessage2);
+            _outbound.Broadcast(selectNodes, rawMessage3);
             
             var mock = (MockManagedOutboundChannel) _channelProvider.ChannelFor(Id.Of(3));
             
@@ -102,7 +101,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestSendTo()
+        public void TestSendTo()
         {
             var buffer = new MemoryStream(Properties.OperationalBufferSize());
     
@@ -112,9 +111,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
 
             var id3 = Id.Of(3);
             
-            await _outbound.SendTo(rawMessage1, id3);
-            await _outbound.SendTo(rawMessage2, id3);
-            await _outbound.SendTo(rawMessage3, id3);
+            _outbound.SendTo(rawMessage1, id3);
+            _outbound.SendTo(rawMessage2, id3);
+            _outbound.SendTo(rawMessage3, id3);
             
             var mock = (MockManagedOutboundChannel) _channelProvider.ChannelFor(Id.Of(3));
             
@@ -124,7 +123,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestSendToPooledByteBuffer()
+        public void TestSendToPooledByteBuffer()
         {
             var buffer1 = _pool.Access();
             var buffer2 = _pool.Access();
@@ -139,9 +138,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
             
             var id3 = Id.Of(3);
             
-            await _outbound.SendTo(buffer1, id3);
-            await _outbound.SendTo(buffer2, id3);
-            await _outbound.SendTo(buffer3, id3);
+            _outbound.SendTo(buffer1, id3);
+            _outbound.SendTo(buffer2, id3);
+            _outbound.SendTo(buffer3, id3);
             
             var mock = (MockManagedOutboundChannel) _channelProvider.ChannelFor(Id.Of(3));
             

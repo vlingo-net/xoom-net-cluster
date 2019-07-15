@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Vlingo.Actors;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Outbound;
@@ -68,9 +67,8 @@ namespace Vlingo.Cluster.Model.Node
             else if (message.IsVote) _state.Handle((Vote) message);
             else if (message.IsCheckHealth)
             {
-                var checkHealth = CheckHealth();
-                var informHealth = InformHealth();
-                Task.WaitAll(checkHealth, informHealth);
+                CheckHealth();
+                InformHealth();
             }
         }
 
@@ -103,7 +101,7 @@ namespace Vlingo.Cluster.Model.Node
 
             if (currentLeader.IsLeaderOver(assertingNodeId))
             {
-                _outbound.Split(assertingNodeId, currentLeader.Id).Wait();
+                _outbound.Split(assertingNodeId, currentLeader.Id);
             }
             else
             {
@@ -114,9 +112,8 @@ namespace Vlingo.Cluster.Model.Node
 
         public void DeclareLeadership()
         {
-            var directory = _outbound.Directory(_registry.LiveNodes);
-            var leader = _outbound.Leader();
-            Task.WaitAll(directory, leader);
+            _outbound.Directory(_registry.LiveNodes);
+            _outbound.Leader();
         }
 
         public void DeclareNodeSplit(Id leaderNodeId)
@@ -134,7 +131,7 @@ namespace Vlingo.Cluster.Model.Node
             if (droppedLeader)
             {
                 _state.LeaderElectionTracker.Start(true);
-                _outbound.Elect(_configuration.AllGreaterNodes(_node.Id)).Wait();
+                _outbound.Elect(_configuration.AllGreaterNodes(_node.Id));
             }
 
             if (_state.IsLeader)
@@ -153,14 +150,14 @@ namespace Vlingo.Cluster.Model.Node
                 if (!_state.LeaderElectionTracker.HasStarted)
                 {
                     _state.LeaderElectionTracker.Start(true);
-                    _outbound.Elect(_configuration.AllGreaterNodes(_node.Id)).Wait();
+                    _outbound.Elect(_configuration.AllGreaterNodes(_node.Id));
                 }
                 else if (_state.LeaderElectionTracker.HasTimedOut)
                 {
                     DeclareLeadership();
                     return;
                 }
-                _outbound.Vote(electId).Wait();
+                _outbound.Vote(electId);
             }
         }
 
@@ -193,7 +190,7 @@ namespace Vlingo.Cluster.Model.Node
             // there is a late Join or Directory received
             if (_node.Id.GreaterThan(voterId))
             {
-                _outbound.Vote(voterId).Wait();
+                _outbound.Vote(voterId);
             }
             else
             {
@@ -201,7 +198,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void ProvidePulseTo(Id id) => _outbound.Pulse(id).Wait();
+        public void ProvidePulseTo(Id id) => _outbound.Pulse(id);
         
         public void Synchronize(Node node)
         {
@@ -215,7 +212,7 @@ namespace Vlingo.Cluster.Model.Node
 
         public void VoteForLocalNode(Id targetNodeId)
         {
-            _outbound.Vote(targetNodeId).Wait();
+            _outbound.Vote(targetNodeId);
             DeclareLeadership();
         }
         
@@ -250,11 +247,11 @@ namespace Vlingo.Cluster.Model.Node
         
         #region internal implementation
 
-        private async Task CheckHealth()
+        private void CheckHealth()
         {
             if (_registry.HasQuorum)
             {
-                await MaintainHealthWithQuorum();
+                MaintainHealthWithQuorum();
             }
             else
             {
@@ -285,7 +282,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        private async Task DeclareLeader()
+        private void DeclareLeader()
         {
             Logger.Log($"Cluster leader: {_node}");
             
@@ -293,9 +290,9 @@ namespace Vlingo.Cluster.Model.Node
 
             PromoteElectedLeader(_node.Id);
 
-            await _outbound.Directory(_registry.LiveNodes);
+            _outbound.Directory(_registry.LiveNodes);
 
-            await _outbound.Leader();
+            _outbound.Leader();
         }
 
         private void DropNodeFromCluster(Id nodeId)
@@ -307,9 +304,9 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        private async Task InformHealth()
+        private void InformHealth()
         {
-            await _outbound.Pulse();
+            _outbound.Pulse();
             
             if (_registry.HasMember(_node.Id))
             {
@@ -318,7 +315,7 @@ namespace Vlingo.Cluster.Model.Node
 
             if (_state.IsIdle || !_registry.IsConfirmedByLeader(_node.Id))
             {
-                await _outbound.Join();
+                _outbound.Join();
             }
         }
 
@@ -338,7 +335,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        private async Task MaintainHealthWithQuorum()
+        private void MaintainHealthWithQuorum()
         {
             _state.NoQuorumTracker.Reset();
 
@@ -349,11 +346,11 @@ namespace Vlingo.Cluster.Model.Node
                 if (!_state.LeaderElectionTracker.HasStarted)
                 {
                     _state.LeaderElectionTracker.Start();
-                    await _outbound.Elect(_configuration.AllGreaterNodes(_node.Id));
+                    _outbound.Elect(_configuration.AllGreaterNodes(_node.Id));
                 }
                 else if (_state.LeaderElectionTracker.HasTimedOut)
                 {
-                    await DeclareLeader();
+                    DeclareLeader();
                 }
             }
         }
