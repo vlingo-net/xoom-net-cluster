@@ -6,7 +6,6 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Vlingo.Actors;
 using Vlingo.Actors.TestKit;
 using Vlingo.Cluster.Model.Message;
@@ -29,9 +28,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         private TestWorld _world;
 
         [Fact]
-        public async Task TestDirectory()
+        public void TestDirectory()
         {
-            await _outboundStream.Actor.Directory(new HashSet<Node>(Config.AllNodes));
+            _outboundStream.Actor.Directory(new HashSet<Node>(Config.AllNodes));
 
             foreach (var channel in AllTargetChannels())
             {
@@ -42,9 +41,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestElect()
+        public void TestElect()
         {
-            await _outboundStream.Actor.Elect(Config.AllGreaterNodes(_localNodeId));
+            _outboundStream.Actor.Elect(Config.AllGreaterNodes(_localNodeId));
 
             foreach (var channel in AllTargetChannels())
             {
@@ -55,9 +54,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestJoin()
+        public void TestJoin()
         {
-            await _outboundStream.Actor.Join();
+            _outboundStream.Actor.Join();
 
             foreach (var channel in AllTargetChannels())
             {
@@ -68,9 +67,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestLeader()
+        public void TestLeader()
         {
-            await _outboundStream.Actor.Leader();
+            _outboundStream.Actor.Leader();
 
             foreach (var channel in AllTargetChannels())
             {
@@ -81,11 +80,11 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestLeaderOfId()
+        public void TestLeaderOfId()
         {
             var targetId = Id.Of(3);
             
-            await _outboundStream.Actor.Leader(targetId);
+            _outboundStream.Actor.Leader(targetId);
 
             var channel = _channelProvider.ChannelFor(targetId);
             var message = OperationalMessage.MessageFrom(Mock(channel).Writes[0]);
@@ -94,9 +93,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestLeave()
+        public void TestLeave()
         {
-            await _outboundStream.Actor.Leave();
+            _outboundStream.Actor.Leave();
 
             foreach (var channel in AllTargetChannels())
             {
@@ -107,11 +106,11 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestPing()
+        public void TestPing()
         {
             var targetId = Id.Of(3);
             
-            await _outboundStream.Actor.Ping(targetId);
+            _outboundStream.Actor.Ping(targetId);
 
             var channel = _channelProvider.ChannelFor(targetId);
             var message = OperationalMessage.MessageFrom(Mock(channel).Writes[0]);
@@ -120,11 +119,11 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestPulseToTarget()
+        public void TestPulseToTarget()
         {
             var targetId = Id.Of(3);
             
-            await _outboundStream.Actor.Pulse(targetId);
+            _outboundStream.Actor.Pulse(targetId);
 
             var channel = _channelProvider.ChannelFor(targetId);
             var message = OperationalMessage.MessageFrom(Mock(channel).Writes[0]);
@@ -133,9 +132,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestPulse()
+        public void TestPulse()
         {
-            await _outboundStream.Actor.Pulse();
+            _outboundStream.Actor.Pulse();
 
             foreach (var channel in AllTargetChannels())
             {
@@ -146,12 +145,12 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestSplit()
+        public void TestSplit()
         {
             var targetNodeId = Id.Of(2);
             var currentLeaderId = Id.Of(3);
     
-            await _outboundStream.Actor.Split(targetNodeId, currentLeaderId);
+            _outboundStream.Actor.Split(targetNodeId, currentLeaderId);
     
             var channel = _channelProvider.ChannelFor(targetNodeId);
             var message = OperationalMessage.MessageFrom(Mock(channel).Writes[0]);
@@ -160,11 +159,11 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         }
         
         [Fact]
-        public async Task TestVote()
+        public void TestVote()
         {
             var targetNodeId = Id.Of(2);
             
-            await _outboundStream.Actor.Vote(targetNodeId);
+            _outboundStream.Actor.Vote(targetNodeId);
 
             var channel = _channelProvider.ChannelFor(targetNodeId);
             var message = OperationalMessage.MessageFrom(Mock(channel).Writes[0]);
