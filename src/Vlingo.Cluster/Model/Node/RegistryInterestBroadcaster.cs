@@ -68,7 +68,7 @@ namespace Vlingo.Cluster.Model.Node
                 }
                 catch (Exception e)
                 {
-                    _logger.Log($"Cannot inform because: {e.Message}", e);
+                    _logger.Error($"Cannot inform because: {e.Message}", e);
                 }   
             }
         }

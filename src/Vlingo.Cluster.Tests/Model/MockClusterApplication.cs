@@ -80,6 +80,11 @@ namespace Vlingo.Cluster.Tests.Model
         public void Start()
         {
         }
+        
+        public void Conclude()
+        {
+            Stop();
+        }
 
         public void Stop() => StopCheck.IncrementAndGet();
 

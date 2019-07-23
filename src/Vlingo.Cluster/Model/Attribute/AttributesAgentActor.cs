@@ -198,7 +198,7 @@ namespace Vlingo.Cluster.Model.Attribute
                         _confirmationInterest.Confirm(request.SourceNodeId, request.AttributeSetName, request.AttributeName, type);
                         break;
                     default:
-                        _configuration.Logger.Log($"Received unknown message: {type.ToString()}");
+                        _configuration.Logger.Warn($"Received unknown message: {type.ToString()}");
                         break;
                 }
             }

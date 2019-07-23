@@ -39,6 +39,10 @@ namespace Vlingo.Cluster.Model
         public void Start()
         {
         }
+        
+        public void Conclude()
+        {
+        }
 
         public void Stop()
         {
@@ -102,7 +106,7 @@ namespace Vlingo.Cluster.Model
                 }
                 catch (Exception e)
                 {
-                    _logger.Log($"Cannot inform because: {e.Message}", e);
+                    _logger.Error($"Cannot inform because: {e.Message}", e);
                 }
             }
         }

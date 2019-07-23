@@ -25,16 +25,16 @@ namespace Vlingo.Cluster.Model.Application
         }
 
         public override void Start() =>
-            Logger.Log($"APP: ClusterApplication started on node: {_localNode}");
+            Logger.Debug($"APP: ClusterApplication started on node: {_localNode}");
 
         public override void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder) =>
-            Logger.Log($"APP: Received application message: {message.AsTextMessage()}");
+            Logger.Debug($"APP: Received application message: {message.AsTextMessage()}");
 
         public override void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster)
         {
             foreach (var id in liveNodes)
             {
-                Logger.Log($"APP: Live node confirmed: {id}");
+                Logger.Debug($"APP: Live node confirmed: {id}");
             }
             
             PrintHealthy(isHealthyCluster);
@@ -42,57 +42,57 @@ namespace Vlingo.Cluster.Model.Application
 
         public override void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading)
         {
-            Logger.Log($"APP: Leader elected: {leaderId}");
+            Logger.Debug($"APP: Leader elected: {leaderId}");
             PrintHealthy(isHealthyCluster);
             if (isLocalNodeLeading)
             {
-                Logger.Log("APP: Local node is leading.");
+                Logger.Debug("APP: Local node is leading.");
             }
         }
 
         public override void InformLeaderLost(Id lostLeaderId, bool isHealthyCluster)
         {
-            Logger.Log($"APP: Leader lost: {lostLeaderId}");
+            Logger.Debug($"APP: Leader lost: {lostLeaderId}");
             PrintHealthy(isHealthyCluster);
         }
 
-        public override void InformLocalNodeShutDown(Id nodeId) => Logger.Log($"APP: Local node shut down: {nodeId}");
+        public override void InformLocalNodeShutDown(Id nodeId) => Logger.Debug($"APP: Local node shut down: {nodeId}");
 
-        public override void InformLocalNodeStarted(Id nodeId) => Logger.Log($"APP: Local node started: {nodeId}");
+        public override void InformLocalNodeStarted(Id nodeId) => Logger.Debug($"APP: Local node started: {nodeId}");
 
         public override void InformNodeIsHealthy(Id nodeId, bool isHealthyCluster)
         {
-            Logger.Log($"APP: Node reported healthy: {nodeId}");
+            Logger.Debug($"APP: Node reported healthy: {nodeId}");
             PrintHealthy(isHealthyCluster);
         }
 
         public override void InformNodeJoinedCluster(Id nodeId, bool isHealthyCluster)
         {
-            Logger.Log($"APP: {nodeId} joined cluster");
+            Logger.Debug($"APP: {nodeId} joined cluster");
             PrintHealthy(isHealthyCluster);
         }
 
         public override void InformNodeLeftCluster(Id nodeId, bool isHealthyCluster)
         {
-            Logger.Log($"APP: {nodeId} left cluster");
+            Logger.Debug($"APP: {nodeId} left cluster");
             PrintHealthy(isHealthyCluster);
         }
 
         public override void InformQuorumAchieved()
         {
-            Logger.Log("APP: Quorum achieved");
+            Logger.Debug("APP: Quorum achieved");
             PrintHealthy(true);
         }
 
         public override void InformQuorumLost()
         {
-            Logger.Log("APP: Quorum lost");
+            Logger.Debug("APP: Quorum lost");
             PrintHealthy(false);
         }
 
         public override void InformAttributesClient(IAttributesProtocol client)
         {
-            Logger.Log("APP: Attributes Client received.");
+            Logger.Debug("APP: Attributes Client received.");
             _client = client;
             if (_localNode.Id.Value == 1)
             {
@@ -102,12 +102,12 @@ namespace Vlingo.Cluster.Model.Application
         }
 
         public override void InformAttributeSetCreated(string attributeSetName) =>
-            Logger.Log($"APP: Attributes Set Created: {attributeSetName}");
+            Logger.Debug($"APP: Attributes Set Created: {attributeSetName}");
 
         public override void InformAttributeAdded(string attributeSetName, string attributeName)
         {
             var attr = _client.Attribute<string>(attributeSetName, attributeName);
-            Logger.Log($"APP: Attribute Set {attributeSetName} Attribute Added: {attributeName} Value: {attr.Value}");
+            Logger.Debug($"APP: Attribute Set {attributeSetName} Attribute Added: {attributeName} Value: {attr.Value}");
             if (_localNode.Id.Value == 1)
             {
                 _client.Replace("fake.set", "fake.attribute.name1", "value-replaced-2");
@@ -118,16 +118,16 @@ namespace Vlingo.Cluster.Model.Application
         public override void InformAttributeRemoved(string attributeSetName, string attributeName)
         {
             var attr = _client.Attribute<string>(attributeSetName, attributeName);
-            Logger.Log($"APP: Attribute Set {attributeSetName} Attribute Removed: {attributeName} Attribute: {attr}");
+            Logger.Debug($"APP: Attribute Set {attributeSetName} Attribute Removed: {attributeName} Attribute: {attr}");
         }
 
         public override void InformAttributeSetRemoved(string attributeSetName) =>
-            Logger.Log($"APP: Attributes Set Removed: {attributeSetName}");
+            Logger.Debug($"APP: Attributes Set Removed: {attributeSetName}");
 
         public override void InformAttributeReplaced(string attributeSetName, string attributeName)
         {
             var attr = _client.Attribute<string>(attributeSetName, attributeName);
-            Logger.Log($"APP: Attribute Set {attributeSetName} Attribute Replaced: {attributeName} Value: {attr.Value}");
+            Logger.Debug($"APP: Attribute Set {attributeSetName} Attribute Replaced: {attributeName} Value: {attr.Value}");
             if (_localNode.Id.Value == 1)
             {
                 _client.Remove("fake.set", "fake.attribute.name1");
@@ -138,11 +138,11 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (isHealthyCluster)
             {
-                Logger.Log("APP: Cluster is healthy");
+                Logger.Debug("APP: Cluster is healthy");
             }
             else
             {
-                Logger.Log("APP: Cluster is NOT healthy");
+                Logger.Debug("APP: Cluster is NOT healthy");
             }
         }
     }

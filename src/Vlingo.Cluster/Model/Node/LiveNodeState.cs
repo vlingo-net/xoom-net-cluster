@@ -35,47 +35,47 @@ namespace Vlingo.Cluster.Model.Node
         }
         
         internal protected virtual void Handle(Directory dir) {
-            Logger.Log($"{StateType} {Node.Id} DIRECTORY: {dir}");
+            Logger.Debug($"{StateType} {Node.Id} DIRECTORY: {dir}");
             LiveNodeMaintainer.MergeAllDirectoryEntries(dir.Nodes);
         }
         
         internal protected virtual void Handle(Elect elec) {
-            Logger.Log($"{StateType} {Node.Id} ELECT: {elec}");
+            Logger.Debug($"{StateType} {Node.Id} ELECT: {elec}");
             LiveNodeMaintainer.EscalateElection(elec.Id);
         }
         
         internal protected virtual void Handle(Join join) {
-            Logger.Log($"{StateType} {Node.Id} JOIN: {join}");
+            Logger.Debug($"{StateType} {Node.Id} JOIN: {join}");
             LiveNodeMaintainer.JoinLocalWith(join.Node);
         }
         
         internal protected virtual void Handle(Leader leader) {
-            Logger.Log($"{StateType} {Node.Id} LEADER: {leader}");
+            Logger.Debug($"{StateType} {Node.Id} LEADER: {leader}");
             LiveNodeMaintainer.AssertNewLeadership(leader.Id);
         }
         
         internal protected virtual void Handle(Leave leave) {
-            Logger.Log($"{StateType} {Node.Id} LEAVE: {leave}");
+            Logger.Debug($"{StateType} {Node.Id} LEAVE: {leave}");
             LiveNodeMaintainer.DropNode(leave.Id);
         }
         
         internal protected virtual void Handle(Ping ping) {
-            Logger.Log($"{StateType} {Node.Id} PING: {ping}");
+            Logger.Debug($"{StateType} {Node.Id} PING: {ping}");
             LiveNodeMaintainer.ProvidePulseTo(ping.Id);
         }
         
         internal protected virtual void Handle(Pulse pulse) {
-            Logger.Log($"{StateType} {Node.Id} PULSE: {pulse}");
+            Logger.Debug($"{StateType} {Node.Id} PULSE: {pulse}");
             LiveNodeMaintainer.UpdateLastHealthIndication(pulse.Id);
         }
         
         internal protected virtual void Handle(Split split) {
-            Logger.Log($"{StateType} {Node.Id} SPLIT: {split}");
+            Logger.Debug($"{StateType} {Node.Id} SPLIT: {split}");
             LiveNodeMaintainer.DeclareNodeSplit(split.Id);
         }
         
         internal protected virtual void Handle(Vote vote) {
-            Logger.Log($"{StateType} {Node.Id} VOTE: {vote}");
+            Logger.Debug($"{StateType} {Node.Id} VOTE: {vote}");
             LiveNodeMaintainer.PlaceVote(vote.Id);
         }
 

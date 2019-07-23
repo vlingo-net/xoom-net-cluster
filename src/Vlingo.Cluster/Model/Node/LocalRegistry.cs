@@ -51,7 +51,7 @@ namespace Vlingo.Cluster.Model.Node
                 {
                     DemoteLeaderOf(status.Node.Id);
                     _broadcaster.InformNodeTimedOut(status.Node, IsClusterHealthy());
-                    _logger.Log($"Node cleaned from registry due to timeout: {status.Node}");
+                    _logger.Info($"Node cleaned from registry due to timeout: {status.Node}");
                 }
             }
             
@@ -88,7 +88,7 @@ namespace Vlingo.Cluster.Model.Node
             }
             else
             {
-                _logger.Log($"Cannot declare leader because missing node: '{id}'");
+                _logger.Warn($"Cannot declare leader because missing node: '{id}'");
             }
         }
 
@@ -134,7 +134,7 @@ namespace Vlingo.Cluster.Model.Node
             }
             else
             {
-                _logger.Log($"Cannot leave because missing node: '{id}'");
+                _logger.Warn($"Cannot leave because missing node: '{id}'");
             }
         }
 

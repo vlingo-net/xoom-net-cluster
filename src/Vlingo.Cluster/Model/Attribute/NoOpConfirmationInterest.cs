@@ -22,7 +22,7 @@ namespace Vlingo.Cluster.Model.Attribute
         
         public void Confirm(Id confirmingNodeId, string attributeSetName, string attributeName, ApplicationMessageType type)
         {
-            _logger.Log($"ATTR CONFIRMATION: NODE: {confirmingNodeId.Value} SET: {attributeSetName} ATTR: {attributeName} TYPE: {type}");
+            _logger.Debug($"ATTR CONFIRMATION: NODE: {confirmingNodeId.Value} SET: {attributeSetName} ATTR: {attributeName} TYPE: {type}");
         }
     }
 }

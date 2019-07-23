@@ -20,7 +20,7 @@ namespace Vlingo.Cluster.Model.Node
 
         protected internal override void Handle(Directory dir)
         {
-            Logger.Log($"{StateType} {Node.Id} DIRECTORY: {dir}");
+            Logger.Debug($"{StateType} {Node.Id} DIRECTORY: {dir}");
     
             if (dir.Id.GreaterThan(Node.Id))
             {
@@ -33,28 +33,28 @@ namespace Vlingo.Cluster.Model.Node
             }
             else
             {
-                Logger.Log($"Leader must not receive Directory message from follower: '{dir.Id}'");
+                Logger.Warn($"Leader must not receive Directory message from follower: '{dir.Id}'");
             }
         }
 
         protected internal override void Handle(Elect elec)
         {
-            Logger.Log($"{StateType} {Node.Id} ELECT: {elec}");
+            Logger.Debug($"{StateType} {Node.Id} ELECT: {elec}");
             LiveNodeMaintainer.VoteForLocalNode(elec.Id);
         }
 
         protected internal override void Handle(Join join)
         {
-            Logger.Log($"{StateType} {Node.Id} JOIN: {join}");
+            Logger.Debug($"{StateType} {Node.Id} JOIN: {join}");
             LiveNodeMaintainer.Join(join.Node);
         }
 
         protected internal override void Handle(Leader leader)
         {
-            Logger.Log($"{StateType} {Node.Id} LEADER: {leader}");
+            Logger.Debug($"{StateType} {Node.Id} LEADER: {leader}");
             if (leader.Id.Equals(Node.Id))
             {
-                Logger.Log("Leader must not receive Leader message of itself from a follower.");
+                Logger.Warn("Leader must not receive Leader message of itself from a follower.");
             }
             else if (leader.Id.GreaterThan(Node.Id))
             {
@@ -68,10 +68,10 @@ namespace Vlingo.Cluster.Model.Node
 
         protected internal override void Handle(Leave leave)
         {
-            Logger.Log($"{StateType} {Node.Id} LEAVE: {leave}");
+            Logger.Debug($"{StateType} {Node.Id} LEAVE: {leave}");
             if (leave.Id.Equals(Node.Id))
             {
-                Logger.Log("Leader must not receive Leave message of itself from a follower.");
+                Logger.Warn("Leader must not receive Leave message of itself from a follower.");
             }
             else
             {
@@ -81,7 +81,7 @@ namespace Vlingo.Cluster.Model.Node
 
         protected internal override void Handle(Vote vote)
         {
-            Logger.Log($"{StateType} {Node.Id} VOTE: {vote}");
+            Logger.Debug($"{StateType} {Node.Id} VOTE: {vote}");
             LiveNodeMaintainer.DeclareLeadership();
         }
     }

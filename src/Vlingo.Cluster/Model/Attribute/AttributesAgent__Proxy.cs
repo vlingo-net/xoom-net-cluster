@@ -9,6 +9,7 @@ namespace Vlingo.Cluster.Model.Attribute
     
     public class AttributesAgent__Proxy : IAttributesAgent
     {
+        private const string RepresentationConclude0 = "Conclude()";
         private const string AddRepresentation1 = "Add(string, string, T)";
         private const string ReplaceRepresentation2 = "Replace(string, string, T)";
         private const string RemoveRepresentation3 = "Remove(string, string)";
@@ -170,6 +171,26 @@ namespace Vlingo.Cluster.Model.Attribute
             else
             {
                 actor.DeadLetters.FailedDelivery(new DeadLetter(actor, IntervalSignalRepresentation7));
+            }
+        }
+        
+        public void Conclude()
+        {
+            if (!actor.IsStopped)
+            {
+                Action<IStoppable> consumer = x => x.Conclude();
+                if (mailbox.IsPreallocated)
+                {
+                    mailbox.Send(actor, consumer, null, RepresentationConclude0);
+                }
+                else
+                {
+                    mailbox.Send(new LocalMessage<IStoppable>(actor, consumer, RepresentationConclude0));
+                }
+            }
+            else
+            {
+                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, RepresentationConclude0));
             }
         }
 

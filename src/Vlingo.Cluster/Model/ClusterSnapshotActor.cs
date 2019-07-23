@@ -109,7 +109,7 @@ namespace Vlingo.Cluster.Model
             }
             else
             {
-                Logger.Log($"ClusterSnapshot couldn't dispatch incoming message; unknown address type: {addressType} for message: {message.AsTextMessage()}");
+                Logger.Warn($"ClusterSnapshot couldn't dispatch incoming message; unknown address type: {addressType} for message: {message.AsTextMessage()}");
             }
         }
         

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Vlingo.Actors;
-using Vlingo.Wire.Message;
-using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Cluster.Model.Attribute;
+using Vlingo.Wire.Fdx.Outbound;
+using Vlingo.Wire.Message;
 
 namespace Vlingo.Cluster.Model.Application
 {
     using Vlingo.Wire.Node;
-
+    
     public class ClusterApplication__Proxy : IClusterApplication
     {
         private const string HandleApplicationMessageRepresentation1 =
@@ -31,7 +31,8 @@ namespace Vlingo.Cluster.Model.Application
         private const string InformAttributeSetRemovedRepresentation16 = "InformAttributeSetRemoved(string)";
         private const string InformAttributeReplacedRepresentation17 = "InformAttributeReplaced(string, string)";
         private const string StartRepresentation18 = "Start()";
-        private const string StopRepresentation19 = "Stop()";
+        private const string ConcludeRepresentation19 = "Conclude()";
+        private const string StopRepresentation20 = "Stop()";
 
         private readonly Actor actor;
         private readonly IMailbox mailbox;
@@ -48,7 +49,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.HandleApplicationMessage(message, responder);
+                Action<IClusterApplication> consumer = __ => __.HandleApplicationMessage(message, responder);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, HandleApplicationMessageRepresentation1);
@@ -61,7 +62,8 @@ namespace Vlingo.Cluster.Model.Application
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, HandleApplicationMessageRepresentation1));
+                actor.DeadLetters.FailedDelivery(new DeadLetter(actor,
+                    HandleApplicationMessageRepresentation1));
             }
         }
 
@@ -69,15 +71,15 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformAllLiveNodes(liveNodes, isHealthyCluster);
+                Action<IClusterApplication> consumer = __ => __.InformAllLiveNodes(liveNodes, isHealthyCluster);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformAllLiveNodesRepresentation2);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IClusterApplication>(actor, consumer, InformAllLiveNodesRepresentation2));
+                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                        InformAllLiveNodesRepresentation2));
                 }
             }
             else
@@ -90,8 +92,8 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x =>
-                    x.InformLeaderElected(leaderId, isHealthyCluster, isLocalNodeLeading);
+                Action<IClusterApplication> consumer = __ =>
+                    __.InformLeaderElected(leaderId, isHealthyCluster, isLocalNodeLeading);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformLeaderElectedRepresentation3);
@@ -112,15 +114,15 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformLeaderLost(lostLeaderId, isHealthyCluster);
+                Action<IClusterApplication> consumer = __ => __.InformLeaderLost(lostLeaderId, isHealthyCluster);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformLeaderLostRepresentation4);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IClusterApplication>(actor, consumer, InformLeaderLostRepresentation4));
+                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                        InformLeaderLostRepresentation4));
                 }
             }
             else
@@ -133,7 +135,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformLocalNodeShutDown(nodeId);
+                Action<IClusterApplication> consumer = __ => __.InformLocalNodeShutDown(nodeId);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformLocalNodeShutDownRepresentation5);
@@ -146,7 +148,8 @@ namespace Vlingo.Cluster.Model.Application
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformLocalNodeShutDownRepresentation5));
+                actor.DeadLetters.FailedDelivery(
+                    new DeadLetter(actor, InformLocalNodeShutDownRepresentation5));
             }
         }
 
@@ -154,7 +157,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformLocalNodeStarted(nodeId);
+                Action<IClusterApplication> consumer = __ => __.InformLocalNodeStarted(nodeId);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformLocalNodeStartedRepresentation6);
@@ -167,7 +170,8 @@ namespace Vlingo.Cluster.Model.Application
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformLocalNodeStartedRepresentation6));
+                actor.DeadLetters.FailedDelivery(new DeadLetter(actor,
+                    InformLocalNodeStartedRepresentation6));
             }
         }
 
@@ -175,7 +179,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformNodeIsHealthy(nodeId, isHealthyCluster);
+                Action<IClusterApplication> consumer = __ => __.InformNodeIsHealthy(nodeId, isHealthyCluster);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformNodeIsHealthyRepresentation7);
@@ -196,7 +200,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformNodeJoinedCluster(nodeId, isHealthyCluster);
+                Action<IClusterApplication> consumer = __ => __.InformNodeJoinedCluster(nodeId, isHealthyCluster);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformNodeJoinedClusterRepresentation8);
@@ -209,7 +213,8 @@ namespace Vlingo.Cluster.Model.Application
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformNodeJoinedClusterRepresentation8));
+                actor.DeadLetters.FailedDelivery(
+                    new DeadLetter(actor, InformNodeJoinedClusterRepresentation8));
             }
         }
 
@@ -217,7 +222,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformNodeLeftCluster(nodeId, isHealthyCluster);
+                Action<IClusterApplication> consumer = __ => __.InformNodeLeftCluster(nodeId, isHealthyCluster);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformNodeLeftClusterRepresentation9);
@@ -238,7 +243,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformQuorumAchieved();
+                Action<IClusterApplication> consumer = __ => __.InformQuorumAchieved();
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformQuorumAchievedRepresentation10);
@@ -259,15 +264,15 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformQuorumLost();
+                Action<IClusterApplication> consumer = __ => __.InformQuorumLost();
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformQuorumLostRepresentation11);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IClusterApplication>(actor, consumer, InformQuorumLostRepresentation11));
+                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                        InformQuorumLostRepresentation11));
                 }
             }
             else
@@ -280,7 +285,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformAttributesClient(client);
+                Action<IClusterApplication> consumer = __ => __.InformAttributesClient(client);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformAttributesClientRepresentation12);
@@ -293,7 +298,8 @@ namespace Vlingo.Cluster.Model.Application
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformAttributesClientRepresentation12));
+                actor.DeadLetters.FailedDelivery(
+                    new DeadLetter(actor, InformAttributesClientRepresentation12));
             }
         }
 
@@ -301,7 +307,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformAttributeSetCreated(attributeSetName);
+                Action<IClusterApplication> consumer = __ => __.InformAttributeSetCreated(attributeSetName);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformAttributeSetCreatedRepresentation13);
@@ -314,7 +320,8 @@ namespace Vlingo.Cluster.Model.Application
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformAttributeSetCreatedRepresentation13));
+                actor.DeadLetters.FailedDelivery(new DeadLetter(actor,
+                    InformAttributeSetCreatedRepresentation13));
             }
         }
 
@@ -322,7 +329,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformAttributeAdded(attributeSetName, attributeName);
+                Action<IClusterApplication> consumer = __ => __.InformAttributeAdded(attributeSetName, attributeName);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformAttributeAddedRepresentation14);
@@ -343,7 +350,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformAttributeRemoved(attributeSetName, attributeName);
+                Action<IClusterApplication> consumer = __ => __.InformAttributeRemoved(attributeSetName, attributeName);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformAttributeRemovedRepresentation15);
@@ -356,7 +363,8 @@ namespace Vlingo.Cluster.Model.Application
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformAttributeRemovedRepresentation15));
+                actor.DeadLetters.FailedDelivery(
+                    new DeadLetter(actor, InformAttributeRemovedRepresentation15));
             }
         }
 
@@ -364,7 +372,7 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformAttributeSetRemoved(attributeSetName);
+                Action<IClusterApplication> consumer = __ => __.InformAttributeSetRemoved(attributeSetName);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformAttributeSetRemovedRepresentation16);
@@ -377,7 +385,8 @@ namespace Vlingo.Cluster.Model.Application
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformAttributeSetRemovedRepresentation16));
+                actor.DeadLetters.FailedDelivery(new DeadLetter(actor,
+                    InformAttributeSetRemovedRepresentation16));
             }
         }
 
@@ -385,7 +394,8 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.InformAttributeReplaced(attributeSetName, attributeName);
+                Action<IClusterApplication> consumer = __ =>
+                    __.InformAttributeReplaced(attributeSetName, attributeName);
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, InformAttributeReplacedRepresentation17);
@@ -398,7 +408,8 @@ namespace Vlingo.Cluster.Model.Application
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformAttributeReplacedRepresentation17));
+                actor.DeadLetters.FailedDelivery(new DeadLetter(actor,
+                    InformAttributeReplacedRepresentation17));
             }
         }
 
@@ -406,14 +417,15 @@ namespace Vlingo.Cluster.Model.Application
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.Start();
+                Action<IClusterApplication> consumer = __ => __.Start();
                 if (mailbox.IsPreallocated)
                 {
                     mailbox.Send(actor, consumer, null, StartRepresentation18);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer, StartRepresentation18));
+                    mailbox.Send(
+                        new LocalMessage<IClusterApplication>(actor, consumer, StartRepresentation18));
                 }
             }
             else
@@ -422,23 +434,45 @@ namespace Vlingo.Cluster.Model.Application
             }
         }
 
-        public void Stop()
+        public void Conclude()
         {
             if (!actor.IsStopped)
             {
-                Action<IClusterApplication> consumer = x => x.Stop();
+                Action<IClusterApplication> consumer = __ => __.Conclude();
                 if (mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, StopRepresentation19);
+                    mailbox.Send(actor, consumer, null, ConcludeRepresentation19);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer, StopRepresentation19));
+                    mailbox.Send(
+                        new LocalMessage<IClusterApplication>(actor, consumer, ConcludeRepresentation19));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, StopRepresentation19));
+                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ConcludeRepresentation19));
+            }
+        }
+
+        public void Stop()
+        {
+            if (!actor.IsStopped)
+            {
+                Action<IClusterApplication> consumer = __ => __.Stop();
+                if (mailbox.IsPreallocated)
+                {
+                    mailbox.Send(actor, consumer, null, StopRepresentation20);
+                }
+                else
+                {
+                    mailbox.Send(
+                        new LocalMessage<IClusterApplication>(actor, consumer, StopRepresentation20));
+                }
+            }
+            else
+            {
+                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, StopRepresentation20));
             }
         }
     }
