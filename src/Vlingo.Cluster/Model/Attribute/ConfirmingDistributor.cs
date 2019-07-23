@@ -160,7 +160,7 @@ namespace Vlingo.Cluster.Model.Attribute
             {
                 if (confirmable.HasUnconfirmedNodes)
                 {
-                    _logger.Log($"REDIST ATTR: {confirmable}");
+                    _logger.Trace($"REDIST ATTR: {confirmable}");
                     _outbound.Application(ApplicationSays.From(
                             _node.Id, _node.Name,
                             confirmable.Message.ToPayload()),

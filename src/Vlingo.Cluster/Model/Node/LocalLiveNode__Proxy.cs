@@ -1,12 +1,14 @@
-using System;
+/*using System;
 using Vlingo.Actors;
 using Vlingo.Cluster.Model.Message;
-using Vlingo.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Node
 {
+    using Vlingo.Wire.Node;
+
     public class LocalLiveNode__Proxy : ILocalLiveNode
     {
+        private const string ConcludeRepresentation0 = "Conclude()";
         private const string HandleRepresentation1 = "Handle(OperationalMessage)";
         private const string RegisterNodeSynchronizerRepresentation2 = "RegisterNodeSynchronizer(INodeSynchronizer)";
         private const string StopRepresentation3 = "Stop()";
@@ -63,6 +65,27 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
+        public void Conclude()
+        {
+            if (!actor.IsStopped)
+            {
+                Action<ILocalLiveNode> consumer = __ => __.Conclude();
+                if (mailbox.IsPreallocated)
+                {
+                    mailbox.Send(actor, consumer, null, ConcludeRepresentation0);
+                }
+                else
+                {
+                    mailbox.Send(
+                        new LocalMessage<ILocalLiveNode>(actor, consumer, ConcludeRepresentation0));
+                }
+            }
+            else
+            {
+                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ConcludeRepresentation0));
+            }
+        }
+
         public void Stop()
         {
             if (!actor.IsStopped)
@@ -83,4 +106,4 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
     }
-}
+}*/

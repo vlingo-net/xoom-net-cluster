@@ -27,11 +27,11 @@ namespace Vlingo.Cluster
         {
             AppDomain.CurrentDomain.ProcessExit += (s, e) =>
             {
-                _control.Item2.Log("\n==========");
-                _control.Item2.Log($"Stopping node: '{_nodeName}' ...");
+                _control.Item2.Info("\n==========");
+                _control.Item2.Info($"Stopping node: '{_nodeName}' ...");
                 _control.Item1.ShutDown();
                 Pause();
-                _control.Item2.Log($"Stopped node: '{_nodeName}'");
+                _control.Item2.Info($"Stopped node: '{_nodeName}'");
             };
         }
         

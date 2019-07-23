@@ -40,11 +40,11 @@ namespace Vlingo.Cluster
       
                 _instance = new NodeBootstrap(control, nodeName);
       
-                control.Item2.Log($"Successfully started cluster node: '{nodeName}'");
+                control.Item2.Info($"Successfully started cluster node: '{nodeName}'");
       
                 if (!embedded)
                 {
-                    control.Item2.Log("==========");
+                    control.Item2.Info("==========");
                 }
             }
 

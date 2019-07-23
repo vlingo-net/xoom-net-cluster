@@ -262,7 +262,7 @@ namespace Vlingo.Cluster.Model.Node
         private void DeclareFollower() {
             if (_state == null || !_state.IsIdle)
             {
-                Logger.Log($"Cluster follower: {_node}");
+                Logger.Info($"Cluster follower: {_node}");
       
                 _state = new FollowerState(_node, this, Logger);
             }
@@ -271,7 +271,7 @@ namespace Vlingo.Cluster.Model.Node
         private void DeclareIdle() {
             if (_state == null || !_state.IsIdle)
             {
-                Logger.Log($"Cluster idle: {_node}");
+                Logger.Info($"Cluster idle: {_node}");
       
                 _state = new IdleState(_node, this, Logger);
       
@@ -284,7 +284,7 @@ namespace Vlingo.Cluster.Model.Node
 
         private void DeclareLeader()
         {
-            Logger.Log($"Cluster leader: {_node}");
+            Logger.Info($"Cluster leader: {_node}");
             
             _state = new LeaderState(_node, this, Logger);
 
@@ -329,7 +329,7 @@ namespace Vlingo.Cluster.Model.Node
 
             if (_state.NoQuorumTracker.HasTimedOut)
             {
-                Logger.Log("No quorum; leaving cluster to become idle node.");
+                Logger.Warn("No quorum; leaving cluster to become idle node.");
                 _registry.Leave(_node.Id);
                 DeclareIdle();
             }

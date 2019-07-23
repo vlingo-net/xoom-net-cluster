@@ -22,7 +22,7 @@ namespace Vlingo.Cluster.Tests.Model
             Assert.NotNull(control);
 
             ++_count;
-            control.Item2.Log($"======== ClusterTest#testClusterSnapshotControl({_count}) ========");
+            control.Item2.Debug($"======== ClusterTest#testClusterSnapshotControl({_count}) ========");
 
             Assert.True(Vlingo.Cluster.Model.Cluster.IsRunning(true, 10));
 
