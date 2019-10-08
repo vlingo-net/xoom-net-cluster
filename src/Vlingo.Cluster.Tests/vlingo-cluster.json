@@ -1,0 +1,95 @@
+﻿{
+  "cluster": {
+    "ssl": false,
+    "op": {
+      "buffer": {
+        "size": 4096
+      },
+      "incoming": {
+        "probe": {
+          "interval": 100
+        }
+      },
+      "outgoing": {
+        "pooled": {
+          "buffers": 20
+        }
+      }
+    },
+    "app": {
+      "buffer": {
+        "size": 10240
+      },
+      "incoming": {
+        "probe": {
+          "interval": 10
+        }
+      },
+      "outgoing": {
+        "pooled": {
+          "buffers": 50
+        }
+      },
+      "class": "Vlingo.Cluster.Model.Application.FakeClusterApplicationActor",
+      "stage": "fake.app.stage"
+    },
+    "msg": {
+      "charset": "UTF-8"
+    },
+    "attributes": {
+      "redistribution": {
+        "interval": 1000,
+        "retries": 20
+      }
+    },
+    "health": {
+      "check": {
+        "interval": 2000
+      }
+    },
+    "live": {
+      "node": {
+        "timeout": 20000
+      }
+    },
+    "quorum": {
+      "timeout": 60000
+    },
+    "seedNodes": "node1,node2,node3"
+  },
+  "node": {
+    "node1": {
+      "id": 1,
+      "name": "node1",
+      "host": "localhost",
+      "op": {
+        "port": 37371
+      },
+      "app": {
+        "port": 37372
+      }
+    },
+    "node2": {
+      "id": 2,
+      "name": "node2",
+      "host": "localhost",
+      "op": {
+        "port": 37373
+      },
+      "app": {
+        "port": 37374
+      }
+    },
+    "node3": {
+      "id": 3,
+      "name": "node3",
+      "host": "localhost",
+      "op": {
+        "port": 37375
+      },
+      "app": {
+        "port": 37376
+      }
+    }
+  }
+}

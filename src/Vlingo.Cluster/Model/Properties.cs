@@ -9,49 +9,43 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
+using Vlingo.Common;
 
 namespace Vlingo.Cluster.Model
 {
-    public sealed class Properties
+    public sealed class Properties : ConfigurationProperties
     {
-        private static readonly string _propertiesFile = "vlingo-cluster.properties";
+        private static Func<Properties> Factory = () =>
+        {
+            var props = new Properties();
+            props.Load(new FileInfo("vlingo-cluster.json"));
+            return props;
+        };
 
-        private static Func<Properties> _factory = () => Open();
-
-        private static Lazy<Properties> SingleInstance => new Lazy<Properties>(_factory, true);
-        
-        private readonly IDictionary<string, string> _dictionary;
+        private static Lazy<Properties> SingleInstance => new Lazy<Properties>(Factory, true);
 
         public static Properties Instance => SingleInstance.Value;
-        
-        public static Properties OpenForTest(Dictionary<string, string> properties) => new Properties(properties);
 
-        public static Properties Open()
-        {
-            var props = new Properties(new Dictionary<string, string>());
-            props.Load(new FileInfo(_propertiesFile));
-            return props;
-        }
-        
         public int ApplicationBufferSize() => GetInteger("cluster.app.buffer.size", 10240);
 
         public long ApplicationInboundProbeInterval()
         {
             var probeInterval = GetInteger("cluster.app.incoming.probe.interval", 100);
-            
-            if (probeInterval == 0) {
+
+            if (probeInterval == 0)
+            {
                 throw new InvalidOperationException("Must assign an application (app) incoming probe interval in properties file.");
             }
 
             return probeInterval;
         }
-        
+
         public int ApplicationOutgoingPooledBuffers()
         {
             var pooledBuffers = GetInteger("cluster.app.outgoing.pooled.buffers", 50);
-            
-            if (pooledBuffers == 0) {
+
+            if (pooledBuffers == 0)
+            {
                 throw new InvalidOperationException("Must assign an application (app) pooled buffers size in properties file.");
             }
 
@@ -61,8 +55,9 @@ namespace Vlingo.Cluster.Model
         public int ApplicationPort(string nodeName)
         {
             var port = GetInteger(nodeName, "app.port", 0);
-            
-            if (port == 0) {
+
+            if (port == 0)
+            {
                 throw new InvalidOperationException($"Must assign an application (app) port to node '{nodeName}' in properties file.");
             }
 
@@ -106,25 +101,25 @@ namespace Vlingo.Cluster.Model
 
             return name;
         }
-        
+
         public long ClusterAttributesRedistributionInterval()
         {
             var interval = GetInteger("cluster.attributes.redistribution.interval", 1000);
             return interval;
         }
-  
+
         public int ClusterAttributesRedistributionRetries()
         {
             var interval = GetInteger("cluster.attributes.redistribution.retries", 10);
             return interval;
         }
-  
+
         public long ClusterHealthCheckInterval()
         {
             var interval = GetInteger("cluster.health.check.interval", 3000);
             return interval;
         }
-  
+
         public long ClusterHeartbeatInterval()
         {
             var interval = GetInteger("cluster.heartbeat.interval", 7000);
@@ -142,7 +137,7 @@ namespace Vlingo.Cluster.Model
             var timeout = GetInteger("cluster.quorum.timeout", 60000);
             return timeout;
         }
-        
+
         public string Host(string nodeName)
         {
             var host = GetString(nodeName, "host", "");
@@ -164,7 +159,7 @@ namespace Vlingo.Cluster.Model
                 throw new InvalidOperationException($"Must assign an id to node '{nodeName}' in properties file.");
             }
 
-            return (short) nodeId;
+            return (short)nodeId;
         }
 
         public string NodeName(string nodeName)
@@ -196,7 +191,7 @@ namespace Vlingo.Cluster.Model
 
             return probeInterval;
         }
-        
+
         public int OperationalOutgoingPooledBuffers()
         {
             var pooledBuffers = GetInteger("cluster.op.outgoing.pooled.buffers", 20);
@@ -208,7 +203,7 @@ namespace Vlingo.Cluster.Model
 
             return pooledBuffers;
         }
-  
+
         public int OperationalPort(String nodeName)
         {
             var port = GetInteger(nodeName, "op.port", 0);
@@ -241,7 +236,7 @@ namespace Vlingo.Cluster.Model
         }
 
         public bool UseSSL() => GetBoolean("cluster.ssl", false);
-        
+
         public bool GetBoolean(string nodeName, string key, bool defaultValue)
         {
             return bool.Parse(GetString(nodeName, key, defaultValue.ToString()));
@@ -251,7 +246,7 @@ namespace Vlingo.Cluster.Model
         {
             return GetBoolean("", key, defaultValue);
         }
-        
+
         public float GetFloat(string nodeName, string key, float defaultValue)
         {
             return float.Parse(GetString(nodeName, key, defaultValue.ToString(CultureInfo.InvariantCulture)));
@@ -261,7 +256,7 @@ namespace Vlingo.Cluster.Model
         {
             return GetFloat("", key, defaultValue);
         }
-        
+
         public int GetInteger(string nodeName, string key, int defaultValue)
         {
             return int.Parse(GetString(nodeName, key, defaultValue.ToString()));
@@ -271,7 +266,7 @@ namespace Vlingo.Cluster.Model
         {
             return GetInteger("", key, defaultValue);
         }
-        
+
         public string GetString(string nodeName, string key, string defaultValue)
         {
             return GetProperty(Key(nodeName, key), defaultValue);
@@ -299,44 +294,6 @@ namespace Vlingo.Cluster.Model
             SeedNodes();
 
             ClusterApplicationTypeName();
-        }
-
-        private Properties(Dictionary<string, string> properties)
-        {
-            _dictionary = properties;
-        }
-        
-        private string GetProperty(string key) => GetProperty(key, null);
-
-        private string GetProperty(string key, string defaultValue)
-        {
-            if(_dictionary.TryGetValue(key, out string value))
-            {
-                return value;
-            }
-
-            return defaultValue;
-        }
-        
-        private void SetProperty(string key, string value)
-        {
-            _dictionary[key] = value;
-        }
-        
-        private void Load(FileInfo configFile)
-        {
-            foreach(var line in File.ReadAllLines(configFile.FullName))
-            {
-                if(string.IsNullOrWhiteSpace(line) || line.Trim().StartsWith("#"))
-                {
-                    continue;
-                }
-
-                var items = line.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
-                var key = items[0].Trim();
-                var val = string.Join("=", items.Skip(1)).Trim();
-                SetProperty(key, val);
-            }
         }
 
         private string Key(string nodeName, string key)
