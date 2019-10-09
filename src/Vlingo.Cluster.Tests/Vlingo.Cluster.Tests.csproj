@@ -18,10 +18,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="vlingo-actors.properties">
+      <None Update="vlingo-actors.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="vlingo-cluster.properties">
+      <None Update="vlingo-cluster.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
