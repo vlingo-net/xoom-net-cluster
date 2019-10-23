@@ -13,8 +13,8 @@ namespace Vlingo.Cluster.Model
 {
     public class Cluster
     {
-        private static IClusterSnapshotControl _control;
-        private static World _world;
+        private static IClusterSnapshotControl? _control;
+        private static World? _world;
         
         private static volatile object _syncRoot = new object();
 

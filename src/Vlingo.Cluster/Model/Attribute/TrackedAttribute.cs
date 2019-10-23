@@ -17,11 +17,11 @@ namespace Vlingo.Cluster.Model.Attribute
             return new TrackedAttribute(tid, attribute);
         }
         
-        public Attribute Attribute { get; }
+        public Attribute? Attribute { get; }
         
         public bool Distributed { get; }
         
-        public string Id { get; }
+        public string? Id { get; }
 
         public bool IsAbsent => Attribute == null;
         
@@ -29,9 +29,9 @@ namespace Vlingo.Cluster.Model.Attribute
         
         public bool IsPresent => !IsAbsent;
 
-        public Attribute ReplacingValueWith<T>(Attribute<T> other) => ((Attribute<T>)Attribute).ReplacingValueWith(other);
+        public Attribute ReplacingValueWith<T>(Attribute<T> other) => ((Attribute<T>)Attribute!).ReplacingValueWith(other);
 
-        public bool SameAs(Attribute other) => Attribute.Equals(other);
+        public bool SameAs(Attribute other) => Attribute != null && Attribute.Equals(other);
         
         public TrackedAttribute WithAttribute(Attribute attribute) => new TrackedAttribute(Id, attribute, false);
         
@@ -57,7 +57,7 @@ namespace Vlingo.Cluster.Model.Attribute
         private static string TrackedIdFor<T>(AttributeSet set, Attribute<T> attribute) =>
             $"{set.Name}:{attribute.Name}";
 
-        private TrackedAttribute(string id, Attribute attribute)
+        private TrackedAttribute(string? id, Attribute? attribute)
         {
             Attribute = attribute;
             Distributed = false;

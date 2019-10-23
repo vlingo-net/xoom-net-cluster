@@ -68,7 +68,7 @@ namespace Vlingo.Cluster.Model.Message
         /// </summary>
         public const  string VOTE = "VOTE";
 
-        public static OperationalMessage MessageFrom(string content)
+        public static OperationalMessage? MessageFrom(string content)
         {
             if (content.StartsWith(APP))
             {

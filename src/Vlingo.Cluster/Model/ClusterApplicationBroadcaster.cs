@@ -48,7 +48,7 @@ namespace Vlingo.Cluster.Model
         {
         }
         
-        public void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder)
+        public void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream? responder)
         {
         }
 

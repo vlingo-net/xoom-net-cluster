@@ -88,13 +88,13 @@ namespace Vlingo.Cluster.Model.Attribute
                     var add = AddAttribute.From(_node, set, tracked);
                     var addConfirmable = _confirmables.UnconfirmedFor(add, nodes);
                     _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, add.ToPayload()), addConfirmable.UnconfirmedNodes);
-                    _application.InformAttributeAdded(set.Name, tracked.Attribute.Name);
+                    _application.InformAttributeAdded(set.Name, tracked.Attribute?.Name);
                     break;
                 case ApplicationMessageType.RemoveAttribute:
                     var remove = RemoveAttribute.From(_node, set, tracked);
                     var removeConfirmable = _confirmables.UnconfirmedFor(remove, nodes);
                     _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, remove.ToPayload()), removeConfirmable.UnconfirmedNodes);
-                    _application.InformAttributeRemoved(set.Name, tracked.Attribute.Name);
+                    _application.InformAttributeRemoved(set.Name, tracked.Attribute?.Name);
                     break;
                 case ApplicationMessageType.RemoveAttributeSet:
                     var removeSet = RemoveAttributeSet.From(_node, set);

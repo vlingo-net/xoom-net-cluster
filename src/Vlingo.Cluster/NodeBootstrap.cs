@@ -14,7 +14,7 @@ namespace Vlingo.Cluster
     
     public sealed class NodeBootstrap
     {
-        private static NodeBootstrap _instance;
+        private static NodeBootstrap? _instance;
 
         private readonly Tuple<IClusterSnapshotControl, ILogger> _clusterSnapshotControl;
 
@@ -23,12 +23,12 @@ namespace Vlingo.Cluster
             
         }
         
-        public static NodeBootstrap Boot(string nodeName)
+        public static NodeBootstrap? Boot(string nodeName)
         {
             return Boot(nodeName, false);
         }
 
-        public static NodeBootstrap Boot(string nodeName, bool embedded)
+        public static NodeBootstrap? Boot(string nodeName, bool embedded)
         {
             var mustBoot = _instance == null || !Cluster.IsRunning();
             
@@ -51,7 +51,7 @@ namespace Vlingo.Cluster
             return _instance;
         }
 
-        public static NodeBootstrap Instance => _instance;
+        public static NodeBootstrap? Instance => _instance;
 
         public IClusterSnapshotControl ClusterSnapshotControl => _clusterSnapshotControl.Item1;
 

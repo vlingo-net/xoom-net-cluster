@@ -28,7 +28,7 @@ namespace Vlingo.Cluster.Model.Message
         
         public string Payload { get; }
         
-        public string SaysId { get; }
+        public string? SaysId { get; }
 
         public override bool IsApp => true;
 
@@ -55,7 +55,7 @@ namespace Vlingo.Cluster.Model.Message
             SaysId = Guid.NewGuid().ToString();
         }
         
-        private ApplicationSays(Id id, Name name, string saysId, string payload) : base(id)
+        private ApplicationSays(Id id, Name name, string? saysId, string payload) : base(id)
         {
             Name = name;
             SaysId = saysId;

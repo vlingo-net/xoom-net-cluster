@@ -45,7 +45,7 @@ namespace Vlingo.Cluster.Model.Application
 
         public bool IsStopped => false;
 
-        public void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder)
+        public void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream? responder)
         {
             if (!actor.IsStopped)
             {
