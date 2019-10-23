@@ -15,6 +15,6 @@ namespace Vlingo.Cluster.Model.Attribute
 
         IEnumerable<Attribute> AllOf(string attributeSetName);
 
-        Attribute<T> Attribute<T>(string attributeSetName, string attributeName);
+        Attribute<T> Attribute<T>(string attributeSetName, string? attributeName);
     }
 }

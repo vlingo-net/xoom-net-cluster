@@ -41,15 +41,15 @@ namespace Vlingo.Cluster.Model.Application
 
         void InformAttributesClient(IAttributesProtocol client);
         
-        void InformAttributeSetCreated(string attributeSetName);
+        void InformAttributeSetCreated(string? attributeSetName);
         
-        void InformAttributeAdded(string? attributeSetName, string? attributeName);
+        void InformAttributeAdded(string attributeSetName, string? attributeName);
             
-        void InformAttributeRemoved(string? attributeSetName, string? attributeName);
+        void InformAttributeRemoved(string attributeSetName, string? attributeName);
             
-        void InformAttributeSetRemoved(string attributeSetName);
+        void InformAttributeSetRemoved(string? attributeSetName);
         
-        void InformAttributeReplaced(string? attributeSetName, string? attributeName);
+        void InformAttributeReplaced(string attributeSetName, string? attributeName);
     }
 
     public static class ClusterApplicationFactory

@@ -20,7 +20,7 @@ namespace Vlingo.Cluster.Model.Attribute
             _logger = configuration.Logger;
         }
         
-        public void Confirm(Id confirmingNodeId, string attributeSetName, string attributeName, ApplicationMessageType type)
+        public void Confirm(Id confirmingNodeId, string? attributeSetName, string? attributeName, ApplicationMessageType type)
         {
             _logger.Debug($"ATTR CONFIRMATION: NODE: {confirmingNodeId.Value} SET: {attributeSetName} ATTR: {attributeName} TYPE: {type}");
         }

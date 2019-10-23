@@ -87,7 +87,7 @@ namespace Vlingo.Cluster.Model
                 throw new InvalidOperationException("Must assign a cluster app class in properties file.");
             }
 
-            return typeName;
+            return typeName!;
         }
 
         public string ClusterApplicationStageName()
@@ -99,7 +99,7 @@ namespace Vlingo.Cluster.Model
                 throw new InvalidOperationException("Must assign a cluster app stage name in properties file.");
             }
 
-            return name;
+            return name!;
         }
 
         public long ClusterAttributesRedistributionInterval()
@@ -147,7 +147,7 @@ namespace Vlingo.Cluster.Model
                 throw new InvalidOperationException($"Must assign a host to node '{nodeName}' in properties file.");
             }
 
-            return host;
+            return host!;
         }
 
         public short NodeId(string nodeName)
@@ -171,7 +171,7 @@ namespace Vlingo.Cluster.Model
                 throw new InvalidOperationException($"Must assign a name to node '{nodeName}' in properties file.");
             }
 
-            return name;
+            return name!;
         }
 
         public int OperationalBufferSize()
@@ -227,7 +227,7 @@ namespace Vlingo.Cluster.Model
                 throw new InvalidOperationException("Must declare seed nodes in properties file.");
             }
 
-            foreach (var seedNode in commaSeparated.Split(','))
+            foreach (var seedNode in commaSeparated!.Split(','))
             {
                 seedNodes.Add(seedNode);
             }
@@ -267,12 +267,12 @@ namespace Vlingo.Cluster.Model
             return GetInteger("", key, defaultValue);
         }
 
-        public string GetString(string nodeName, string key, string defaultValue)
+        public string? GetString(string nodeName, string key, string defaultValue)
         {
             return GetProperty(Key(nodeName, key), defaultValue);
         }
 
-        public string GetString(string key, string defaultValue)
+        public string? GetString(string key, string defaultValue)
         {
             return GetProperty(key, defaultValue);
         }

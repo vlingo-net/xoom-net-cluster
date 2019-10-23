@@ -11,7 +11,7 @@ namespace Vlingo.Cluster.Model.Attribute
 {
     public abstract class Attribute
     {
-        public string Name { get; protected set; }
+        public string? Name { get; protected set; }
         
         public AttributeType Type { get; protected set; }
 
@@ -22,12 +22,12 @@ namespace Vlingo.Cluster.Model.Attribute
     {
         public static Attribute<T> Undefined => From("__undefined", AttributeType.String, default);
 
-        public static Attribute<T> From(string name, T value) => new Attribute<T>(name, value, TypeOf(typeof(T)));
+        public static Attribute<T> From(string? name, T value) => new Attribute<T>(name, value, TypeOf(typeof(T)));
 
-        public static Attribute<T> From(string name, AttributeType attributeType, string value)
+        public static Attribute<T> From(string? name, AttributeType attributeType, string? value)
         {
             var typedValue = TypeValue(attributeType, value);
-            return new Attribute<T>(name, (T)typedValue, attributeType);
+            return new Attribute<T>(name, (T)typedValue!, attributeType);
         }
 
         public static AttributeType TypeOfAttribute(string fullName)
@@ -43,7 +43,7 @@ namespace Vlingo.Cluster.Model.Attribute
             }
         }
 
-        public Attribute(string name, T value, AttributeType attributeType)
+        public Attribute(string? name, T value, AttributeType attributeType)
         {
             Name = name;
             Value = value;
@@ -54,7 +54,7 @@ namespace Vlingo.Cluster.Model.Attribute
 
         public bool IsUndefined => Equals(Undefined);
 
-        public override string ToStringValue() => Value.ToString();
+        public override string ToStringValue() => Value!.ToString();
 
         public override bool Equals(object obj)
         {
@@ -65,9 +65,20 @@ namespace Vlingo.Cluster.Model.Attribute
 
             var otherAttribute = (Attribute<T>) obj;
 
-            if (Value == null && otherAttribute.Value == null)
+            if (Value == null && Name == null)
             {
-                return Name.Equals(otherAttribute.Name) && 
+                return Type == otherAttribute.Type;
+            }
+
+            if (Value == null)
+            {
+                return Name!.Equals(otherAttribute.Name) && 
+                       Type == otherAttribute.Type;
+            }
+            
+            if (Name == null)
+            {
+                return Value.Equals(otherAttribute.Value) &&
                        Type == otherAttribute.Type;
             }
             
@@ -76,7 +87,26 @@ namespace Vlingo.Cluster.Model.Attribute
                    Type == otherAttribute.Type;
         }
 
-        public override int GetHashCode() => 31 * Name.GetHashCode() + Value.GetHashCode() + Type.GetHashCode();
+        public override int GetHashCode()
+        {
+            if (Name == null && Value == null)
+            {
+                return 31 * Type.GetHashCode();
+            }
+            
+            if (Name == null && Value != null)
+            {
+                return 31 * Value.GetHashCode() + Type.GetHashCode();
+            }
+            
+            if (Value == null && Name != null)
+            {
+                return 31 * Name.GetHashCode() + Type.GetHashCode();
+            }
+            
+            return 31 * Name!.GetHashCode() + Value!.GetHashCode() + Type.GetHashCode();
+            
+        }
 
         public override string ToString() => $"Attribute[name={Name}, value={Value}, type={Type}]";
 
@@ -119,7 +149,7 @@ namespace Vlingo.Cluster.Model.Attribute
             return new Attribute<T>(Name, other.Value, Type);
         }
 
-        private static object TypeValue(AttributeType attributeType, string value)
+        private static object? TypeValue(AttributeType attributeType, string? value)
         {
             switch (attributeType)
             {

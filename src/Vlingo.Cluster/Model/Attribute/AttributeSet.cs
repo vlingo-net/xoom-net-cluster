@@ -17,9 +17,9 @@ namespace Vlingo.Cluster.Model.Attribute
         
         public static AttributeSet None => Named("__none");
         
-        public static AttributeSet Named(string name) => new AttributeSet(name);
+        public static AttributeSet Named(string? name) => new AttributeSet(name);
 
-        public string Name { get; }
+        public string? Name { get; }
 
         public IEnumerable<TrackedAttribute> All => _attributes.Values;
 
@@ -35,7 +35,7 @@ namespace Vlingo.Cluster.Model.Attribute
             {
                 var nowPresent = TrackedAttribute.Of(this, attribute);
                 return _attributes.AddOrUpdate(
-                    nowPresent.Id,
+                    nowPresent.Id!,
                     nowPresent, 
                     (id, trackedAttribute) => nowPresent);
             }
@@ -43,7 +43,7 @@ namespace Vlingo.Cluster.Model.Attribute
             return maybeAttribute;
         }
 
-        public TrackedAttribute AttributeNamed(string name) => Find(name);
+        public TrackedAttribute AttributeNamed(string? name) => Find(name);
 
         public AttributeSet Copy(AttributeSet source)
         {
@@ -51,19 +51,19 @@ namespace Vlingo.Cluster.Model.Attribute
 
             foreach (var attribute in _attributes.Values)
             {
-                target._attributes.AddOrUpdate(attribute.Id, attribute, (id, trackedAttribute) => attribute);
+                target._attributes.AddOrUpdate(attribute.Id!, attribute, (id, trackedAttribute) => attribute);
             }
 
             return target;
         }
 
-        public TrackedAttribute Remove(Attribute attribute)
+        public TrackedAttribute Remove(Attribute? attribute)
         {
             var maybeAttribute = Find(attribute);
 
             if (maybeAttribute.IsPresent)
             {
-                _attributes.TryRemove(maybeAttribute.Id, out var removedAttribute);
+                _attributes.TryRemove(maybeAttribute.Id!, out var removedAttribute);
                 return removedAttribute;
             }
 
@@ -77,7 +77,7 @@ namespace Vlingo.Cluster.Model.Attribute
             if (maybeAttribute.IsPresent)
             {
                 return _attributes.AddOrUpdate(
-                    maybeAttribute.Id,
+                    maybeAttribute.Id!,
                     maybeAttribute, 
                    (id, trackedAttribute) => maybeAttribute.WithAttribute(attribute));
             }
@@ -112,12 +112,12 @@ namespace Vlingo.Cluster.Model.Attribute
                 }
             }
             
-            return Name.Equals(otherAttribute.Name);
+            return Name != null && Name.Equals(otherAttribute.Name);
         }
 
         public override int GetHashCode()
         {
-            var hashCode = 31 * Name.GetHashCode();
+            var hashCode = Name != null ? 31 * Name.GetHashCode() : 31;
 
             foreach (var attribute in _attributes.Values)
             {
@@ -138,19 +138,19 @@ namespace Vlingo.Cluster.Model.Attribute
             return $"AttributeSet[name={Name}, attributes=[{builder}]]";
         }
 
-        private AttributeSet(string name)
+        private AttributeSet(string? name)
         {
             Name = name;
             _attributes = new ConcurrentDictionary<string, TrackedAttribute>(16, 128);
         }
 
-        private TrackedAttribute Find(Attribute attribute) => Find(attribute.Name);
+        private TrackedAttribute Find(Attribute? attribute) => Find(attribute?.Name);
 
-        private TrackedAttribute Find(string name)
+        private TrackedAttribute Find(string? name)
         {
             foreach (var id in _attributes.Values)
             {
-                if (id.Attribute.Name.Equals(name))
+                if (id.Attribute?.Name != null && id.Attribute.Name.Equals(name))
                 {
                     return id;
                 }

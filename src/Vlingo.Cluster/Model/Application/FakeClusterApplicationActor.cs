@@ -101,10 +101,10 @@ namespace Vlingo.Cluster.Model.Application
             }
         }
 
-        public override void InformAttributeSetCreated(string attributeSetName) =>
+        public override void InformAttributeSetCreated(string? attributeSetName) =>
             Logger.Debug($"APP: Attributes Set Created: {attributeSetName}");
 
-        public override void InformAttributeAdded(string attributeSetName, string attributeName)
+        public override void InformAttributeAdded(string attributeSetName, string? attributeName)
         {
             var attr = _client?.Attribute<string>(attributeSetName, attributeName);
             Logger.Debug($"APP: Attribute Set {attributeSetName} Attribute Added: {attributeName} Value: {attr?.Value}");
@@ -115,16 +115,16 @@ namespace Vlingo.Cluster.Model.Application
             }
         }
 
-        public override void InformAttributeRemoved(string attributeSetName, string attributeName)
+        public override void InformAttributeRemoved(string attributeSetName, string? attributeName)
         {
             var attr = _client?.Attribute<string>(attributeSetName, attributeName);
             Logger.Debug($"APP: Attribute Set {attributeSetName} Attribute Removed: {attributeName} Attribute: {attr}");
         }
 
-        public override void InformAttributeSetRemoved(string attributeSetName) =>
+        public override void InformAttributeSetRemoved(string? attributeSetName) =>
             Logger.Debug($"APP: Attributes Set Removed: {attributeSetName}");
 
-        public override void InformAttributeReplaced(string attributeSetName, string attributeName)
+        public override void InformAttributeReplaced(string attributeSetName, string? attributeName)
         {
             var attr = _client?.Attribute<string>(attributeSetName, attributeName);
             Logger.Debug($"APP: Attribute Set {attributeSetName} Attribute Replaced: {attributeName} Value: {attr?.Value}");

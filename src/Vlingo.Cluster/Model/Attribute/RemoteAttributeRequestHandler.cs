@@ -28,7 +28,7 @@ namespace Vlingo.Cluster.Model.Attribute
 
         internal void AddAttribute(ReceivedAttributeMessage request)
         {
-            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName);
+            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
             if (attributeSet.IsNone)
             {
                 attributeSet = AttributeSet.Named(request.AttributeSetName);
@@ -40,7 +40,7 @@ namespace Vlingo.Cluster.Model.Attribute
         
         internal void CreateAttributeSet(ReceivedAttributeMessage request)
         {
-            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName);
+            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
             if (attributeSet.IsNone)
             {
                 attributeSet = AttributeSet.Named(request.AttributeSetName);
@@ -51,18 +51,18 @@ namespace Vlingo.Cluster.Model.Attribute
         
         internal void RemoveAttributeSet(ReceivedAttributeMessage request)
         {
-            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName);
+            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
             if (attributeSet.IsDefined)
             {
                 attributeSet = AttributeSet.Named(request.AttributeSetName);
-                _repository.Remove(request.AttributeSetName);
+                _repository.Remove(request.AttributeSetName!);
             }
             _confirmingDistributor.ConfirmRemove(request.TrackingId, attributeSet, _configuration.NodeMatching(request.SourceNodeId));
         }
         
         internal void ReplaceAttribute(ReceivedAttributeMessage request)
         {
-            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName);
+            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
             if (attributeSet.IsDefined)
             {
                 var tracked = attributeSet.Replace(request.Attribute());
@@ -75,7 +75,7 @@ namespace Vlingo.Cluster.Model.Attribute
         
         internal void RemoveAttribute(ReceivedAttributeMessage request)
         {
-            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName);
+            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
             if (attributeSet.IsDefined)
             {
                 var tracked = attributeSet.Remove(request.Attribute());

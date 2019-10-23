@@ -45,12 +45,48 @@ namespace Vlingo.Cluster.Model.Attribute
             }
 
             var otherAttribute = (TrackedAttribute) obj;
-            return Attribute.Equals(otherAttribute.Attribute) && 
+
+            if (Attribute == null && Id == null)
+            {
+                return Distributed == otherAttribute.Distributed;
+            }
+            
+            if (Attribute == null && Id != null)
+            {
+                return Distributed == otherAttribute.Distributed &&
+                       Id.Equals(otherAttribute.Id);
+            }
+
+            if (Id == null && Attribute != null)
+            {
+                return Attribute.Equals(otherAttribute.Attribute) &&
+                       Distributed == otherAttribute.Distributed;
+            }
+            
+            return Attribute!.Equals(otherAttribute.Attribute) && 
                    Distributed == otherAttribute.Distributed &&
-                   Id.Equals(otherAttribute.Id);
+                   Id!.Equals(otherAttribute.Id);
         }
 
-        public override int GetHashCode() => 31 * Attribute.GetHashCode() + Distributed.GetHashCode() + Id.GetHashCode();
+        public override int GetHashCode()
+        {
+            if (Attribute == null && Id == null)
+            {
+                return 31 * Distributed.GetHashCode();
+            }
+
+            if (Attribute == null)
+            {
+                return 31 * Distributed.GetHashCode() + Id!.GetHashCode();
+            }
+
+            if (Id == null)
+            {
+                return 31 * Attribute.GetHashCode() + Distributed.GetHashCode();
+            }
+            
+            return 31 * Attribute.GetHashCode() + Distributed.GetHashCode() + Id.GetHashCode();
+        }
 
         public override string ToString() => $"TrackedAttribute[attribute={Attribute}, distributed={Distributed}, id={Id}]";
 
@@ -64,7 +100,7 @@ namespace Vlingo.Cluster.Model.Attribute
             Id = attribute == null ? null : id;
         }
 
-        private TrackedAttribute(string id, Attribute attribute, bool distributed)
+        private TrackedAttribute(string? id, Attribute? attribute, bool distributed)
         {
             Attribute = attribute;
             Distributed = distributed;

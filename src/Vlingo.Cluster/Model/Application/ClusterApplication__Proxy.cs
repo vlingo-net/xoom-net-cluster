@@ -303,7 +303,7 @@ namespace Vlingo.Cluster.Model.Application
             }
         }
 
-        public void InformAttributeSetCreated(string attributeSetName)
+        public void InformAttributeSetCreated(string? attributeSetName)
         {
             if (!actor.IsStopped)
             {
@@ -325,7 +325,7 @@ namespace Vlingo.Cluster.Model.Application
             }
         }
 
-        public void InformAttributeAdded(string attributeSetName, string attributeName)
+        public void InformAttributeAdded(string attributeSetName, string? attributeName)
         {
             if (!actor.IsStopped)
             {
@@ -346,7 +346,7 @@ namespace Vlingo.Cluster.Model.Application
             }
         }
 
-        public void InformAttributeRemoved(string attributeSetName, string attributeName)
+        public void InformAttributeRemoved(string attributeSetName, string? attributeName)
         {
             if (!actor.IsStopped)
             {
@@ -368,7 +368,7 @@ namespace Vlingo.Cluster.Model.Application
             }
         }
 
-        public void InformAttributeSetRemoved(string attributeSetName)
+        public void InformAttributeSetRemoved(string? attributeSetName)
         {
             if (!actor.IsStopped)
             {
@@ -390,7 +390,7 @@ namespace Vlingo.Cluster.Model.Application
             }
         }
 
-        public void InformAttributeReplaced(string attributeSetName, string attributeName)
+        public void InformAttributeReplaced(string attributeSetName, string? attributeName)
         {
             if (!actor.IsStopped)
             {

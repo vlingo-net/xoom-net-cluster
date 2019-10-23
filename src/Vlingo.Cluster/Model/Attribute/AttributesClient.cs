@@ -41,7 +41,7 @@ namespace Vlingo.Cluster.Model.Attribute
                 {
                     if (tracked.IsPresent)
                     {
-                        all.Add(tracked.Attribute);
+                        all.Add(tracked.Attribute!);
                     }
                 }
             }
@@ -49,7 +49,7 @@ namespace Vlingo.Cluster.Model.Attribute
             return all;
         }
 
-        public Attribute<T> Attribute<T>(string attributeSetName, string attributeName)
+        public Attribute<T> Attribute<T>(string attributeSetName, string? attributeName)
         {
             var set = _repository.AttributeSetOf(attributeSetName);
             if (set.IsDefined)
@@ -57,7 +57,7 @@ namespace Vlingo.Cluster.Model.Attribute
                 var tracked = set.AttributeNamed(attributeName);
                 if (tracked.IsPresent)
                 {
-                    return (Attribute<T>) tracked.Attribute;
+                    return (Attribute<T>) tracked.Attribute!;
                 }
             }
             
@@ -73,7 +73,7 @@ namespace Vlingo.Cluster.Model.Attribute
 
         internal void SyncWithout(AttributeSet set)
         {
-            _repository.Remove(set.Name);
+            _repository.Remove(set.Name!);
         }
 
         public IEnumerable<AttributeSet> All => _repository.All;

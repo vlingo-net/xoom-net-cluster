@@ -52,7 +52,7 @@ namespace Vlingo.Cluster.Model.Attribute
             
             application.InformAttributesClient(_client);
 
-            Stage.Scheduler.Schedule(SelfAs<IScheduled<object>>(), null, TimeSpan.FromMilliseconds(1000L), 
+            Stage.Scheduler.Schedule(SelfAs<IScheduled<object?>>(), null, TimeSpan.FromMilliseconds(1000L), 
                 TimeSpan.FromMilliseconds(Properties.Instance.ClusterAttributesRedistributionInterval()));
         }
         
