@@ -19,17 +19,17 @@ namespace Vlingo.Cluster.Model
         private const string AppName = "APP";
         private const string OpName = "OP";
         
-        private IInboundStream _applicationInboundStream;
-        private IApplicationOutboundStream _applicationOutboundStream;
-        private IInboundStream _operationalInboundStream;
-        private IOperationalOutboundStream _operationalOutboundStream;
+        private IInboundStream? _applicationInboundStream;
+        private IApplicationOutboundStream? _applicationOutboundStream;
+        private IInboundStream? _operationalInboundStream;
+        private IOperationalOutboundStream? _operationalOutboundStream;
         
         public void Close()
         {
-            _operationalInboundStream.Stop();
-            _operationalOutboundStream.Stop();
-            _applicationInboundStream.Stop();
-            _applicationOutboundStream.Stop();
+            _operationalInboundStream?.Stop();
+            _operationalOutboundStream?.Stop();
+            _applicationInboundStream?.Stop();
+            _applicationOutboundStream?.Stop();
         }
 
         public void Open(Stage stage, Wire.Node.Node node, IInboundStreamInterest interest, IConfiguration configuration)
@@ -72,13 +72,13 @@ namespace Vlingo.Cluster.Model
                         Properties.Instance.ApplicationBufferSize()));
         }
 
-        public IInboundStream ApplicationInboundStream => _applicationInboundStream;
+        public IInboundStream? ApplicationInboundStream => _applicationInboundStream;
 
-        public IApplicationOutboundStream ApplicationOutboundStream => _applicationOutboundStream;
+        public IApplicationOutboundStream? ApplicationOutboundStream => _applicationOutboundStream;
 
-        public IInboundStream OperationalInboundStream => _operationalInboundStream;
+        public IInboundStream? OperationalInboundStream => _operationalInboundStream;
 
-        public IOperationalOutboundStream OperationalOutboundStream => _operationalOutboundStream;
+        public IOperationalOutboundStream? OperationalOutboundStream => _operationalOutboundStream;
         
         public void Start()
         {

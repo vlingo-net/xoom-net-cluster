@@ -13,13 +13,13 @@ namespace Vlingo.Cluster.Model.Attribute.Message
     
     public abstract class AttributeMessage : ApplicationMessage
     {
-        public string AttributeSetName { get; }
+        public string? AttributeSetName { get; }
         
-        public string AttributeName { get; }
+        public string? AttributeName { get; }
         
-        public string AttributeType { get; }
+        public string? AttributeType { get; }
         
-        public string AttributeValue { get; }
+        public string? AttributeValue { get; }
 
         public override string ToPayload()
         {
@@ -51,13 +51,13 @@ namespace Vlingo.Cluster.Model.Attribute.Message
             
         }
         
-        protected AttributeMessage(string correlatingMessageId, Node node, AttributeSet set, TrackedAttribute tracked, ApplicationMessageType type)
+        protected AttributeMessage(string? correlatingMessageId, Node node, AttributeSet set, TrackedAttribute tracked, ApplicationMessageType type)
             : base(correlatingMessageId, type, TrackingIdFor(node, type, tracked.Id))
         {
             AttributeSetName = set.Name;
-            AttributeName = tracked.Attribute.Name;
-            AttributeType = tracked.Attribute.Type.ToString();
-            AttributeValue = tracked.Attribute.ToStringValue();
+            AttributeName = tracked.Attribute?.Name;
+            AttributeType = tracked.Attribute?.Type.ToString();
+            AttributeValue = tracked.Attribute?.ToStringValue();
         }
     }
 }

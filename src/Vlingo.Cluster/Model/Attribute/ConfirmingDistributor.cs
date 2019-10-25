@@ -41,7 +41,7 @@ namespace Vlingo.Cluster.Model.Attribute
 
         }
 
-        internal void AcknowledgeConfirmation(string trackingId, Node node) => _confirmables.Confirm(trackingId, node);
+        internal void AcknowledgeConfirmation(string? trackingId, Node node) => _confirmables.Confirm(trackingId, node);
         
         internal void DistributeCreate(AttributeSet set) => DistributeTo(set, _allOtherNodes);
 
@@ -88,13 +88,13 @@ namespace Vlingo.Cluster.Model.Attribute
                     var add = AddAttribute.From(_node, set, tracked);
                     var addConfirmable = _confirmables.UnconfirmedFor(add, nodes);
                     _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, add.ToPayload()), addConfirmable.UnconfirmedNodes);
-                    _application.InformAttributeAdded(set.Name, tracked.Attribute.Name);
+                    _application.InformAttributeAdded(set.Name!, tracked.Attribute?.Name);
                     break;
                 case ApplicationMessageType.RemoveAttribute:
                     var remove = RemoveAttribute.From(_node, set, tracked);
                     var removeConfirmable = _confirmables.UnconfirmedFor(remove, nodes);
                     _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, remove.ToPayload()), removeConfirmable.UnconfirmedNodes);
-                    _application.InformAttributeRemoved(set.Name, tracked.Attribute.Name);
+                    _application.InformAttributeRemoved(set.Name!, tracked.Attribute?.Name);
                     break;
                 case ApplicationMessageType.RemoveAttributeSet:
                     var removeSet = RemoveAttributeSet.From(_node, set);
@@ -106,21 +106,21 @@ namespace Vlingo.Cluster.Model.Attribute
                     var replace = ReplaceAttribute.From(_node, set, tracked);
                     var replaceConfirmable = _confirmables.UnconfirmedFor(replace, nodes);
                     _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, replace.ToPayload()), replaceConfirmable.UnconfirmedNodes);
-                    _application.InformAttributeReplaced(set.Name, tracked.Attribute.Name);
+                    _application.InformAttributeReplaced(set.Name!, tracked.Attribute?.Name);
                     break;
                 default:
                     throw new InvalidOperationException("Cannot distribute unknown ApplicationMessageType.");
             }
         }
 
-        internal void ConfirmCreate(string correlatingMessageId, AttributeSet set, Node toOriginalSource)
+        internal void ConfirmCreate(string? correlatingMessageId, AttributeSet set, Node toOriginalSource)
         {
             var confirm = new ConfirmCreateAttributeSet(correlatingMessageId, _node, set);
             _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, confirm.ToPayload()), toOriginalSource.Collected);
             _application.InformAttributeSetCreated(set.Name);
         }
         
-        internal void ConfirmRemove(string correlatingMessageId, AttributeSet set, Node toOriginalSource)
+        internal void ConfirmRemove(string? correlatingMessageId, AttributeSet set, Node toOriginalSource)
         {
             var confirm = new ConfirmRemoveAttributeSet(correlatingMessageId, _node, set);
             _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, confirm.ToPayload()), toOriginalSource.Collected);
@@ -128,7 +128,7 @@ namespace Vlingo.Cluster.Model.Attribute
         }
 
         internal void Confirm(
-            string correlatingMessageId,
+            string? correlatingMessageId,
             AttributeSet set,
             TrackedAttribute tracked,
             ApplicationMessageType type, Node toOriginalSource)
@@ -137,17 +137,17 @@ namespace Vlingo.Cluster.Model.Attribute
                 case ApplicationMessageType.AddAttribute:
                     var confirmAdd = ConfirmAttribute.From(correlatingMessageId, toOriginalSource, set, tracked, ApplicationMessageType.ConfirmAddAttribute);
                     _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, confirmAdd.ToPayload()), toOriginalSource.Collected);
-                    _application.InformAttributeAdded(set.Name, tracked.Attribute.Name);
+                    _application.InformAttributeAdded(set.Name!, tracked.Attribute?.Name);
                     break;
                 case ApplicationMessageType.RemoveAttribute:
                     var confirmRemove = ConfirmAttribute.From(correlatingMessageId, toOriginalSource, set, tracked, ApplicationMessageType.ConfirmRemoveAttribute);
                     _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, confirmRemove.ToPayload()), toOriginalSource.Collected);
-                    _application.InformAttributeRemoved(set.Name, tracked.Attribute.Name);
+                    _application.InformAttributeRemoved(set.Name!, tracked.Attribute?.Name);
                     break;
                 case ApplicationMessageType.ReplaceAttribute:
                     var confirmReplace = ConfirmAttribute.From(correlatingMessageId, toOriginalSource, set, tracked, ApplicationMessageType.ConfirmReplaceAttribute);
                     _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, confirmReplace.ToPayload()), toOriginalSource.Collected);
-                    _application.InformAttributeReplaced(set.Name, tracked.Attribute.Name);
+                    _application.InformAttributeReplaced(set.Name!, tracked.Attribute?.Name);
                     break;
                 default:
                     throw new InvalidOperationException("Cannot confirm unknown ApplicationMessageType.");
@@ -163,7 +163,7 @@ namespace Vlingo.Cluster.Model.Attribute
                     _logger.Trace($"REDIST ATTR: {confirmable}");
                     _outbound.Application(ApplicationSays.From(
                             _node.Id, _node.Name,
-                            confirmable.Message.ToPayload()),
+                            confirmable.Message?.ToPayload()),
                         confirmable.UnconfirmedNodes);
                 }
             }

@@ -19,13 +19,13 @@ namespace Vlingo.Cluster.Model
 
         void Open(Stage stage, Wire.Node.Node node, IInboundStreamInterest interest, IConfiguration configuration);
 
-        IInboundStream ApplicationInboundStream { get; }
+        IInboundStream? ApplicationInboundStream { get; }
 
-        IApplicationOutboundStream ApplicationOutboundStream { get; }
+        IApplicationOutboundStream? ApplicationOutboundStream { get; }
 
-        IInboundStream OperationalInboundStream { get; }
+        IInboundStream? OperationalInboundStream { get; }
         
-        IOperationalOutboundStream OperationalOutboundStream { get; }
+        IOperationalOutboundStream? OperationalOutboundStream { get; }
 
         void Start();
     }

@@ -34,7 +34,7 @@ namespace Vlingo.Cluster.Model.Message
             return payload;
         }
 
-        internal static string SaysIdFrom(string content)
+        internal static string? SaysIdFrom(string content)
         {
             var parts = content.Split('\n');
             

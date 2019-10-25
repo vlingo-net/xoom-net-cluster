@@ -24,7 +24,7 @@ namespace Vlingo.Cluster.Model.Attribute.Message
             AttributeSetName = set.Name;
         }
         
-        public string AttributeSetName { get; }
+        public string? AttributeSetName { get; }
 
         public override string ToPayload()
         {

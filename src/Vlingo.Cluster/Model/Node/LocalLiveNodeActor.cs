@@ -21,7 +21,7 @@ namespace Vlingo.Cluster.Model.Node
         private readonly ICancellable _cancellable;
         private readonly CheckHealth _checkHealth;
         private readonly IConfiguration _configuration;
-        private LiveNodeState _state;
+        private LiveNodeState? _state;
         private readonly Node _node;
         private readonly List<INodeSynchronizer> _nodeSynchronizers;
         private readonly IOperationalOutboundStream _outbound;
@@ -56,15 +56,15 @@ namespace Vlingo.Cluster.Model.Node
         
         public void Handle(OperationalMessage message)
         {
-            if (message.IsDirectory) _state.Handle((Directory) message);
-            else if (message.IsElect) _state.Handle((Elect) message);
-            else if (message.IsJoin) _state.Handle((Join) message);
-            else if (message.IsLeader) _state.Handle((Leader) message);
-            else if (message.IsLeave) _state.Handle((Leave) message);
-            else if (message.IsPing) _state.Handle((Ping) message);
-            else if (message.IsPulse) _state.Handle((Pulse) message);
-            else if (message.IsSplit) _state.Handle((Split) message);
-            else if (message.IsVote) _state.Handle((Vote) message);
+            if (message.IsDirectory) _state?.Handle((Directory) message);
+            else if (message.IsElect) _state?.Handle((Elect) message);
+            else if (message.IsJoin) _state?.Handle((Join) message);
+            else if (message.IsLeader) _state?.Handle((Leader) message);
+            else if (message.IsLeave) _state?.Handle((Leave) message);
+            else if (message.IsPing) _state?.Handle((Ping) message);
+            else if (message.IsPulse) _state?.Handle((Pulse) message);
+            else if (message.IsSplit) _state?.Handle((Split) message);
+            else if (message.IsVote) _state?.Handle((Vote) message);
             else if (message.IsCheckHealth)
             {
                 CheckHealth();
@@ -130,11 +130,11 @@ namespace Vlingo.Cluster.Model.Node
 
             if (droppedLeader)
             {
-                _state.LeaderElectionTracker.Start(true);
+                _state?.LeaderElectionTracker.Start(true);
                 _outbound.Elect(_configuration.AllGreaterNodes(_node.Id));
             }
 
-            if (_state.IsLeader)
+            if (_state != null && _state.IsLeader)
             {
                 DeclareLeadership();
             }
@@ -147,12 +147,12 @@ namespace Vlingo.Cluster.Model.Node
     
             if (_node.Id.GreaterThan(electId))
             {
-                if (!_state.LeaderElectionTracker.HasStarted)
+                if (_state != null && !_state.LeaderElectionTracker.HasStarted)
                 {
                     _state.LeaderElectionTracker.Start(true);
                     _outbound.Elect(_configuration.AllGreaterNodes(_node.Id));
                 }
-                else if (_state.LeaderElectionTracker.HasTimedOut)
+                else if (_state != null && _state.LeaderElectionTracker.HasTimedOut)
                 {
                     DeclareLeadership();
                     return;
@@ -166,7 +166,7 @@ namespace Vlingo.Cluster.Model.Node
             _registry.Join(joiningNode);
             _outbound.Open(joiningNode.Id);
     
-            if (_state.IsLeader)
+            if (_state != null && _state.IsLeader)
             {
                 DeclareLeadership();
             }
@@ -194,7 +194,7 @@ namespace Vlingo.Cluster.Model.Node
             }
             else
             {
-                _state.LeaderElectionTracker.Clear();
+                _state?.LeaderElectionTracker.Clear();
             }
         }
 
@@ -313,7 +313,7 @@ namespace Vlingo.Cluster.Model.Node
                 _registry.UpdateLastHealthIndication(_node.Id);
             }
 
-            if (_state.IsIdle || !_registry.IsConfirmedByLeader(_node.Id))
+            if (_state != null && (_state.IsIdle || !_registry.IsConfirmedByLeader(_node.Id)))
             {
                 _outbound.Join();
             }
@@ -321,13 +321,13 @@ namespace Vlingo.Cluster.Model.Node
 
         private void MaintainHealthWithNoQuorum()
         {
-            _state.LeaderElectionTracker.Reset();
+            _state?.LeaderElectionTracker.Reset();
 
-            _state.NoQuorumTracker.Start();
+            _state?.NoQuorumTracker.Start();
 
             WatchForQuorumRelinquished();
 
-            if (_state.NoQuorumTracker.HasTimedOut)
+            if (_state != null && _state.NoQuorumTracker.HasTimedOut)
             {
                 Logger.Warn("No quorum; leaving cluster to become idle node.");
                 _registry.Leave(_node.Id);
@@ -337,18 +337,18 @@ namespace Vlingo.Cluster.Model.Node
 
         private void MaintainHealthWithQuorum()
         {
-            _state.NoQuorumTracker.Reset();
+            _state?.NoQuorumTracker.Reset();
 
             WatchForQuorumAchievement();
 
             if (!_registry.HasLeader)
             {
-                if (!_state.LeaderElectionTracker.HasStarted)
+                if (_state != null && !_state.LeaderElectionTracker.HasStarted)
                 {
                     _state.LeaderElectionTracker.Start();
                     _outbound.Elect(_configuration.AllGreaterNodes(_node.Id));
                 }
-                else if (_state.LeaderElectionTracker.HasTimedOut)
+                else if (_state != null && _state.LeaderElectionTracker.HasTimedOut)
                 {
                     DeclareLeader();
                 }
@@ -389,7 +389,7 @@ namespace Vlingo.Cluster.Model.Node
 
         private ICancellable ScheduleHealthCheck()
         {
-            return Stage.Scheduler.Schedule(SelfAs<IScheduled<object>>(), null, TimeSpan.FromMilliseconds(1000L),
+            return Stage.Scheduler.Schedule(SelfAs<IScheduled<object?>>(), null, TimeSpan.FromMilliseconds(1000L),
                 TimeSpan.FromMilliseconds(Properties.Instance.ClusterHealthCheckInterval()));
         }
 

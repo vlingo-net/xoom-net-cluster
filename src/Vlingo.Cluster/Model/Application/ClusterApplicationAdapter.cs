@@ -18,7 +18,7 @@ namespace Vlingo.Cluster.Model.Application
     {
         public override bool IsStopped => false;
 
-        public abstract void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder);
+        public abstract void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream? responder);
 
         public abstract void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster);
 
@@ -42,14 +42,14 @@ namespace Vlingo.Cluster.Model.Application
 
         public abstract void InformAttributesClient(IAttributesProtocol client);
 
-        public abstract void InformAttributeSetCreated(string attributeSetName);
+        public abstract void InformAttributeSetCreated(string? attributeSetName);
 
-        public abstract void InformAttributeAdded(string attributeSetName, string attributeName);
+        public abstract void InformAttributeAdded(string attributeSetName, string? attributeName);
 
-        public abstract void InformAttributeRemoved(string attributeSetName, string attributeName);
+        public abstract void InformAttributeRemoved(string attributeSetName, string? attributeName);
 
-        public abstract void InformAttributeSetRemoved(string attributeSetName);
+        public abstract void InformAttributeSetRemoved(string? attributeSetName);
 
-        public abstract void InformAttributeReplaced(string attributeSetName, string attributeName);
+        public abstract void InformAttributeReplaced(string attributeSetName, string? attributeName);
     }
 }

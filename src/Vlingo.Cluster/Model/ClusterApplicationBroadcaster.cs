@@ -48,7 +48,7 @@ namespace Vlingo.Cluster.Model
         {
         }
         
-        public void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder)
+        public void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream? responder)
         {
         }
 
@@ -81,19 +81,19 @@ namespace Vlingo.Cluster.Model
         public void InformAttributesClient(IAttributesProtocol client) =>
             Broadcast(app => app.InformAttributesClient(client));
 
-        public void InformAttributeSetCreated(string attributeSetName) =>
+        public void InformAttributeSetCreated(string? attributeSetName) =>
             Broadcast(app => app.InformAttributeSetCreated(attributeSetName));
 
-        public void InformAttributeAdded(string attributeSetName, string attributeName) =>
+        public void InformAttributeAdded(string attributeSetName, string? attributeName) =>
             Broadcast(app => app.InformAttributeAdded(attributeSetName, attributeName));
 
-        public void InformAttributeRemoved(string attributeSetName, string attributeName) =>
+        public void InformAttributeRemoved(string attributeSetName, string? attributeName) =>
             Broadcast(app => app.InformAttributeRemoved(attributeSetName, attributeName));
 
-        public void InformAttributeSetRemoved(string attributeSetName) =>
+        public void InformAttributeSetRemoved(string? attributeSetName) =>
             Broadcast(app => app.InformAttributeSetRemoved(attributeSetName));
 
-        public void InformAttributeReplaced(string attributeSetName, string attributeName) =>
+        public void InformAttributeReplaced(string attributeSetName, string? attributeName) =>
             Broadcast(app => app.InformAttributeReplaced(attributeSetName, attributeName));
 
         private void Broadcast(Action<IClusterApplication> inform)

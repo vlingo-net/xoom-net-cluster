@@ -17,11 +17,11 @@ namespace Vlingo.Cluster.Model.Attribute
             return new TrackedAttribute(tid, attribute);
         }
         
-        public Attribute Attribute { get; }
+        public Attribute? Attribute { get; }
         
         public bool Distributed { get; }
         
-        public string Id { get; }
+        public string? Id { get; }
 
         public bool IsAbsent => Attribute == null;
         
@@ -29,9 +29,9 @@ namespace Vlingo.Cluster.Model.Attribute
         
         public bool IsPresent => !IsAbsent;
 
-        public Attribute ReplacingValueWith<T>(Attribute<T> other) => ((Attribute<T>)Attribute).ReplacingValueWith(other);
+        public Attribute ReplacingValueWith<T>(Attribute<T> other) => ((Attribute<T>)Attribute!).ReplacingValueWith(other);
 
-        public bool SameAs(Attribute other) => Attribute.Equals(other);
+        public bool SameAs(Attribute other) => Attribute != null && Attribute.Equals(other);
         
         public TrackedAttribute WithAttribute(Attribute attribute) => new TrackedAttribute(Id, attribute, false);
         
@@ -45,26 +45,62 @@ namespace Vlingo.Cluster.Model.Attribute
             }
 
             var otherAttribute = (TrackedAttribute) obj;
-            return Attribute.Equals(otherAttribute.Attribute) && 
+
+            if (Attribute == null && Id == null)
+            {
+                return Distributed == otherAttribute.Distributed;
+            }
+            
+            if (Attribute == null && Id != null)
+            {
+                return Distributed == otherAttribute.Distributed &&
+                       Id.Equals(otherAttribute.Id);
+            }
+
+            if (Id == null && Attribute != null)
+            {
+                return Attribute.Equals(otherAttribute.Attribute) &&
+                       Distributed == otherAttribute.Distributed;
+            }
+            
+            return Attribute!.Equals(otherAttribute.Attribute) && 
                    Distributed == otherAttribute.Distributed &&
-                   Id.Equals(otherAttribute.Id);
+                   Id!.Equals(otherAttribute.Id);
         }
 
-        public override int GetHashCode() => 31 * Attribute.GetHashCode() + Distributed.GetHashCode() + Id.GetHashCode();
+        public override int GetHashCode()
+        {
+            if (Attribute == null && Id == null)
+            {
+                return 31 * Distributed.GetHashCode();
+            }
+
+            if (Attribute == null)
+            {
+                return 31 * Distributed.GetHashCode() + Id!.GetHashCode();
+            }
+
+            if (Id == null)
+            {
+                return 31 * Attribute.GetHashCode() + Distributed.GetHashCode();
+            }
+            
+            return 31 * Attribute.GetHashCode() + Distributed.GetHashCode() + Id.GetHashCode();
+        }
 
         public override string ToString() => $"TrackedAttribute[attribute={Attribute}, distributed={Distributed}, id={Id}]";
 
         private static string TrackedIdFor<T>(AttributeSet set, Attribute<T> attribute) =>
             $"{set.Name}:{attribute.Name}";
 
-        private TrackedAttribute(string id, Attribute attribute)
+        private TrackedAttribute(string? id, Attribute? attribute)
         {
             Attribute = attribute;
             Distributed = false;
             Id = attribute == null ? null : id;
         }
 
-        private TrackedAttribute(string id, Attribute attribute, bool distributed)
+        private TrackedAttribute(string? id, Attribute? attribute, bool distributed)
         {
             Attribute = attribute;
             Distributed = distributed;

@@ -16,7 +16,7 @@ namespace Vlingo.Cluster.Model.Application
     
     public class FakeClusterApplicationActor : ClusterApplicationAdapter
     {
-        private IAttributesProtocol _client;
+        private IAttributesProtocol? _client;
         private readonly Node _localNode;
 
         public FakeClusterApplicationActor(Node localNode)
@@ -27,7 +27,7 @@ namespace Vlingo.Cluster.Model.Application
         public override void Start() =>
             Logger.Debug($"APP: ClusterApplication started on node: {_localNode}");
 
-        public override void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder) =>
+        public override void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream? responder) =>
             Logger.Debug($"APP: Received application message: {message.AsTextMessage()}");
 
         public override void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster)
@@ -101,36 +101,36 @@ namespace Vlingo.Cluster.Model.Application
             }
         }
 
-        public override void InformAttributeSetCreated(string attributeSetName) =>
+        public override void InformAttributeSetCreated(string? attributeSetName) =>
             Logger.Debug($"APP: Attributes Set Created: {attributeSetName}");
 
-        public override void InformAttributeAdded(string attributeSetName, string attributeName)
+        public override void InformAttributeAdded(string attributeSetName, string? attributeName)
         {
-            var attr = _client.Attribute<string>(attributeSetName, attributeName);
-            Logger.Debug($"APP: Attribute Set {attributeSetName} Attribute Added: {attributeName} Value: {attr.Value}");
+            var attr = _client?.Attribute<string>(attributeSetName, attributeName);
+            Logger.Debug($"APP: Attribute Set {attributeSetName} Attribute Added: {attributeName} Value: {attr?.Value}");
             if (_localNode.Id.Value == 1)
             {
-                _client.Replace("fake.set", "fake.attribute.name1", "value-replaced-2");
-                _client.Replace("fake.set", "fake.attribute.name2", "value-replaced-20");
+                _client?.Replace("fake.set", "fake.attribute.name1", "value-replaced-2");
+                _client?.Replace("fake.set", "fake.attribute.name2", "value-replaced-20");
             }
         }
 
-        public override void InformAttributeRemoved(string attributeSetName, string attributeName)
+        public override void InformAttributeRemoved(string attributeSetName, string? attributeName)
         {
-            var attr = _client.Attribute<string>(attributeSetName, attributeName);
+            var attr = _client?.Attribute<string>(attributeSetName, attributeName);
             Logger.Debug($"APP: Attribute Set {attributeSetName} Attribute Removed: {attributeName} Attribute: {attr}");
         }
 
-        public override void InformAttributeSetRemoved(string attributeSetName) =>
+        public override void InformAttributeSetRemoved(string? attributeSetName) =>
             Logger.Debug($"APP: Attributes Set Removed: {attributeSetName}");
 
-        public override void InformAttributeReplaced(string attributeSetName, string attributeName)
+        public override void InformAttributeReplaced(string attributeSetName, string? attributeName)
         {
-            var attr = _client.Attribute<string>(attributeSetName, attributeName);
-            Logger.Debug($"APP: Attribute Set {attributeSetName} Attribute Replaced: {attributeName} Value: {attr.Value}");
+            var attr = _client?.Attribute<string>(attributeSetName, attributeName);
+            Logger.Debug($"APP: Attribute Set {attributeSetName} Attribute Replaced: {attributeName} Value: {attr?.Value}");
             if (_localNode.Id.Value == 1)
             {
-                _client.Remove("fake.set", "fake.attribute.name1");
+                _client?.Remove("fake.set", "fake.attribute.name1");
             }
         }
         

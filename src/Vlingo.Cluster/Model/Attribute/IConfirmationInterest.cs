@@ -12,6 +12,6 @@ namespace Vlingo.Cluster.Model.Attribute
 {
     public interface IConfirmationInterest
     {
-        void Confirm(Id confirmingNodeId, string attributeSetName, string attributeName, ApplicationMessageType type);
+        void Confirm(Id confirmingNodeId, string? attributeSetName, string? attributeName, ApplicationMessageType type);
     }
 }

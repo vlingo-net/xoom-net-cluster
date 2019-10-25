@@ -19,7 +19,7 @@ namespace Vlingo.Cluster.Model.Attribute
             _all = new ConcurrentDictionary<string, AttributeSet>(16, 16);
         }
 
-        internal void Add(AttributeSet set) => _all.AddOrUpdate(set.Name, set, (s, attributeSet) => set);
+        internal void Add(AttributeSet set) => _all.AddOrUpdate(set.Name!, set, (s, attributeSet) => set);
 
         internal AttributeSet AttributeSetOf(string name)
         {
@@ -35,7 +35,7 @@ namespace Vlingo.Cluster.Model.Attribute
 
         internal void RemoveAll() => _all.Clear();
         
-        internal void SyncWith(AttributeSet set) => _all.AddOrUpdate(set.Name, set, (s, attributeSet) => set);
+        internal void SyncWith(AttributeSet set) => _all.AddOrUpdate(set.Name!, set, (s, attributeSet) => set);
 
         internal IEnumerable<AttributeSet> All => _all.Values;
     }

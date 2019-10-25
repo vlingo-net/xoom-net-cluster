@@ -28,7 +28,7 @@ namespace Vlingo.Cluster.Model.Attribute
             _expectedConfirmables = new List<Confirmable>();
         }
 
-        internal void Confirm(string trackingId, Node node)
+        internal void Confirm(string? trackingId, Node node)
         {
             var confirmable = ConfirmableOf(trackingId);
             confirmable.Confirm(node);
@@ -38,7 +38,7 @@ namespace Vlingo.Cluster.Model.Attribute
             }
         }
 
-        internal Confirmable ConfirmableOf(string trackingId)
+        internal Confirmable ConfirmableOf(string? trackingId)
         {
             foreach (var confirmable in _expectedConfirmables)
             {
@@ -69,7 +69,7 @@ namespace Vlingo.Cluster.Model.Attribute
         internal IEnumerable<Confirmable> AllRedistributable =>
             _expectedConfirmables.Where(c => c.IsRedistributableAsOf());
 
-        internal IEnumerable<string> AllTrackingIds => _expectedConfirmables.Select(c => c.Message.TrackingId);
+        internal IEnumerable<string> AllTrackingIds => _expectedConfirmables.Select(c => c.Message!.TrackingId);
 
         internal sealed class Confirmable
         {
@@ -77,7 +77,7 @@ namespace Vlingo.Cluster.Model.Attribute
             internal static readonly Confirmable NoConfirmable = new Confirmable();
     
             private long _createdOn;
-            private ApplicationMessage _message;
+            private ApplicationMessage? _message;
             private readonly string _trackingId;
             private Dictionary<Node, int> _unconfirmedNodes;
             
@@ -118,7 +118,7 @@ namespace Vlingo.Cluster.Model.Attribute
 
             internal bool HasUnconfirmedNodes => _unconfirmedNodes.Any();
 
-            internal ApplicationMessage Message => _message;
+            internal ApplicationMessage? Message => _message;
 
             internal IEnumerable<Node> UnconfirmedNodes => _unconfirmedNodes.Keys;
 

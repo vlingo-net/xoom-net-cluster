@@ -22,13 +22,13 @@ namespace Vlingo.Cluster.Model.Message
             return new ApplicationSays(id, name, saysId, payload);
         }
         
-        public static ApplicationSays From(Id id, Name name, string payload) => new ApplicationSays(id, name, payload);
+        public static ApplicationSays From(Id id, Name name, string? payload) => new ApplicationSays(id, name, payload);
         
         public Name Name { get; }
         
-        public string Payload { get; }
+        public string? Payload { get; }
         
-        public string SaysId { get; }
+        public string? SaysId { get; }
 
         public override bool IsApp => true;
 
@@ -40,22 +40,36 @@ namespace Vlingo.Cluster.Model.Message
             }
 
             var otherAppSaid = (ApplicationSays) obj;
+
+            if (Payload == null)
+            {
+                return Name.Equals(otherAppSaid.Name);
+            }
+            
             return Name.Equals(otherAppSaid.Name) && 
                    Payload.Equals(otherAppSaid.Payload);
         }
 
-        public override int GetHashCode() => 31 * Name.GetHashCode() + Payload.GetHashCode();
+        public override int GetHashCode()
+        {
+            if (Payload == null)
+            {
+                return 31 * Name.GetHashCode();
+            }
+            
+            return 31 * Name.GetHashCode() + Payload.GetHashCode();
+        }
 
         public override string ToString() => $"ApplicationSays[{Id},{Name},{Payload}]";
 
-        private ApplicationSays(Id id, Name name, string payload) : base(id)
+        private ApplicationSays(Id id, Name name, string? payload) : base(id)
         {
             Name = name;
             Payload = payload;
             SaysId = Guid.NewGuid().ToString();
         }
         
-        private ApplicationSays(Id id, Name name, string saysId, string payload) : base(id)
+        private ApplicationSays(Id id, Name name, string? saysId, string? payload) : base(id)
         {
             Name = name;
             SaysId = saysId;

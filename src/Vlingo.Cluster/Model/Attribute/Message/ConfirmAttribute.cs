@@ -12,14 +12,14 @@ namespace Vlingo.Cluster.Model.Attribute.Message
     public sealed class ConfirmAttribute : AttributeMessage
     {
         public static ConfirmAttribute From(
-            string correlatingMessageId,
+            string? correlatingMessageId,
             Node node,
             AttributeSet set,
             TrackedAttribute tracked,
             ApplicationMessageType type) => new ConfirmAttribute(correlatingMessageId, node, set, tracked, type);
 
         public ConfirmAttribute(
-            string correlatingMessageId,
+            string? correlatingMessageId,
             Node node,
             AttributeSet set,
             TrackedAttribute tracked,

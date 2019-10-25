@@ -40,10 +40,10 @@ namespace Vlingo.Cluster.Model
             initializer.Registry.RegisterRegistryInterest(SelfAs<IRegistryInterest>());
 
             _attributesAgent = AttributesAgentFactory.Instance(Stage, _localNode, _broadcaster,
-                _communicationsHub.OperationalOutboundStream, initializer.Configuration);
+                _communicationsHub.OperationalOutboundStream!, initializer.Configuration);
             
             _localLiveNode = LocalLiveNodeFactory.Instance(Stage, _localNode, SelfAs<IClusterSnapshot>(),
-                initializer.Registry, _communicationsHub.OperationalOutboundStream, initializer.Configuration);
+                initializer.Registry, _communicationsHub.OperationalOutboundStream!, initializer.Configuration);
             
             _localLiveNode.RegisterNodeSynchronizer(_attributesAgent);
             
@@ -94,13 +94,16 @@ namespace Vlingo.Cluster.Model
             {
                 var textMessage = message.AsTextMessage();
                 var typedMessage = OperationalMessage.MessageFrom(textMessage);
-                if (typedMessage.IsApp)
+                if (typedMessage != null && typedMessage.IsApp)
                 {
                     _attributesAgent.HandleInboundStreamMessage(addressType, message);
                 }
                 else
                 {
-                    _localLiveNode.Handle(typedMessage);
+                    if (typedMessage != null)
+                    {
+                        _localLiveNode.Handle(typedMessage);
+                    }
                 }
             }
             else if (addressType.IsApplication)

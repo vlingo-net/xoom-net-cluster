@@ -13,7 +13,7 @@ namespace Vlingo.Cluster.Model.Attribute.Message
     
     public sealed class ConfirmRemoveAttributeSet : ApplicationMessage
     {        
-        public ConfirmRemoveAttributeSet(string correlatingMessageId, Node node, AttributeSet set)
+        public ConfirmRemoveAttributeSet(string? correlatingMessageId, Node node, AttributeSet set)
             : base(
                 correlatingMessageId,
                 ApplicationMessageType.ConfirmRemoveAttributeSet,
@@ -22,7 +22,7 @@ namespace Vlingo.Cluster.Model.Attribute.Message
             AttributeSetName = set.Name;
         }
         
-        public string AttributeSetName { get; }
+        public string? AttributeSetName { get; }
 
         public override string ToPayload()
         {
