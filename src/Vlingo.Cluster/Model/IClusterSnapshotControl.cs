@@ -18,7 +18,7 @@ namespace Vlingo.Cluster.Model
 
     public class ClusterSnapshotControlFactory
     {
-        public static Tuple<IClusterSnapshotControl, ILogger> Instance(World world, string name)
+        public static (IClusterSnapshotControl, ILogger) Instance(World world, string name)
         {
             var initializer = new ClusterSnapshotInitializer(name, Properties.Instance, world.DefaultLogger);
             
@@ -31,7 +31,7 @@ namespace Vlingo.Cluster.Model
             
             var control = world.ActorFor<IClusterSnapshotControl>(definition);
             
-            return new Tuple<IClusterSnapshotControl, ILogger>(control, world.DefaultLogger);
+            return (control, world.DefaultLogger);
         }
     }
 }

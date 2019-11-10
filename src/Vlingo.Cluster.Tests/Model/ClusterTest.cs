@@ -17,16 +17,16 @@ namespace Vlingo.Cluster.Tests.Model
         [Fact]
         public void TestClusterSnapshotControl()
         {
-            var control = Vlingo.Cluster.Model.Cluster.ControlFor("node1");
+            var (control, logger) = Vlingo.Cluster.Model.Cluster.ControlFor("node1");
 
             Assert.NotNull(control);
 
             ++_count;
-            control.Item2.Debug($"======== ClusterTest#testClusterSnapshotControl({_count}) ========");
+            logger.Debug($"======== ClusterTest#testClusterSnapshotControl({_count}) ========");
 
             Assert.True(Vlingo.Cluster.Model.Cluster.IsRunning(true, 10));
 
-            control.Item1.ShutDown();
+            control.ShutDown();
 
             Assert.False(Vlingo.Cluster.Model.Cluster.IsRunning(false, 10));
         }

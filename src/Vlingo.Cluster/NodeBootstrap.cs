@@ -16,7 +16,7 @@ namespace Vlingo.Cluster
     {
         private static NodeBootstrap? _instance;
 
-        private readonly Tuple<IClusterSnapshotControl, ILogger> _clusterSnapshotControl;
+        private readonly (IClusterSnapshotControl, ILogger) _clusterSnapshotControl;
 
         public static void Main(string[] args)
         {
@@ -55,7 +55,7 @@ namespace Vlingo.Cluster
 
         public IClusterSnapshotControl ClusterSnapshotControl => _clusterSnapshotControl.Item1;
 
-        private NodeBootstrap(Tuple<IClusterSnapshotControl, ILogger> control, string nodeName)
+        private NodeBootstrap((IClusterSnapshotControl, ILogger) control, string nodeName)
         {
             _clusterSnapshotControl = control;
             

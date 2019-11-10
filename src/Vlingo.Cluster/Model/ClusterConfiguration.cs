@@ -11,11 +11,8 @@ using System.Text;
 using Vlingo.Actors;
 using Vlingo.Wire.Node;
 
-
 namespace Vlingo.Cluster.Model
 {
-    
-    
     public class ClusterConfiguration : IConfiguration
     {
         private readonly ILogger _logger;

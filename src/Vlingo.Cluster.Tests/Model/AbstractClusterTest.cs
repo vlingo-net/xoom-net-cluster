@@ -79,6 +79,7 @@ namespace Vlingo.Cluster.Tests.Model
             properties.Add("node.node3.app.port", NextPortToUseString());
 
             Properties = Properties.Instance;
+            Properties.SetCustomProperties(properties);
 
             TestWorld = TestWorld.Start("cluster-test-world");
 
@@ -90,7 +91,9 @@ namespace Vlingo.Cluster.Tests.Model
         public virtual void Dispose()
         {
             TestWorld?.Terminate();
-            Cluster.Reset();
+            // Cluster.Reset() Cannot be used because when tests are executed in parallel there are race conditions that
+            // some finished tests puts cluster down while others are still running and relying on the instance.
+            //Cluster.Reset(); 
         }
 
         protected Wire.Node.Node NextNodeWith(int nodeNumber) => Wire.Node.Node.With(Id.Of(nodeNumber),

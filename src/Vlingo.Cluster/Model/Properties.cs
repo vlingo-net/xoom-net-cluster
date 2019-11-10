@@ -9,12 +9,16 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Vlingo.Common;
 
 namespace Vlingo.Cluster.Model
 {
     public sealed class Properties : ConfigurationProperties
     {
+        private static IDictionary<string, string> _properties = new Dictionary<string, string>();
+        
         private static Func<Properties> Factory = () =>
         {
             var props = new Properties();
@@ -22,9 +26,21 @@ namespace Vlingo.Cluster.Model
             return props;
         };
 
-        private static Lazy<Properties> SingleInstance => new Lazy<Properties>(Factory, true);
+        private static Lazy<Properties> SingleInstance = new Lazy<Properties>(Factory, true);
 
-        public static Properties Instance => SingleInstance.Value;
+        public static Properties Instance
+        {
+            get
+            {
+                if (_properties.Any())
+                {
+                    SingleInstance.Value.UpdateCustomProperties(_properties);
+                    _properties.Clear();
+                }
+                
+                return SingleInstance.Value;
+            }
+        }
 
         public int ApplicationBufferSize() => GetInteger("cluster.app.buffer.size", 10240);
 
@@ -294,6 +310,16 @@ namespace Vlingo.Cluster.Model
             SeedNodes();
 
             ClusterApplicationTypeName();
+        }
+
+        public void SetCustomProperties(IDictionary<string, string> properties) => _properties = properties;
+
+        private void UpdateCustomProperties(IDictionary<string, string> properties)
+        {
+            foreach (var property in properties)
+            {
+                SetProperty(property.Key, property.Value);
+            }
         }
 
         private string Key(string nodeName, string key)

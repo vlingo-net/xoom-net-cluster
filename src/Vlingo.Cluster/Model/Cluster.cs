@@ -18,7 +18,7 @@ namespace Vlingo.Cluster.Model
         
         private static volatile object _syncRoot = new object();
 
-        public static Tuple<IClusterSnapshotControl, ILogger> ControlFor(string name)
+        public static (IClusterSnapshotControl, ILogger) ControlFor(string name)
         {
             if (_world != null)
             {
@@ -28,7 +28,7 @@ namespace Vlingo.Cluster.Model
             return ControlFor(World.Start("vlingo-cluster"), name);
         }
 
-        public static Tuple<IClusterSnapshotControl, ILogger> ControlFor(World world, string name)
+        public static (IClusterSnapshotControl, ILogger) ControlFor(World world, string name)
         {
             lock (_syncRoot)
             {
@@ -39,11 +39,11 @@ namespace Vlingo.Cluster.Model
 
                 _world = world;
 
-                var control = ClusterSnapshotControlFactory.Instance(world, name);
+                var (control, logger) = ClusterSnapshotControlFactory.Instance(world, name);
     
-                _control = control.Item1;
+                _control = control;
     
-                return control;   
+                return (control, logger);   
             }
         }
 
