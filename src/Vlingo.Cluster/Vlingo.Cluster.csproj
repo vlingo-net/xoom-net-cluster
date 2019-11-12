@@ -16,7 +16,7 @@
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/vlingo-net/vlingo-net-cluster</PackageProjectUrl>
-        <PackageIconUrl>https://raw.githubusercontent.com/vlingo-net/vlingo-net-cluster/master/vlingo-64x64.png</PackageIconUrl>
+        <PackageIcon>vlingo-64x64.png</PackageIcon>
         <RepositoryUrl>https://github.com/vlingo-net/vlingo-net-cluster</RepositoryUrl>
         <PackageTags>vlingo-net-cluster;.net;c#;f#;reactive-programming;actors;actor-model;cluster</PackageTags>
     </PropertyGroup>
@@ -27,6 +27,7 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+        <None Include="..\..\vlingo-64x64.png" Pack="true" PackagePath="\" />
         <None Update="vlingo-actors.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
