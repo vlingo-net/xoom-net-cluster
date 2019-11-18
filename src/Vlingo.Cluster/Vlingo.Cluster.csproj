@@ -7,7 +7,7 @@
 
         <!-- NuGet Metadata -->
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.4.14</PackageVersion>
+        <PackageVersion>0.4.15</PackageVersion>
         <PackageId>Vlingo.Cluster</PackageId>
         <Authors>Vlingo</Authors>
         <Description>
