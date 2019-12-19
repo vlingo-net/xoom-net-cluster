@@ -13,6 +13,8 @@ using Vlingo.Cluster.Model.Attribute.Message;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Cluster.Tests.Model.Outbound;
+using Vlingo.Common;
+using Vlingo.Common.Pool;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
 using Xunit;
@@ -24,14 +26,12 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
     
     public class ConfirmingDistributorTest : AbstractClusterTest
     {
-        private MockManagedOutboundChannelProvider _channelProvider;
-        private ConfirmingDistributor _confirmingDistributor;
-        private Id _localNodeId;
-        private Node _localNode;
-        private ByteBufferPool _pool;
-        private TestActor<IOperationalOutboundStream> _outboundStream;
-        private AttributeSet _set;
-        private TrackedAttribute _tracked;
+        private readonly MockManagedOutboundChannelProvider _channelProvider;
+        private readonly ConfirmingDistributor _confirmingDistributor;
+        private readonly Id _localNodeId;
+        private readonly Node _localNode;
+        private readonly AttributeSet _set;
+        private readonly TrackedAttribute _tracked;
 
         [Fact]
         public void TestAcknowledgeConfirmation()
@@ -184,14 +184,13 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
     
             _channelProvider = new MockManagedOutboundChannelProvider(_localNodeId, Config);
     
-            _pool = new ByteBufferPool(10, Properties.OperationalBufferSize());
+            var pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), Properties.OperationalBufferSize());
     
-            _outboundStream =
-                TestWorld.ActorFor<IOperationalOutboundStream>(
-            Definition.Has<OperationalOutboundStreamActor>(
-            Definition.Parameters(_localNode, _channelProvider, _pool)));
+            var outboundStream = TestWorld.ActorFor<IOperationalOutboundStream>(
+                Definition.Has<OperationalOutboundStreamActor>(
+                    Definition.Parameters(_localNode, _channelProvider, pool)));
     
-            _confirmingDistributor = new ConfirmingDistributor(Application, _localNode, _outboundStream.Actor, Config);
+            _confirmingDistributor = new ConfirmingDistributor(Application, _localNode, outboundStream.Actor, Config);
         }
 
         private MockManagedOutboundChannel Mock(IManagedOutboundChannel channel) => (MockManagedOutboundChannel) channel;

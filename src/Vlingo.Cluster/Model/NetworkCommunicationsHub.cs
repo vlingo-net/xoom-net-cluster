@@ -7,6 +7,8 @@
 
 using Vlingo.Actors;
 using Vlingo.Cluster.Model.Outbound;
+using Vlingo.Common;
+using Vlingo.Common.Pool;
 using Vlingo.Wire.Fdx.Inbound;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
@@ -49,8 +51,8 @@ namespace Vlingo.Cluster.Model
                     stage,
                     node,
                     new ManagedOutboundSocketChannelProvider(node, AddressType.Op, configuration),
-                    new ByteBufferPool(
-                        Properties.Instance.OperationalOutgoingPooledBuffers(),
+                    new ConsumerByteBufferPool(
+                        ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(Properties.Instance.ApplicationOutgoingPooledBuffers()), 
                         Properties.Instance.OperationalBufferSize()));
             
             _applicationInboundStream =
@@ -67,8 +69,8 @@ namespace Vlingo.Cluster.Model
                 ApplicationOutboundStreamFactory.Instance(
                     stage,
                     new ManagedOutboundSocketChannelProvider(node, AddressType.App, configuration),
-                    new ByteBufferPool(
-                        Properties.Instance.ApplicationOutgoingPooledBuffers(),
+                    new ConsumerByteBufferPool(
+                        ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(Properties.Instance.ApplicationOutgoingPooledBuffers()), 
                         Properties.Instance.ApplicationBufferSize()));
         }
 

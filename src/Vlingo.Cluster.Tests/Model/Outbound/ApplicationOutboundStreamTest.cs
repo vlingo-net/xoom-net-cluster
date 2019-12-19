@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.IO;
 using Vlingo.Actors;
 using Vlingo.Actors.TestKit;
+using Vlingo.Common;
+using Vlingo.Common.Pool;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
@@ -21,11 +23,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
     {
         private static string _message1 = "Message1";
         
-        private MockManagedOutboundChannelProvider _channelProvider;
-        private Id _localNodeId;
-        private ByteBufferPool _pool;
-        private TestActor<IApplicationOutboundStream> _outboundStream;
-        private TestWorld _world;
+        private readonly MockManagedOutboundChannelProvider _channelProvider;
+        private readonly TestActor<IApplicationOutboundStream> _outboundStream;
+        private readonly TestWorld _world;
 
         [Fact]
         public void TestBroadcast()
@@ -67,16 +67,16 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         {
             _world = TestWorld.Start("test-outbound-stream");
     
-            _localNodeId = Id.Of(1);
+            var localNodeId = Id.Of(1);
     
-            _channelProvider = new MockManagedOutboundChannelProvider(_localNodeId, Config);
+            _channelProvider = new MockManagedOutboundChannelProvider(localNodeId, Config);
     
-            _pool = new ByteBufferPool(10, Properties.OperationalBufferSize());
+            var pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), Properties.OperationalBufferSize());
     
             _outboundStream =
                 _world.ActorFor<IApplicationOutboundStream>(
                     Definition.Has<ApplicationOutboundStreamActor>(
-                        Definition.Parameters(_channelProvider, _pool)));
+                        Definition.Parameters(_channelProvider, pool)));
         }
 
         public override void Dispose()

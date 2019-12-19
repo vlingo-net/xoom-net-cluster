@@ -10,6 +10,8 @@ using Vlingo.Actors;
 using Vlingo.Actors.TestKit;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Outbound;
+using Vlingo.Common;
+using Vlingo.Common.Pool;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
 using Xunit;
@@ -181,7 +183,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
     
             _channelProvider = new MockManagedOutboundChannelProvider(_localNodeId, Config);
     
-            var pool = new ByteBufferPool(10, Properties.OperationalBufferSize());
+            var pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), Properties.OperationalBufferSize());
     
             _outboundStream =
                 _world.ActorFor<IOperationalOutboundStream>(

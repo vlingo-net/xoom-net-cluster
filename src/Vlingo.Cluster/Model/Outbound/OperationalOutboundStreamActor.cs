@@ -22,7 +22,7 @@ namespace Vlingo.Cluster.Model.Outbound
         private readonly Node _node;
         private readonly Outbound _outbound;
 
-        public OperationalOutboundStreamActor(Node node, IManagedOutboundChannelProvider provider, ByteBufferPool byteBufferPool)
+        public OperationalOutboundStreamActor(Node node, IManagedOutboundChannelProvider provider, ConsumerByteBufferPool byteBufferPool)
         {
             _node = node;
             _outbound = new Outbound(provider, byteBufferPool);

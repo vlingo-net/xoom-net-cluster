@@ -7,6 +7,8 @@
 
 using System.Collections.Generic;
 using System.IO;
+using Vlingo.Common;
+using Vlingo.Common.Pool;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
 using Xunit;
@@ -23,7 +25,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         private static string _message3 = "Message3";
   
         private readonly MockManagedOutboundChannelProvider _channelProvider;
-        private readonly ByteBufferPool _pool;
+        private readonly ConsumerByteBufferPool _pool;
         private readonly Outbound _outbound;
 
         [Fact]
@@ -52,9 +54,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         [Fact]
         public void TestBroadcastPooledByteBuffer()
         {
-            var buffer1 = _pool.Access();
-            var buffer2 = _pool.Access();
-            var buffer3 = _pool.Access();
+            var buffer1 = _pool.Acquire();
+            var buffer2 = _pool.Acquire();
+            var buffer3 = _pool.Acquire();
     
             var rawMessage1 = BuildRawMessageBuffer((MemoryStream)buffer1.AsStream(), _message1);
             BytesFrom(rawMessage1, (MemoryStream)buffer1.AsStream());
@@ -125,9 +127,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         [Fact]
         public void TestSendToPooledByteBuffer()
         {
-            var buffer1 = _pool.Access();
-            var buffer2 = _pool.Access();
-            var buffer3 = _pool.Access();
+            var buffer1 = _pool.Acquire();
+            var buffer2 = _pool.Acquire();
+            var buffer3 = _pool.Acquire();
     
             var rawMessage1 = BuildRawMessageBuffer((MemoryStream)buffer1.AsStream(), _message1);
             BytesFrom(rawMessage1, (MemoryStream)buffer1.AsStream());
@@ -151,9 +153,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         
         public OutboundTest(ITestOutputHelper output) : base(output)
         {
-            _pool = new ByteBufferPool(10, Properties.OperationalBufferSize());
+            _pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), Properties.OperationalBufferSize());
             _channelProvider = new MockManagedOutboundChannelProvider(Id.Of(1), Config);
-            _outbound = new Outbound(_channelProvider, new ByteBufferPool(10, 10_000));
+            _outbound = new Outbound(_channelProvider, new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), 10_000));
         }
     }
 }

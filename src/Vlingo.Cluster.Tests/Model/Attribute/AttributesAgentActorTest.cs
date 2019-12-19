@@ -14,6 +14,8 @@ using Vlingo.Cluster.Model.Attribute.Message;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Cluster.Tests.Model.Outbound;
+using Vlingo.Common;
+using Vlingo.Common.Pool;
 using Vlingo.Wire.Fdx.Inbound;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
@@ -26,14 +28,13 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
     
     public class AttributesAgentActorTest : AbstractClusterTest
     {
-        private MockManagedOutboundChannelProvider _channelProvider;
-        private Id _localNodeId;
-        private Node _localNode;
-        private MockConfirmationInterest _interest;
-        private ByteBufferPool _pool;
-        private TestActor<IOperationalOutboundStream> _outboundStream;
-        private AttributeSet _set;
-        private TrackedAttribute _tracked;
+        private readonly MockManagedOutboundChannelProvider _channelProvider;
+        private readonly Id _localNodeId;
+        private readonly Node _localNode;
+        private readonly MockConfirmationInterest _interest;
+        private readonly TestActor<IOperationalOutboundStream> _outboundStream;
+        private readonly AttributeSet _set;
+        private readonly TrackedAttribute _tracked;
 
         [Fact]
         public void TestAdd()
@@ -302,14 +303,14 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
     
             _channelProvider = new MockManagedOutboundChannelProvider(_localNodeId, Config);
     
-            _pool = new ByteBufferPool(10, Properties.OperationalBufferSize());
+            var pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), Properties.OperationalBufferSize());
     
             _interest = new MockConfirmationInterest();
     
             _outboundStream =
                 TestWorld.ActorFor<IOperationalOutboundStream>(
                     Definition.Has<OperationalOutboundStreamActor>(
-                        Definition.Parameters(_localNode, _channelProvider, _pool)));
+                        Definition.Parameters(_localNode, _channelProvider, pool)));
         }
         
         private RawMessage RawMessageFor(Id id, Name name, ApplicationMessage message) {

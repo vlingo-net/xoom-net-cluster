@@ -52,7 +52,7 @@ namespace Vlingo.Cluster.Model.Outbound
             Stage stage,
             Node node,
             IManagedOutboundChannelProvider provider,
-            ByteBufferPool byteBufferPool)
+            ConsumerByteBufferPool byteBufferPool)
         {
             var definition =
                     Definition.Has<OperationalOutboundStreamActor>(
