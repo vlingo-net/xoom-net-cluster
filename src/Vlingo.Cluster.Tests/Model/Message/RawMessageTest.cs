@@ -86,7 +86,7 @@ namespace Vlingo.Cluster.Tests.Model.Message
             header.CopyBytesTo(buffer);
             buffer.Flip();
             message.HeaderFrom(buffer);
-            buffer.Clear();
+            buffer.Flip();
             var convertedHeader = RawMessageHeader.From(buffer);
             Assert.Equal(header, convertedHeader);
         }
