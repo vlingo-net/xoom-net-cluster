@@ -19,6 +19,7 @@
         <PackageIcon>vlingo-64x64.png</PackageIcon>
         <RepositoryUrl>https://github.com/vlingo-net/vlingo-net-cluster</RepositoryUrl>
         <PackageTags>vlingo-net-cluster;.net;c#;f#;reactive-programming;actors;actor-model;cluster</PackageTags>
+        <Configurations>Debug;Release;Debug With Project References</Configurations>
     </PropertyGroup>
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
@@ -35,10 +36,19 @@
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
-    <ItemGroup>
-      <PackageReference Include="Vlingo.Actors" Version="0.6.4.1" />
-      <PackageReference Include="Vlingo.Common" Version="0.6.4.1" />
-      <PackageReference Include="Vlingo.Wire" Version="0.6.4.1" />
-    </ItemGroup>
+    <Choose>
+      <When Condition="'$(Configuration)' == 'Debug With Project References'">
+        <ItemGroup>
+          <ProjectReference Include="..\..\..\vlingo-net-wire\src\Vlingo.Wire\Vlingo.Wire.csproj" />
+        </ItemGroup>
+      </When>
+      <Otherwise>
+        <ItemGroup>
+          <PackageReference Include="Vlingo.Actors" Version="0.6.4.1" />
+          <PackageReference Include="Vlingo.Common" Version="0.6.4.1" />
+          <PackageReference Include="Vlingo.Wire" Version="0.6.4.1" />
+        </ItemGroup>
+      </Otherwise>
+    </Choose>
 
 </Project>

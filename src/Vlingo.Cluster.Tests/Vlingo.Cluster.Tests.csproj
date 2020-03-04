@@ -5,6 +5,8 @@
         <LangVersion>7.2</LangVersion>
 
         <IsPackable>false</IsPackable>
+
+        <Configurations>Debug;Release;Debug With Project References</Configurations>
     </PropertyGroup>
 
     <ItemGroup>
