@@ -1,18 +1,16 @@
 language: csharp
 jobs:
   include:
-    - os: linux
-      dotnet: 3.0.100
-      mono: none
-    - os: osx
-      osx_image: xcode11
-      dotnet: 3.0.100
-      mono: none
-sudo: false  # use the new container-based Travis infrastructure
+  - os: linux
+    dotnet: 3.1.101
+    mono: none
+  - os: osx
+    osx_image: xcode11
+    dotnet: 3.1.101
+    mono: none
 script:
-  - dotnet restore ./src/Vlingo.Cluster.sln;
-    dotnet build ./src/Vlingo.Cluster.sln;
-    dotnet test ./src/Vlingo.Cluster.Tests/Vlingo.Cluster.Tests.csproj;
-
+- dotnet restore ./src/Vlingo.Cluster.sln; dotnet build ./src/Vlingo.Cluster.sln;
+  dotnet test ./src/Vlingo.Cluster.Tests/Vlingo.Cluster.Tests.csproj;
 notifications:
-  slack: vlingo-platform-net:kwiEEBuUpRnz2rYYYstTBpXr
+  slack:
+    secure: j3DVTgD6/9UvKWyLueDdyNJXtfsDH19Qub207O/iUcKCf4Y2dRF7CqdqKxCjpmZoZ6xcBK7Qd8PXS6M3ozOzMKR5REBH8Q83IiBh1Oj17zX4J2DHpkG3SzJFCxj5IdMLL8ygXVIolTy/C25RENxEIsa9K9ExpF5YzT9uFHFH4XqMY+E8TVZrQPXpAHEfutyP1U8THIXPzIEpVPsR3pQYSx+a0/e4yb/0WlT/bscceiaZn0brtcmMKEQFLRQFdFL3yqNsmbD6TkPLlYcIGNHFnJGqi1GJT2o0yuuhCNop+waKaSQGYeKKKXH9m9Hn0ysBElnoQ40W9H0Wo1PS7k1mSYnycRP7WBlx0CAGd8blIq9XyShXlWvlSoyr3QXz5SoxvZZ6f+4GrezhfeZ4PbKSSjahaj0ArhB8PY8kA63ILuTOP0EgnSn9muN8W2mZ6pOwd8lqSxqEwKTvaJGbLlyVMUP3BgkYm1/i3gQzEh79ZI3dWlr4NEZzzGDl9nGDWN0AVdT1rF9dAP9Bxll+zbJa17ZJpFAm/KvFdV9sUHO8AfRPRdxkjbaM8EXtrGLrMymQKAicEzNxt0Sag/g8BFPoNsZsmL9yMyYEFBxIUDJI24YxbojoheK52NHWFuOHPFfh9E2L1bPhSwMQrXOHoya9BzDzf/of29XNWoWdbQo3nzY=
