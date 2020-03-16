@@ -185,11 +185,10 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
             _channelProvider = new MockManagedOutboundChannelProvider(_localNodeId, Config);
     
             var pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), Properties.OperationalBufferSize());
-    
+
             var outboundStream = TestWorld.ActorFor<IOperationalOutboundStream>(
-                Definition.Has<OperationalOutboundStreamActor>(
-                    Definition.Parameters(_localNode, _channelProvider, pool)));
-    
+                () => new OperationalOutboundStreamActor(_localNode, _channelProvider, pool));
+
             _confirmingDistributor = new ConfirmingDistributor(Application, _localNode, outboundStream.Actor, Config);
         }
 

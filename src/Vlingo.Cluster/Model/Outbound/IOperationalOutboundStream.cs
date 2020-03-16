@@ -54,13 +54,8 @@ namespace Vlingo.Cluster.Model.Outbound
             IManagedOutboundChannelProvider provider,
             ConsumerByteBufferPool byteBufferPool)
         {
-            var definition =
-                    Definition.Has<OperationalOutboundStreamActor>(
-                        Definition.Parameters(node, provider, byteBufferPool),
-            "cluster-operational-outbound-stream");
-            
             var operationalOutboundStream =
-                stage.ActorFor<IOperationalOutboundStream>(definition);
+                stage.ActorFor<IOperationalOutboundStream>(() => new OperationalOutboundStreamActor(node, provider, byteBufferPool), "cluster-operational-outbound-stream");
     
             return operationalOutboundStream;
         }

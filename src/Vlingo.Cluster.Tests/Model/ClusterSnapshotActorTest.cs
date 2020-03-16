@@ -29,7 +29,7 @@ namespace Vlingo.Cluster.Tests.Model
         {
             var snapshot =
                 TestWorld.ActorFor<IClusterSnapshot>(
-                    Definition.Has<ClusterSnapshotActor>(Definition.Parameters(_intializer, Application)));
+                    () => new ClusterSnapshotActor(_intializer, Application));
             
             snapshot.Actor.QuorumAchieved();
             Assert.Equal(1, Application.InformQuorumAchievedCheck.Get());
@@ -43,7 +43,7 @@ namespace Vlingo.Cluster.Tests.Model
         {
             var control =
                 TestWorld.ActorFor<IClusterSnapshotControl>(
-                    Definition.Has<ClusterSnapshotActor>(Definition.Parameters(_intializer, Application)));
+                    () => new ClusterSnapshotActor(_intializer, Application));
             
             control.Actor.ShutDown();
             Assert.Equal(1, Application.StopCheck.Get());
@@ -54,7 +54,7 @@ namespace Vlingo.Cluster.Tests.Model
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    Definition.Has<ClusterSnapshotActor>(Definition.Parameters(_intializer, Application)));
+                    () => new ClusterSnapshotActor(_intializer, Application));
             
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, _opMessage);
             Assert.Equal(0, Application.HandleApplicationMessageCheck.Get());
@@ -69,8 +69,8 @@ namespace Vlingo.Cluster.Tests.Model
         {
             var registryInterest =
                 TestWorld.ActorFor<IRegistryInterest>(
-                    Definition.Has<ClusterSnapshotActor>(Definition.Parameters(_intializer, Application)));
-            
+                    () => new ClusterSnapshotActor(_intializer, Application));
+
             registryInterest.Actor.InformAllLiveNodes(Config.AllNodes, true);
             Assert.Equal(1, Application.AllLiveNodes.Get());
     

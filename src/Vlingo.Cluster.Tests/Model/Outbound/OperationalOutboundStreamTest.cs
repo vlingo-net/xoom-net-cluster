@@ -184,10 +184,10 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
             _channelProvider = new MockManagedOutboundChannelProvider(_localNodeId, Config);
     
             var pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), Properties.OperationalBufferSize());
-    
+
             _outboundStream =
                 _world.ActorFor<IOperationalOutboundStream>(
-                    Definition.Has<OperationalOutboundStreamActor>(Definition.Parameters(_localNode, _channelProvider, pool)));
+                    () => new OperationalOutboundStreamActor(_localNode, _channelProvider, pool));
         }
 
         public override void Dispose()

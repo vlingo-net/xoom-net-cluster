@@ -29,10 +29,8 @@ namespace Vlingo.Cluster.Model.Node
             IOperationalOutboundStream outbound,
             IConfiguration configuration)
         {
-            var definition = Definition.Has<LocalLiveNodeActor>(
-                Definition.Parameters(node, snapshot, registry, outbound, configuration),"local-live-node");
-    
-            var localLiveNode = stage.ActorFor<ILocalLiveNode>(definition);
+            var localLiveNode = stage.ActorFor<ILocalLiveNode>(
+                () => new LocalLiveNodeActor(node, snapshot, registry, outbound, configuration), "local-live-node");
     
             return localLiveNode;
         }

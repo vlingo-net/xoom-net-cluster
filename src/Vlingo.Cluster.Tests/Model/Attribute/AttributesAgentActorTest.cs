@@ -41,9 +41,8 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var agent =
                 TestWorld.ActorFor<IAttributesAgent>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
-            
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
+
             agent.Actor.Add("test-set", "test-attr", "test-value");
     
             var allOtherNodes = Config.AllOtherNodes(_localNodeId).ToList();
@@ -60,8 +59,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var agent =
                 TestWorld.ActorFor<IAttributesAgent>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
             
             agent.Actor.Add("test-set", "test-attr", "test-value1");
             agent.Actor.Replace("test-set", "test-attr", "test-value2");
@@ -80,8 +78,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var agent =
                 TestWorld.ActorFor<IAttributesAgent>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
             
             agent.Actor.Add("test-set", "test-attr", "test-value1");
             agent.Actor.Remove("test-set", "test-attr");
@@ -100,8 +97,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var agent =
                 TestWorld.ActorFor<IAttributesAgent>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
             
             agent.Actor.Add("test-set", "test-attr1", "test-value1");
             agent.Actor.Add("test-set", "test-attr2", "test-value2");
@@ -129,8 +125,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
 
             var message = CreateAttributeSet.From(_localNode, _set);
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, RawMessageFor(_localNodeId, _localNode.Name, message));
@@ -145,8 +140,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
 
             var message = AddAttribute.From(_localNode, _set, _tracked);
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, RawMessageFor(_localNodeId, _localNode.Name, message));
@@ -161,8 +155,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
 
             var addMessage = AddAttribute.From(_localNode, _set, _tracked);
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, RawMessageFor(_localNodeId, _localNode.Name, addMessage));
@@ -180,8 +173,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
 
             var addMessage = AddAttribute.From(_localNode, _set, _tracked);
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, RawMessageFor(_localNodeId, _localNode.Name, addMessage));
@@ -199,8 +191,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
 
             var createMessage = CreateAttributeSet.From(_localNode, _set);
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, RawMessageFor(_localNodeId, _localNode.Name, createMessage));
@@ -218,8 +209,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
 
             var confirm = new ConfirmCreateAttributeSet("123", _localNode, _set);
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, RawMessageFor(_localNodeId, _localNode.Name, confirm));
@@ -233,8 +223,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
 
             var confirm = new ConfirmAttribute("123", _localNode, _set, _tracked, ApplicationMessageType.ConfirmAddAttribute);
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, RawMessageFor(_localNodeId, _localNode.Name, confirm));
@@ -249,8 +238,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
 
             var confirm = new ConfirmAttribute("123", _localNode, _set, _tracked, ApplicationMessageType.ConfirmReplaceAttribute);
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, RawMessageFor(_localNodeId, _localNode.Name, confirm));
@@ -265,8 +253,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
 
             var confirm = new ConfirmAttribute("123", _localNode, _set, _tracked, ApplicationMessageType.ConfirmRemoveAttribute);
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, RawMessageFor(_localNodeId, _localNode.Name, confirm));
@@ -281,8 +268,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    Definition.Has<AttributesAgentActor>(
-                        Definition.Parameters(_localNode, Application, _outboundStream.Actor, Config, _interest)));
+                    () => new AttributesAgentActor(_localNode, Application, _outboundStream.Actor, Config, _interest));
 
             var confirm = new ConfirmRemoveAttributeSet("123", _localNode, _set);
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, RawMessageFor(_localNodeId, _localNode.Name, confirm));
@@ -306,11 +292,10 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
             var pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), Properties.OperationalBufferSize());
     
             _interest = new MockConfirmationInterest();
-    
+
             _outboundStream =
                 TestWorld.ActorFor<IOperationalOutboundStream>(
-                    Definition.Has<OperationalOutboundStreamActor>(
-                        Definition.Parameters(_localNode, _channelProvider, pool)));
+                    () => new OperationalOutboundStreamActor(_localNode, _channelProvider, pool));
         }
         
         private RawMessage RawMessageFor(Id id, Name name, ApplicationMessage message) {

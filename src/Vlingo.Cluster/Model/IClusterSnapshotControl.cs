@@ -5,7 +5,6 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System;
 using Vlingo.Actors;
 using Vlingo.Cluster.Model.Application;
 
@@ -23,13 +22,9 @@ namespace Vlingo.Cluster.Model
             var initializer = new ClusterSnapshotInitializer(name, Properties.Instance, world.DefaultLogger);
             
             var application = ClusterApplicationFactory.Instance(world, initializer.LocalNode);
-            
-            var definition =
-                    Definition.Has<ClusterSnapshotActor>(
-                        Definition.Parameters(initializer, application),
-                        "cluster-snapshot-" + name);
-            
-            var control = world.ActorFor<IClusterSnapshotControl>(definition);
+
+            var control =
+                world.ActorFor<IClusterSnapshotControl>(() => new ClusterSnapshotActor(initializer, application), $"cluster-snapshot-{name}");
             
             return (control, world.DefaultLogger);
         }

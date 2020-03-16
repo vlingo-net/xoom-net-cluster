@@ -28,12 +28,8 @@ namespace Vlingo.Cluster.Model.Attribute
             IOperationalOutboundStream outbound,
             IConfiguration configuration)
         {
-            var definition =
-                    Definition.Has<AttributesAgentActor>(
-                Definition.Parameters(node, application, outbound, configuration),
-            "attributes-agent");
-            
-            var attributesAgent = stage.ActorFor<IAttributesAgent>(definition);
+            var attributesAgent = stage.ActorFor<IAttributesAgent>(
+                () => new AttributesAgentActor(node, application, outbound, configuration), "attributes-agent");
             
             return attributesAgent;
         }
