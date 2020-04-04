@@ -6,6 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Cluster.Model.Node;
+using Vlingo.Common;
 using Xunit;
 
 namespace Vlingo.Cluster.Tests.Model.Node

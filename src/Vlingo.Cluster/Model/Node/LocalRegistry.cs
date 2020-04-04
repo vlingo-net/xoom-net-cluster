@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Actors;
+using Vlingo.Common;
 
 namespace Vlingo.Cluster.Model.Node
 {

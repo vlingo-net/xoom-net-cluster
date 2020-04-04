@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Cluster.Model.Node;
+using Vlingo.Common;
 using Xunit;
 using Xunit.Abstractions;
 
