@@ -153,9 +153,9 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         
         public OutboundTest(ITestOutputHelper output) : base(output)
         {
-            _pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), Properties.OperationalBufferSize());
+            _pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(10), Properties.OperationalBufferSize());
             _channelProvider = new MockManagedOutboundChannelProvider(Id.Of(1), Config);
-            _outbound = new Outbound(_channelProvider, new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), 10_000));
+            _outbound = new Outbound(_channelProvider, new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(10), 10_000));
         }
     }
 }

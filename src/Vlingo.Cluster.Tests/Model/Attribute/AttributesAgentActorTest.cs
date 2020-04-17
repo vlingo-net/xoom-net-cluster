@@ -289,7 +289,7 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
     
             _channelProvider = new MockManagedOutboundChannelProvider(_localNodeId, Config);
     
-            var pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), Properties.OperationalBufferSize());
+            var pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(10), Properties.OperationalBufferSize());
     
             _interest = new MockConfirmationInterest();
 

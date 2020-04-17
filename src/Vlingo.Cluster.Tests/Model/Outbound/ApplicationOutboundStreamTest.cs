@@ -71,7 +71,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
     
             _channelProvider = new MockManagedOutboundChannelProvider(localNodeId, Config);
     
-            var pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(10), Properties.OperationalBufferSize());
+            var pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(10), Properties.OperationalBufferSize());
 
             _outboundStream =
                 _world.ActorFor<IApplicationOutboundStream>(

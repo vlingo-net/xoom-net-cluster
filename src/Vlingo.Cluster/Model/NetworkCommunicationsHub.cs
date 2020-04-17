@@ -52,7 +52,7 @@ namespace Vlingo.Cluster.Model
                     node,
                     new ManagedOutboundSocketChannelProvider(node, AddressType.Op, configuration),
                     new ConsumerByteBufferPool(
-                        ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(Properties.Instance.ApplicationOutgoingPooledBuffers()), 
+                        ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(Properties.Instance.ApplicationOutgoingPooledBuffers()), 
                         Properties.Instance.OperationalBufferSize()));
             
             _applicationInboundStream =
@@ -70,7 +70,7 @@ namespace Vlingo.Cluster.Model
                     stage,
                     new ManagedOutboundSocketChannelProvider(node, AddressType.App, configuration),
                     new ConsumerByteBufferPool(
-                        ElasticResourcePool<IConsumerByteBuffer, Nothing>.Config.Of(Properties.Instance.ApplicationOutgoingPooledBuffers()), 
+                        ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(Properties.Instance.ApplicationOutgoingPooledBuffers()), 
                         Properties.Instance.ApplicationBufferSize()));
         }
 
