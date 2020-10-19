@@ -1,3 +1,10 @@
+// Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 using System;
 using Vlingo.Actors;
 
@@ -7,32 +14,32 @@ namespace Vlingo.Cluster.Model
     {
         private const string ShutDownRepresentation1 = "ShutDown()";
 
-        private readonly Actor actor;
-        private readonly IMailbox mailbox;
+        private readonly Actor _actor;
+        private readonly IMailbox _mailbox;
 
         public ClusterSnapshotControl__Proxy(Actor actor, IMailbox mailbox)
         {
-            this.actor = actor;
-            this.mailbox = mailbox;
+            _actor = actor;
+            _mailbox = mailbox;
         }
 
         public void ShutDown()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterSnapshotControl> consumer = x => x.ShutDown();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, ShutDownRepresentation1);
+                    _mailbox.Send(_actor, consumer, null, ShutDownRepresentation1);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterSnapshotControl>(actor, consumer, ShutDownRepresentation1));
+                    _mailbox.Send(new LocalMessage<IClusterSnapshotControl>(_actor, consumer, ShutDownRepresentation1));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ShutDownRepresentation1));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, ShutDownRepresentation1));
             }
         }
     }

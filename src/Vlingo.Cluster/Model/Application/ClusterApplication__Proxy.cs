@@ -1,3 +1,10 @@
+// Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 using System;
 using System.Collections.Generic;
 using Vlingo.Actors;
@@ -34,445 +41,445 @@ namespace Vlingo.Cluster.Model.Application
         private const string ConcludeRepresentation19 = "Conclude()";
         private const string StopRepresentation20 = "Stop()";
 
-        private readonly Actor actor;
-        private readonly IMailbox mailbox;
+        private readonly Actor _actor;
+        private readonly IMailbox _mailbox;
 
         public ClusterApplication__Proxy(Actor actor, IMailbox mailbox)
         {
-            this.actor = actor;
-            this.mailbox = mailbox;
+            _actor = actor;
+            _mailbox = mailbox;
         }
 
         public bool IsStopped => false;
 
         public void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream? responder)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.HandleApplicationMessage(message, responder);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, HandleApplicationMessageRepresentation1);
+                    _mailbox.Send(_actor, consumer, null, HandleApplicationMessageRepresentation1);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         HandleApplicationMessageRepresentation1));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor,
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor,
                     HandleApplicationMessageRepresentation1));
             }
         }
 
         public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformAllLiveNodes(liveNodes, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformAllLiveNodesRepresentation2);
+                    _mailbox.Send(_actor, consumer, null, InformAllLiveNodesRepresentation2);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformAllLiveNodesRepresentation2));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformAllLiveNodesRepresentation2));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformAllLiveNodesRepresentation2));
             }
         }
 
         public void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ =>
                     __.InformLeaderElected(leaderId, isHealthyCluster, isLocalNodeLeading);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformLeaderElectedRepresentation3);
+                    _mailbox.Send(_actor, consumer, null, InformLeaderElectedRepresentation3);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformLeaderElectedRepresentation3));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformLeaderElectedRepresentation3));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformLeaderElectedRepresentation3));
             }
         }
 
         public void InformLeaderLost(Id lostLeaderId, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformLeaderLost(lostLeaderId, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformLeaderLostRepresentation4);
+                    _mailbox.Send(_actor, consumer, null, InformLeaderLostRepresentation4);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformLeaderLostRepresentation4));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformLeaderLostRepresentation4));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformLeaderLostRepresentation4));
             }
         }
 
         public void InformLocalNodeShutDown(Id nodeId)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformLocalNodeShutDown(nodeId);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformLocalNodeShutDownRepresentation5);
+                    _mailbox.Send(_actor, consumer, null, InformLocalNodeShutDownRepresentation5);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformLocalNodeShutDownRepresentation5));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(
-                    new DeadLetter(actor, InformLocalNodeShutDownRepresentation5));
+                _actor.DeadLetters?.FailedDelivery(
+                    new DeadLetter(_actor, InformLocalNodeShutDownRepresentation5));
             }
         }
 
         public void InformLocalNodeStarted(Id nodeId)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformLocalNodeStarted(nodeId);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformLocalNodeStartedRepresentation6);
+                    _mailbox.Send(_actor, consumer, null, InformLocalNodeStartedRepresentation6);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformLocalNodeStartedRepresentation6));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor,
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor,
                     InformLocalNodeStartedRepresentation6));
             }
         }
 
         public void InformNodeIsHealthy(Id nodeId, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformNodeIsHealthy(nodeId, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformNodeIsHealthyRepresentation7);
+                    _mailbox.Send(_actor, consumer, null, InformNodeIsHealthyRepresentation7);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformNodeIsHealthyRepresentation7));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformNodeIsHealthyRepresentation7));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformNodeIsHealthyRepresentation7));
             }
         }
 
         public void InformNodeJoinedCluster(Id nodeId, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformNodeJoinedCluster(nodeId, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformNodeJoinedClusterRepresentation8);
+                    _mailbox.Send(_actor, consumer, null, InformNodeJoinedClusterRepresentation8);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformNodeJoinedClusterRepresentation8));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(
-                    new DeadLetter(actor, InformNodeJoinedClusterRepresentation8));
+                _actor.DeadLetters?.FailedDelivery(
+                    new DeadLetter(_actor, InformNodeJoinedClusterRepresentation8));
             }
         }
 
         public void InformNodeLeftCluster(Id nodeId, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformNodeLeftCluster(nodeId, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformNodeLeftClusterRepresentation9);
+                    _mailbox.Send(_actor, consumer, null, InformNodeLeftClusterRepresentation9);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformNodeLeftClusterRepresentation9));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformNodeLeftClusterRepresentation9));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformNodeLeftClusterRepresentation9));
             }
         }
 
         public void InformQuorumAchieved()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformQuorumAchieved();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformQuorumAchievedRepresentation10);
+                    _mailbox.Send(_actor, consumer, null, InformQuorumAchievedRepresentation10);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformQuorumAchievedRepresentation10));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformQuorumAchievedRepresentation10));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformQuorumAchievedRepresentation10));
             }
         }
 
         public void InformQuorumLost()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformQuorumLost();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformQuorumLostRepresentation11);
+                    _mailbox.Send(_actor, consumer, null, InformQuorumLostRepresentation11);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformQuorumLostRepresentation11));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformQuorumLostRepresentation11));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformQuorumLostRepresentation11));
             }
         }
 
         public void InformAttributesClient(IAttributesProtocol client)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformAttributesClient(client);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformAttributesClientRepresentation12);
+                    _mailbox.Send(_actor, consumer, null, InformAttributesClientRepresentation12);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformAttributesClientRepresentation12));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(
-                    new DeadLetter(actor, InformAttributesClientRepresentation12));
+                _actor.DeadLetters?.FailedDelivery(
+                    new DeadLetter(_actor, InformAttributesClientRepresentation12));
             }
         }
 
         public void InformAttributeSetCreated(string? attributeSetName)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformAttributeSetCreated(attributeSetName);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformAttributeSetCreatedRepresentation13);
+                    _mailbox.Send(_actor, consumer, null, InformAttributeSetCreatedRepresentation13);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformAttributeSetCreatedRepresentation13));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor,
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor,
                     InformAttributeSetCreatedRepresentation13));
             }
         }
 
         public void InformAttributeAdded(string attributeSetName, string? attributeName)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformAttributeAdded(attributeSetName, attributeName);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformAttributeAddedRepresentation14);
+                    _mailbox.Send(_actor, consumer, null, InformAttributeAddedRepresentation14);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformAttributeAddedRepresentation14));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformAttributeAddedRepresentation14));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformAttributeAddedRepresentation14));
             }
         }
 
         public void InformAttributeRemoved(string attributeSetName, string? attributeName)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformAttributeRemoved(attributeSetName, attributeName);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformAttributeRemovedRepresentation15);
+                    _mailbox.Send(_actor, consumer, null, InformAttributeRemovedRepresentation15);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformAttributeRemovedRepresentation15));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(
-                    new DeadLetter(actor, InformAttributeRemovedRepresentation15));
+                _actor.DeadLetters?.FailedDelivery(
+                    new DeadLetter(_actor, InformAttributeRemovedRepresentation15));
             }
         }
 
         public void InformAttributeSetRemoved(string? attributeSetName)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.InformAttributeSetRemoved(attributeSetName);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformAttributeSetRemovedRepresentation16);
+                    _mailbox.Send(_actor, consumer, null, InformAttributeSetRemovedRepresentation16);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformAttributeSetRemovedRepresentation16));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor,
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor,
                     InformAttributeSetRemovedRepresentation16));
             }
         }
 
         public void InformAttributeReplaced(string attributeSetName, string? attributeName)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ =>
                     __.InformAttributeReplaced(attributeSetName, attributeName);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformAttributeReplacedRepresentation17);
+                    _mailbox.Send(_actor, consumer, null, InformAttributeReplacedRepresentation17);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterApplication>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IClusterApplication>(_actor, consumer,
                         InformAttributeReplacedRepresentation17));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor,
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor,
                     InformAttributeReplacedRepresentation17));
             }
         }
 
         public void Start()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.Start();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, StartRepresentation18);
+                    _mailbox.Send(_actor, consumer, null, StartRepresentation18);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IClusterApplication>(actor, consumer, StartRepresentation18));
+                    _mailbox.Send(
+                        new LocalMessage<IClusterApplication>(_actor, consumer, StartRepresentation18));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, StartRepresentation18));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, StartRepresentation18));
             }
         }
 
         public void Conclude()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.Conclude();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, ConcludeRepresentation19);
+                    _mailbox.Send(_actor, consumer, null, ConcludeRepresentation19);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IClusterApplication>(actor, consumer, ConcludeRepresentation19));
+                    _mailbox.Send(
+                        new LocalMessage<IClusterApplication>(_actor, consumer, ConcludeRepresentation19));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ConcludeRepresentation19));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, ConcludeRepresentation19));
             }
         }
 
         public void Stop()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterApplication> consumer = __ => __.Stop();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, StopRepresentation20);
+                    _mailbox.Send(_actor, consumer, null, StopRepresentation20);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IClusterApplication>(actor, consumer, StopRepresentation20));
+                    _mailbox.Send(
+                        new LocalMessage<IClusterApplication>(_actor, consumer, StopRepresentation20));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, StopRepresentation20));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, StopRepresentation20));
             }
         }
     }

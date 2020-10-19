@@ -1,3 +1,10 @@
+// Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 using System;
 using System.Collections.Generic;
 using Vlingo.Actors;
@@ -26,350 +33,350 @@ namespace Vlingo.Cluster.Model.Outbound
         private const string ConcludeRepresentation15 = "Conclude()";
         private const string StopRepresentation16 = "Stop()";
 
-        private readonly Actor actor;
-        private readonly IMailbox mailbox;
+        private readonly Actor _actor;
+        private readonly IMailbox _mailbox;
 
         public OperationalOutboundStream__Proxy(Actor actor, IMailbox mailbox)
         {
-            this.actor = actor;
-            this.mailbox = mailbox;
+            _actor = actor;
+            _mailbox = mailbox;
         }
 
         public bool IsStopped => false;
 
         public void Close(Id id)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Close(id);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, CloseRepresentation1);
+                    _mailbox.Send(_actor, consumer, null, CloseRepresentation1);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, CloseRepresentation1));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, CloseRepresentation1));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, CloseRepresentation1));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, CloseRepresentation1));
             }
         }
 
         public void Application(ApplicationSays says, IEnumerable<Node> unconfirmedNodes)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Application(says, unconfirmedNodes);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, ApplicationRepresentation2);
+                    _mailbox.Send(_actor, consumer, null, ApplicationRepresentation2);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IOperationalOutboundStream>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IOperationalOutboundStream>(_actor, consumer,
                         ApplicationRepresentation2));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ApplicationRepresentation2));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, ApplicationRepresentation2));
             }
         }
 
         public void Directory(IEnumerable<Node> allLiveNodes)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Directory(allLiveNodes);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, DirectoryRepresentation3);
+                    _mailbox.Send(_actor, consumer, null, DirectoryRepresentation3);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, DirectoryRepresentation3));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, DirectoryRepresentation3));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, DirectoryRepresentation3));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, DirectoryRepresentation3));
             }
         }
 
         public void Elect(IEnumerable<Node> allGreaterNodes)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Elect(allGreaterNodes);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, ElectRepresentation4);
+                    _mailbox.Send(_actor, consumer, null, ElectRepresentation4);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, ElectRepresentation4));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, ElectRepresentation4));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ElectRepresentation4));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, ElectRepresentation4));
             }
         }
 
         public void Join()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Join();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, JoinRepresentation5);
+                    _mailbox.Send(_actor, consumer, null, JoinRepresentation5);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, JoinRepresentation5));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, JoinRepresentation5));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, JoinRepresentation5));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, JoinRepresentation5));
             }
         }
 
         public void Leader()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Leader();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, LeaderRepresentation6);
+                    _mailbox.Send(_actor, consumer, null, LeaderRepresentation6);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, LeaderRepresentation6));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, LeaderRepresentation6));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, LeaderRepresentation6));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, LeaderRepresentation6));
             }
         }
 
         public void Leader(Id id)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Leader(id);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, LeaderRepresentation7);
+                    _mailbox.Send(_actor, consumer, null, LeaderRepresentation7);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, LeaderRepresentation7));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, LeaderRepresentation7));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, LeaderRepresentation7));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, LeaderRepresentation7));
             }
         }
 
         public void Leave()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Leave();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, LeaveRepresentation8);
+                    _mailbox.Send(_actor, consumer, null, LeaveRepresentation8);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, LeaveRepresentation8));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, LeaveRepresentation8));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, LeaveRepresentation8));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, LeaveRepresentation8));
             }
         }
 
         public void Open(Id id)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Open(id);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, OpenRepresentation9);
+                    _mailbox.Send(_actor, consumer, null, OpenRepresentation9);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, OpenRepresentation9));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, OpenRepresentation9));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, OpenRepresentation9));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, OpenRepresentation9));
             }
         }
 
         public void Ping(Id targetNodeId)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Ping(targetNodeId);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, PingRepresentation10);
+                    _mailbox.Send(_actor, consumer, null, PingRepresentation10);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, PingRepresentation10));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, PingRepresentation10));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, PingRepresentation10));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, PingRepresentation10));
             }
         }
 
         public void Pulse(Id targetNodeId)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Pulse(targetNodeId);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, PulseRepresentation11);
+                    _mailbox.Send(_actor, consumer, null, PulseRepresentation11);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, PulseRepresentation11));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, PulseRepresentation11));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, PulseRepresentation11));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, PulseRepresentation11));
             }
         }
 
         public void Pulse()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Pulse();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, PulseRepresentation12);
+                    _mailbox.Send(_actor, consumer, null, PulseRepresentation12);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, PulseRepresentation12));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, PulseRepresentation12));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, PulseRepresentation12));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, PulseRepresentation12));
             }
         }
 
         public void Split(Id targetNodeId, Id currentLeaderId)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Split(targetNodeId, currentLeaderId);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, SplitRepresentation13);
+                    _mailbox.Send(_actor, consumer, null, SplitRepresentation13);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, SplitRepresentation13));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, SplitRepresentation13));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, SplitRepresentation13));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, SplitRepresentation13));
             }
         }
 
         public void Vote(Id targetNodeId)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Vote(targetNodeId);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, VoteRepresentation14);
+                    _mailbox.Send(_actor, consumer, null, VoteRepresentation14);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, VoteRepresentation14));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, VoteRepresentation14));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, VoteRepresentation14));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, VoteRepresentation14));
             }
         }
 
         public void Conclude()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Conclude();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, ConcludeRepresentation15);
+                    _mailbox.Send(_actor, consumer, null, ConcludeRepresentation15);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, ConcludeRepresentation15));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, ConcludeRepresentation15));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ConcludeRepresentation15));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, ConcludeRepresentation15));
             }
         }
 
         public void Stop()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IOperationalOutboundStream> consumer = __ => __.Stop();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, StopRepresentation16);
+                    _mailbox.Send(_actor, consumer, null, StopRepresentation16);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IOperationalOutboundStream>(actor, consumer, StopRepresentation16));
+                    _mailbox.Send(
+                        new LocalMessage<IOperationalOutboundStream>(_actor, consumer, StopRepresentation16));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, StopRepresentation16));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, StopRepresentation16));
             }
         }
     }

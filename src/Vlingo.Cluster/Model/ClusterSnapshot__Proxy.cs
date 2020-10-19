@@ -1,3 +1,10 @@
+// Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 using System;
 using Vlingo.Actors;
 
@@ -8,52 +15,52 @@ namespace Vlingo.Cluster.Model
         private const string QuorumAchievedRepresentation1 = "QuorumAchieved()";
         private const string QuorumLostRepresentation2 = "QuorumLost()";
 
-        private readonly Actor actor;
-        private readonly IMailbox mailbox;
+        private readonly Actor _actor;
+        private readonly IMailbox _mailbox;
 
         public ClusterSnapshot__Proxy(Actor actor, IMailbox mailbox)
         {
-            this.actor = actor;
-            this.mailbox = mailbox;
+            _actor = actor;
+            _mailbox = mailbox;
         }
 
         public void QuorumAchieved()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterSnapshot> consumer = x => x.QuorumAchieved();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, QuorumAchievedRepresentation1);
+                    _mailbox.Send(_actor, consumer, null, QuorumAchievedRepresentation1);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterSnapshot>(actor, consumer, QuorumAchievedRepresentation1));
+                    _mailbox.Send(new LocalMessage<IClusterSnapshot>(_actor, consumer, QuorumAchievedRepresentation1));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, QuorumAchievedRepresentation1));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, QuorumAchievedRepresentation1));
             }
         }
 
         public void QuorumLost()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IClusterSnapshot> consumer = x => x.QuorumLost();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, QuorumLostRepresentation2);
+                    _mailbox.Send(_actor, consumer, null, QuorumLostRepresentation2);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IClusterSnapshot>(actor, consumer, QuorumLostRepresentation2));
+                    _mailbox.Send(new LocalMessage<IClusterSnapshot>(_actor, consumer, QuorumLostRepresentation2));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, QuorumLostRepresentation2));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, QuorumLostRepresentation2));
             }
         }
     }

@@ -1,3 +1,10 @@
+// Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 using System;
 using Vlingo.Actors;
 using Vlingo.Common;
@@ -22,195 +29,195 @@ namespace Vlingo.Cluster.Model.Attribute
         private const string IntervalSignalRepresentation7 = "IntervalSignal(IScheduled<object>, object)";
         private const string StopRepresentation8 = "Stop()";
 
-        private readonly Actor actor;
-        private readonly IMailbox mailbox;
+        private readonly Actor _actor;
+        private readonly IMailbox _mailbox;
 
         public AttributesAgent__Proxy(Actor actor, IMailbox mailbox)
         {
-            this.actor = actor;
-            this.mailbox = mailbox;
+            _actor = actor;
+            _mailbox = mailbox;
         }
 
         public bool IsStopped => false;
 
         public void Add<T>(string attributeSetName, string attributeName, T value)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IAttributesAgent> consumer = x => x.Add(attributeSetName, attributeName, value);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, AddRepresentation1);
+                    _mailbox.Send(_actor, consumer, null, AddRepresentation1);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IAttributesAgent>(actor, consumer, AddRepresentation1));
+                    _mailbox.Send(new LocalMessage<IAttributesAgent>(_actor, consumer, AddRepresentation1));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, AddRepresentation1));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, AddRepresentation1));
             }
         }
 
         public void Replace<T>(string attributeSetName, string attributeName, T value)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IAttributesAgent> consumer = x => x.Replace(attributeSetName, attributeName, value);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, ReplaceRepresentation2);
+                    _mailbox.Send(_actor, consumer, null, ReplaceRepresentation2);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IAttributesAgent>(actor, consumer, ReplaceRepresentation2));
+                    _mailbox.Send(new LocalMessage<IAttributesAgent>(_actor, consumer, ReplaceRepresentation2));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, ReplaceRepresentation2));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, ReplaceRepresentation2));
             }
         }
 
         public void Remove(string attributeSetName, string attributeName)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IAttributesAgent> consumer = x => x.Remove(attributeSetName, attributeName);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, RemoveRepresentation3);
+                    _mailbox.Send(_actor, consumer, null, RemoveRepresentation3);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IAttributesAgent>(actor, consumer, RemoveRepresentation3));
+                    _mailbox.Send(new LocalMessage<IAttributesAgent>(_actor, consumer, RemoveRepresentation3));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, RemoveRepresentation3));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, RemoveRepresentation3));
             }
         }
 
         public void RemoveAll(string attributeSetName)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IAttributesAgent> consumer = x => x.RemoveAll(attributeSetName);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, RemoveAllRepresentation4);
+                    _mailbox.Send(_actor, consumer, null, RemoveAllRepresentation4);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IAttributesAgent>(actor, consumer, RemoveAllRepresentation4));
+                    _mailbox.Send(new LocalMessage<IAttributesAgent>(_actor, consumer, RemoveAllRepresentation4));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, RemoveAllRepresentation4));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, RemoveAllRepresentation4));
             }
         }
 
         public void Synchronize(Node node)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IAttributesAgent> consumer = x => x.Synchronize(node);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, SynchronizeRepresentation5);
+                    _mailbox.Send(_actor, consumer, null, SynchronizeRepresentation5);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IAttributesAgent>(actor, consumer, SynchronizeRepresentation5));
+                    _mailbox.Send(new LocalMessage<IAttributesAgent>(_actor, consumer, SynchronizeRepresentation5));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, SynchronizeRepresentation5));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, SynchronizeRepresentation5));
             }
         }
 
         public void HandleInboundStreamMessage(AddressType addressType, RawMessage message)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IAttributesAgent> consumer = x => x.HandleInboundStreamMessage(addressType, message);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, HandleInboundStreamMessageRepresentation6);
+                    _mailbox.Send(_actor, consumer, null, HandleInboundStreamMessageRepresentation6);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IAttributesAgent>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IAttributesAgent>(_actor, consumer,
                         HandleInboundStreamMessageRepresentation6));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, HandleInboundStreamMessageRepresentation6));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, HandleInboundStreamMessageRepresentation6));
             }
         }
 
         public void IntervalSignal(IScheduled<object> scheduled, object data)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IAttributesAgent> consumer = x => x.IntervalSignal(scheduled, data);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, IntervalSignalRepresentation7);
+                    _mailbox.Send(_actor, consumer, null, IntervalSignalRepresentation7);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IAttributesAgent>(actor, consumer, IntervalSignalRepresentation7));
+                    _mailbox.Send(new LocalMessage<IAttributesAgent>(_actor, consumer, IntervalSignalRepresentation7));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, IntervalSignalRepresentation7));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, IntervalSignalRepresentation7));
             }
         }
         
         public void Conclude()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IStoppable> consumer = x => x.Conclude();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, RepresentationConclude0);
+                    _mailbox.Send(_actor, consumer, null, RepresentationConclude0);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IStoppable>(actor, consumer, RepresentationConclude0));
+                    _mailbox.Send(new LocalMessage<IStoppable>(_actor, consumer, RepresentationConclude0));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, RepresentationConclude0));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, RepresentationConclude0));
             }
         }
 
         public void Stop()
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IAttributesAgent> consumer = x => x.Stop();
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, StopRepresentation8);
+                    _mailbox.Send(_actor, consumer, null, StopRepresentation8);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IAttributesAgent>(actor, consumer, StopRepresentation8));
+                    _mailbox.Send(new LocalMessage<IAttributesAgent>(_actor, consumer, StopRepresentation8));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, StopRepresentation8));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, StopRepresentation8));
             }
         }
     }

@@ -1,3 +1,10 @@
+// Copyright © 2012-2020 VLINGO LABS. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the
+// Mozilla Public License, v. 2.0. If a copy of the MPL
+// was not distributed with this file, You can obtain
+// one at https://mozilla.org/MPL/2.0/.
+
 using System;
 using System.Collections.Generic;
 using Vlingo.Actors;
@@ -21,203 +28,203 @@ namespace Vlingo.Cluster.Model.Node
         private const string InformNodeLeftClusterRepresentation8 = "InformNodeLeftCluster(Node, bool)";
         private const string InformNodeTimedOutRepresentation9 = "InformNodeTimedOut(Node, bool)";
 
-        private readonly Actor actor;
-        private readonly IMailbox mailbox;
+        private readonly Actor _actor;
+        private readonly IMailbox _mailbox;
 
         public RegistryInterest__Proxy(Actor actor, IMailbox mailbox)
         {
-            this.actor = actor;
-            this.mailbox = mailbox;
+            _actor = actor;
+            _mailbox = mailbox;
         }
 
         public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IRegistryInterest> consumer = x => x.InformAllLiveNodes(liveNodes, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformAllLiveNodesRepresentation1);
+                    _mailbox.Send(_actor, consumer, null, InformAllLiveNodesRepresentation1);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IRegistryInterest>(actor, consumer, InformAllLiveNodesRepresentation1));
+                    _mailbox.Send(
+                        new LocalMessage<IRegistryInterest>(_actor, consumer, InformAllLiveNodesRepresentation1));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformAllLiveNodesRepresentation1));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformAllLiveNodesRepresentation1));
             }
         }
 
         public void InformConfirmedByLeader(Node node, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IRegistryInterest> consumer = x => x.InformConfirmedByLeader(node, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformConfirmedByLeaderRepresentation2);
+                    _mailbox.Send(_actor, consumer, null, InformConfirmedByLeaderRepresentation2);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IRegistryInterest>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IRegistryInterest>(_actor, consumer,
                         InformConfirmedByLeaderRepresentation2));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformConfirmedByLeaderRepresentation2));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformConfirmedByLeaderRepresentation2));
             }
         }
 
         public void InformCurrentLeader(Node node, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IRegistryInterest> consumer = x => x.InformCurrentLeader(node, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformCurrentLeaderRepresentation3);
+                    _mailbox.Send(_actor, consumer, null, InformCurrentLeaderRepresentation3);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IRegistryInterest>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IRegistryInterest>(_actor, consumer,
                         InformCurrentLeaderRepresentation3));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformCurrentLeaderRepresentation3));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformCurrentLeaderRepresentation3));
             }
         }
 
         public void InformMergedAllDirectoryEntries(IEnumerable<Node> liveNodes, IEnumerable<MergeResult> mergeResults,
             bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IRegistryInterest> consumer = x =>
                     x.InformMergedAllDirectoryEntries(liveNodes, mergeResults, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformMergedAllDirectoryEntriesRepresentation4);
+                    _mailbox.Send(_actor, consumer, null, InformMergedAllDirectoryEntriesRepresentation4);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IRegistryInterest>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IRegistryInterest>(_actor, consumer,
                         InformMergedAllDirectoryEntriesRepresentation4));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformMergedAllDirectoryEntriesRepresentation4));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformMergedAllDirectoryEntriesRepresentation4));
             }
         }
 
         public void InformLeaderDemoted(Node node, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IRegistryInterest> consumer = x => x.InformLeaderDemoted(node, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformLeaderDemotedRepresentation5);
+                    _mailbox.Send(_actor, consumer, null, InformLeaderDemotedRepresentation5);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IRegistryInterest>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IRegistryInterest>(_actor, consumer,
                         InformLeaderDemotedRepresentation5));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformLeaderDemotedRepresentation5));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformLeaderDemotedRepresentation5));
             }
         }
 
         public void InformNodeIsHealthy(Node node, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IRegistryInterest> consumer = x => x.InformNodeIsHealthy(node, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformNodeIsHealthyRepresentation6);
+                    _mailbox.Send(_actor, consumer, null, InformNodeIsHealthyRepresentation6);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IRegistryInterest>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IRegistryInterest>(_actor, consumer,
                         InformNodeIsHealthyRepresentation6));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformNodeIsHealthyRepresentation6));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformNodeIsHealthyRepresentation6));
             }
         }
 
         public void InformNodeJoinedCluster(Node node, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IRegistryInterest> consumer = x => x.InformNodeJoinedCluster(node, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformNodeJoinedClusterRepresentation7);
+                    _mailbox.Send(_actor, consumer, null, InformNodeJoinedClusterRepresentation7);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IRegistryInterest>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IRegistryInterest>(_actor, consumer,
                         InformNodeJoinedClusterRepresentation7));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformNodeJoinedClusterRepresentation7));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformNodeJoinedClusterRepresentation7));
             }
         }
 
         public void InformNodeLeftCluster(Node node, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IRegistryInterest> consumer = x => x.InformNodeLeftCluster(node, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformNodeLeftClusterRepresentation8);
+                    _mailbox.Send(_actor, consumer, null, InformNodeLeftClusterRepresentation8);
                 }
                 else
                 {
-                    mailbox.Send(new LocalMessage<IRegistryInterest>(actor, consumer,
+                    _mailbox.Send(new LocalMessage<IRegistryInterest>(_actor, consumer,
                         InformNodeLeftClusterRepresentation8));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformNodeLeftClusterRepresentation8));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformNodeLeftClusterRepresentation8));
             }
         }
 
         public void InformNodeTimedOut(Node node, bool isHealthyCluster)
         {
-            if (!actor.IsStopped)
+            if (!_actor.IsStopped)
             {
                 Action<IRegistryInterest> consumer = x => x.InformNodeTimedOut(node, isHealthyCluster);
-                if (mailbox.IsPreallocated)
+                if (_mailbox.IsPreallocated)
                 {
-                    mailbox.Send(actor, consumer, null, InformNodeTimedOutRepresentation9);
+                    _mailbox.Send(_actor, consumer, null, InformNodeTimedOutRepresentation9);
                 }
                 else
                 {
-                    mailbox.Send(
-                        new LocalMessage<IRegistryInterest>(actor, consumer, InformNodeTimedOutRepresentation9));
+                    _mailbox.Send(
+                        new LocalMessage<IRegistryInterest>(_actor, consumer, InformNodeTimedOutRepresentation9));
                 }
             }
             else
             {
-                actor.DeadLetters.FailedDelivery(new DeadLetter(actor, InformNodeTimedOutRepresentation9));
+                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, InformNodeTimedOutRepresentation9));
             }
         }
     }
