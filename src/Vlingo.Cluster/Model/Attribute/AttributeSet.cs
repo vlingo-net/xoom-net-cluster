@@ -64,7 +64,7 @@ namespace Vlingo.Cluster.Model.Attribute
             if (maybeAttribute.IsPresent)
             {
                 _attributes.TryRemove(maybeAttribute.Id!, out var removedAttribute);
-                return removedAttribute;
+                return removedAttribute!;
             }
 
             return maybeAttribute;
@@ -85,7 +85,7 @@ namespace Vlingo.Cluster.Model.Attribute
             return maybeAttribute;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || obj.GetType() != typeof(AttributeSet))
             {

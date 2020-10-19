@@ -59,13 +59,13 @@ namespace Vlingo.Cluster.Model.Attribute.Message
             return builder.ToString();
         }
 
-        public Id SourceNodeId => Id.Of(int.Parse(Get(SourceNodeIdKey)));
+        public Id SourceNodeId => Id.Of(int.Parse(Get(SourceNodeIdKey)!));
         
         public Name SourceNodeName => Name.Of(Get(SourceNodeNameKey)!);
         
-        public Id SourceNodeOpPort => Id.Of(int.Parse(Get(SourceNodeOpPortKey)));
+        public Id SourceNodeOpPort => Id.Of(int.Parse(Get(SourceNodeOpPortKey)!));
         
-        public Id SourceNodeAppPort => Id.Of(int.Parse(Get(SourceNodeAppPortKey)));
+        public Id SourceNodeAppPort => Id.Of(int.Parse(Get(SourceNodeAppPortKey)!));
         
         public string? ClassOfMessage => Get(ClassOfMessageKey);
         

@@ -32,7 +32,7 @@ namespace Vlingo.Cluster.Model.Message
 
         public override bool IsApp => true;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || obj.GetType() != typeof(ApplicationSays))
             {

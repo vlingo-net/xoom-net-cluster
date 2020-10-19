@@ -80,7 +80,7 @@ namespace Vlingo.Cluster.Model
             return port;
         }
 
-        public Type ClusterApplicationType()
+        public Type? ClusterApplicationType()
         {
             var typeName = ClusterApplicationTypeName();
 
@@ -255,43 +255,31 @@ namespace Vlingo.Cluster.Model
 
         public bool GetBoolean(string nodeName, string key, bool defaultValue)
         {
-            return bool.Parse(GetString(nodeName, key, defaultValue.ToString()));
+            var value = GetString(nodeName, key, defaultValue.ToString());
+            return value == null ? defaultValue : bool.Parse(value);
         }
 
-        public bool GetBoolean(string key, bool defaultValue)
-        {
-            return GetBoolean("", key, defaultValue);
-        }
+        public bool GetBoolean(string key, bool defaultValue) => GetBoolean("", key, defaultValue);
 
         public float GetFloat(string nodeName, string key, float defaultValue)
         {
-            return float.Parse(GetString(nodeName, key, defaultValue.ToString(CultureInfo.InvariantCulture)));
+            var value = GetString(nodeName, key, defaultValue.ToString(CultureInfo.InvariantCulture));
+            return value == null ? defaultValue : float.Parse(value);
         }
 
-        public float GetFloat(string key, float defaultValue)
-        {
-            return GetFloat("", key, defaultValue);
-        }
+        public float GetFloat(string key, float defaultValue) => GetFloat("", key, defaultValue);
 
         public int GetInteger(string nodeName, string key, int defaultValue)
         {
-            return int.Parse(GetString(nodeName, key, defaultValue.ToString()));
+            var value = GetString(nodeName, key, defaultValue.ToString());
+            return value == null ? defaultValue : int.Parse(value);
         }
 
-        public int GetInteger(string key, int defaultValue)
-        {
-            return GetInteger("", key, defaultValue);
-        }
+        public int GetInteger(string key, int defaultValue) => GetInteger("", key, defaultValue);
 
-        public string? GetString(string nodeName, string key, string defaultValue)
-        {
-            return GetProperty(Key(nodeName, key), defaultValue);
-        }
+        public string? GetString(string nodeName, string key, string defaultValue) => GetProperty(Key(nodeName, key), defaultValue);
 
-        public string? GetString(string key, string defaultValue)
-        {
-            return GetProperty(key, defaultValue);
-        }
+        public string? GetString(string key, string defaultValue) => GetProperty(key, defaultValue);
 
         public void ValidateRequired(string nodeName)
         {

@@ -37,7 +37,7 @@ namespace Vlingo.Cluster.Model.Attribute
         
         public TrackedAttribute AsDistributed() => new TrackedAttribute(Id, Attribute, true);
         
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || obj.GetType() != typeof(TrackedAttribute))
             {

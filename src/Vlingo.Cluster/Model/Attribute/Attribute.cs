@@ -15,7 +15,7 @@ namespace Vlingo.Cluster.Model.Attribute
         
         public AttributeType Type { get; protected set; }
 
-        public abstract string ToStringValue();
+        public abstract string? ToStringValue();
     }
     
     public sealed class Attribute<T> : Attribute
@@ -54,9 +54,9 @@ namespace Vlingo.Cluster.Model.Attribute
 
         public bool IsUndefined => Equals(Undefined);
 
-        public override string ToStringValue() => Value!.ToString();
+        public override string? ToStringValue() => Value?.ToString();
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || obj.GetType() != typeof(Attribute<T>))
             {
@@ -110,9 +110,9 @@ namespace Vlingo.Cluster.Model.Attribute
 
         public override string ToString() => $"Attribute[name={Name}, value={Value}, type={Type}]";
 
-        private static AttributeType TypeOf(Type type)
+        private static AttributeType TypeOf(Type? type)
         {
-            switch (type.FullName)
+            switch (type?.FullName)
             {
                 case "System.String":
                     return AttributeType.String;
@@ -135,7 +135,7 @@ namespace Vlingo.Cluster.Model.Attribute
                 case "System.Decimal":
                     return AttributeType.Decimal;
                 default:
-                    throw new ArgumentException($"The type '{type.FullName}' is not recognized.");
+                    throw new ArgumentException($"The type '{type?.FullName}' is not recognized.");
             }
         }
 
@@ -151,6 +151,11 @@ namespace Vlingo.Cluster.Model.Attribute
 
         private static object? TypeValue(AttributeType attributeType, string? value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+            
             switch (attributeType)
             {
                 case AttributeType.String:

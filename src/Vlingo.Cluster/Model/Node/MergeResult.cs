@@ -27,6 +27,6 @@ namespace Vlingo.Cluster.Model.Node
 
         public Node Node => _node;
 
-        public int CompareTo(MergeResult other) => _node.CompareTo(other._node);
+        public int CompareTo(MergeResult? other) => _node.CompareTo(other?._node);
     }
 }

@@ -24,7 +24,7 @@ namespace Vlingo.Cluster.Model.Message
         
         public Node Node => _node;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || obj.GetType() != typeof(Join))
             {
