@@ -151,33 +151,28 @@ namespace Vlingo.Cluster.Model.Attribute
 
         private static object? TypeValue(AttributeType attributeType, string? value)
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-            
             switch (attributeType)
             {
                 case AttributeType.String:
                     return value;
                 case AttributeType.Integer:
-                    return int.Parse(value);
+                    return int.Parse(value!);
                 case AttributeType.Long:
-                    return long.Parse(value);
+                    return long.Parse(value!);
                 case AttributeType.Boolean:
-                    return bool.Parse(value);
+                    return bool.Parse(value!);
                 case AttributeType.Byte:
-                    return byte.Parse(value);
+                    return byte.Parse(value!);
                 case AttributeType.Double:
-                    return double.Parse(value);
+                    return double.Parse(value!);
                 case AttributeType.Float:
-                    return float.Parse(value);
+                    return float.Parse(value!);
                 case AttributeType.Short:
-                    return short.Parse(value);
+                    return short.Parse(value!);
                 case AttributeType.Character:
-                    return char.Parse(value);
+                    return char.Parse(value!);
                 case AttributeType.Decimal: 
-                    return decimal.Parse(value);
+                    return decimal.Parse(value!);
                 default:
                     throw new ArgumentException();
             }
