@@ -8,6 +8,7 @@
 using System.IO;
 using System.Text;
 using Vlingo.Cluster.Model.Message;
+using Vlingo.Common;
 using Vlingo.Wire.Channel;
 using Vlingo.Wire.Message;
 
@@ -15,12 +16,14 @@ namespace Vlingo.Cluster.Tests.Model.Message
 {
     public class MessageFixtures
     {
+        private static AtomicInteger _nextPortNumber = new AtomicInteger(27270);
+        
         public static short DefaultNodeId => 1;
         
         public static string DefaultNodeName => "node1";
-        public static string[] OpAddresses => new [] { "", "localhost:37371", "localhost:37373", "localhost:37375" };
+        public static string[] OpAddresses => new [] { "", $"localhost:{_nextPortNumber.IncrementAndGet()}", $"localhost:{_nextPortNumber.IncrementAndGet()}", $"localhost:{_nextPortNumber.IncrementAndGet()}" };
         
-        public static string[] AppAddresses => new [] { "", "localhost:37372", "localhost:37374", "localhost:37376" };
+        public static string[] AppAddresses => new [] { "", $"localhost:{_nextPortNumber.IncrementAndGet()}", $"localhost:{_nextPortNumber.IncrementAndGet()}", $"localhost:{_nextPortNumber.IncrementAndGet()}" };
         
 
         public static string DirectoryAsText(int id1, int id2, int id3)
@@ -37,7 +40,7 @@ namespace Vlingo.Cluster.Tests.Model.Message
         }
 
         public static string JoinAsText() =>
-            $"{OperationalMessage.JOIN}\nid=1 nm=node1 op=localhost:37371 app=localhost:37372";
+            $"{OperationalMessage.JOIN}\nid=1 nm=node1 op={OpAddresses[1]} app={AppAddresses[1]}";
         
         public static string LeaderAsText() => $"{OperationalMessage.LEADER}\nid=1";
         
