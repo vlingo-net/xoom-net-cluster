@@ -6,78 +6,35 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
-using System.Threading;
 using Vlingo.Actors;
 
 namespace Vlingo.Cluster.Model
 {
     public class Cluster
     {
-        private static IClusterSnapshotControl? _control;
-        private static World? _world;
-        
+        private static readonly string InternalName = Guid.NewGuid().ToString();
         private static volatile object _syncRoot = new object();
 
         public static (IClusterSnapshotControl, ILogger) ControlFor(string nodeName)
-        {
-            if (_world != null)
-            {
-                throw new InvalidOperationException("Cluster snapshot control already exists.");
-            }
-            
-            return ControlFor(World.Start("vlingo-cluster"), nodeName);
-        }
+            => ControlFor(World.Start("vlingo-cluster"), nodeName);
 
         public static (IClusterSnapshotControl, ILogger) ControlFor(World world, string nodeName)
         {
             lock (_syncRoot)
             {
-                if (_control != null)
+                if (IsRunningInside(world))
                 {
-                    throw new InvalidOperationException("Cluster snapshot control already exists.");
+                    throw new InvalidOperationException($"Cluster is already running inside World: {world.Name}");
                 }
-
-                _world = world;
 
                 var (control, logger) = ClusterSnapshotControlFactory.Instance(world, nodeName);
     
-                _control = control;
-    
+                world.RegisterDynamic(InternalName, control);
+                
                 return (control, logger);   
             }
         }
 
-        public static void Reset()
-        {
-            lock (_syncRoot)
-            {
-                _control = null;
-                _world = null;
-            }
-        }
-
-        public static bool IsRunning(bool expected, int retries)
-        {
-            for (var idx = 0; idx < retries; ++idx)
-            {
-                if (IsRunning() == expected)
-                {
-                    return expected;
-                }
-
-                try
-                {
-                    Thread.Sleep(500);
-                }
-                catch
-                {
-                    // nothing to do
-                }
-            }
-            
-            return !expected;
-        }
-
-        public static bool IsRunning() => _control != null;
+        public static bool IsRunningInside(World world) => world.ResolveDynamic<IClusterSnapshotControl>(InternalName) != null;
     }
 }

@@ -67,7 +67,6 @@ namespace Vlingo.Cluster.Model
         {
             if (IsStopped)
             {
-                Cluster.Reset();
                 return;
             }
 
@@ -77,7 +76,6 @@ namespace Vlingo.Cluster.Model
             _communicationsHub.Close();
             Stop();
             Stage.World.Terminate();
-            Cluster.Reset();
         }
         
         //=========================================

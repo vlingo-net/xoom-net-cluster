@@ -20,11 +20,11 @@ namespace Vlingo.Cluster.Tests.Model
     public class AbstractClusterTest : AbstractMessageTool, IDisposable
     {
         private static readonly Random Random = new Random();
-        private static AtomicInteger _portToUse = new AtomicInteger(10_000 + Random.Next(50_000));
+        private static readonly AtomicInteger PortToUse = new AtomicInteger(10_000 + Random.Next(50_000));
 
-        protected MockClusterApplication Application;
-        protected Properties Properties;
-        protected TestWorld TestWorld;
+        protected readonly MockClusterApplication Application;
+        protected readonly Properties Properties;
+        protected readonly TestWorld TestWorld;
 
         [Fact]
         public void TestValues()
@@ -88,25 +88,13 @@ namespace Vlingo.Cluster.Tests.Model
             Application = new MockClusterApplication();
         }
 
-        public virtual void Dispose()
-        {
-            TestWorld?.Terminate();
-            // Cluster.Reset() Cannot be used because when tests are executed in parallel there are race conditions that
-            // some finished tests puts cluster down while others are still running and relying on the instance.
-            //Cluster.Reset(); 
-        }
+        public virtual void Dispose() => TestWorld?.Terminate();
 
         protected Wire.Node.Node NextNodeWith(int nodeNumber) => Wire.Node.Node.With(Id.Of(nodeNumber),
             Name.Of($"node{nodeNumber}"), Host.Of("localhost"), NextPortToUse(), NextPortToUse());
 
-        private int NextPortToUse()
-        {
-            return _portToUse.GetAndIncrement();
-        }
+        private int NextPortToUse() => PortToUse.GetAndIncrement();
 
-        private string NextPortToUseString()
-        {
-            return NextPortToUse().ToString();
-        }
+        private string NextPortToUseString() => NextPortToUse().ToString();
     }
 }
