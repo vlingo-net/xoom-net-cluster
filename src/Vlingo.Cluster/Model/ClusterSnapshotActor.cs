@@ -6,6 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
+using System.Threading;
 using Vlingo.Actors;
 using Vlingo.Cluster.Model.Application;
 using Vlingo.Cluster.Model.Attribute;
@@ -73,6 +74,7 @@ namespace Vlingo.Cluster.Model
             _localLiveNode.Stop();
             _clusterApplication.Stop();
             _attributesAgent.Stop();
+            Pause();
             _communicationsHub.Close();
             Stop();
             Stage.World.Terminate();
@@ -161,5 +163,17 @@ namespace Vlingo.Cluster.Model
 
         public void InformNodeTimedOut(Wire.Node.Node node, bool isHealthyCluster) =>
             _broadcaster.InformNodeLeftCluster(node.Id, isHealthyCluster);
+        
+        private void Pause()
+        {
+            try
+            {
+                Thread.Sleep(3000);
+            }
+            catch 
+            {
+                // ignore
+            }
+        }
     }
 }

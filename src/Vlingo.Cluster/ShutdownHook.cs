@@ -39,7 +39,7 @@ namespace Vlingo.Cluster
         {
             try
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(4000);
             }
             catch 
             {
