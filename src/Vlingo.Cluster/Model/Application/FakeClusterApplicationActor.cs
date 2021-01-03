@@ -91,7 +91,7 @@ namespace Vlingo.Cluster.Model.Application
             PrintHealthy(false);
         }
 
-        public override void InformResponder(IApplicationOutboundStream responder)
+        public override void InformResponder(IApplicationOutboundStream? responder)
         {
             _responder = responder;
             Logger.Debug($"APP: Informed of responder: {_responder}");
