@@ -18,17 +18,17 @@ namespace Vlingo.Cluster.Model
         
         private static volatile object _syncRoot = new object();
 
-        public static (IClusterSnapshotControl, ILogger) ControlFor(string name)
+        public static (IClusterSnapshotControl, ILogger) ControlFor(string nodeName)
         {
             if (_world != null)
             {
                 throw new InvalidOperationException("Cluster snapshot control already exists.");
             }
             
-            return ControlFor(World.Start("vlingo-cluster"), name);
+            return ControlFor(World.Start("vlingo-cluster"), nodeName);
         }
 
-        public static (IClusterSnapshotControl, ILogger) ControlFor(World world, string name)
+        public static (IClusterSnapshotControl, ILogger) ControlFor(World world, string nodeName)
         {
             lock (_syncRoot)
             {
@@ -39,7 +39,7 @@ namespace Vlingo.Cluster.Model
 
                 _world = world;
 
-                var (control, logger) = ClusterSnapshotControlFactory.Instance(world, name);
+                var (control, logger) = ClusterSnapshotControlFactory.Instance(world, nodeName);
     
                 _control = control;
     
@@ -52,12 +52,13 @@ namespace Vlingo.Cluster.Model
             lock (_syncRoot)
             {
                 _control = null;
+                _world = null;
             }
         }
 
         public static bool IsRunning(bool expected, int retries)
         {
-            for (int idx = 0; idx < retries; ++idx)
+            for (var idx = 0; idx < retries; ++idx)
             {
                 if (IsRunning() == expected)
                 {
@@ -70,6 +71,7 @@ namespace Vlingo.Cluster.Model
                 }
                 catch
                 {
+                    // nothing to do
                 }
             }
             

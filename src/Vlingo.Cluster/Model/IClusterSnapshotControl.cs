@@ -17,14 +17,14 @@ namespace Vlingo.Cluster.Model
 
     public class ClusterSnapshotControlFactory
     {
-        public static (IClusterSnapshotControl, ILogger) Instance(World world, string name)
+        public static (IClusterSnapshotControl, ILogger) Instance(World world, string nodeName)
         {
-            var initializer = new ClusterSnapshotInitializer(name, Properties.Instance, world.DefaultLogger);
+            var initializer = new ClusterSnapshotInitializer(nodeName, Properties.Instance, world.DefaultLogger);
             
             var application = ClusterApplicationFactory.Instance(world, initializer.LocalNode);
 
             var control =
-                world.ActorFor<IClusterSnapshotControl>(() => new ClusterSnapshotActor(initializer, application), $"cluster-snapshot-{name}");
+                world.ActorFor<IClusterSnapshotControl>(() => new ClusterSnapshotActor(initializer, application), $"cluster-snapshot-{nodeName}");
             
             return (control, world.DefaultLogger);
         }
