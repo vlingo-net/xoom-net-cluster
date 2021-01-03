@@ -94,16 +94,20 @@ namespace Vlingo.Cluster.Model
             {
                 var textMessage = message.AsTextMessage();
                 var typedMessage = OperationalMessage.MessageFrom(textMessage);
-                if (typedMessage != null && typedMessage.IsApp)
+                if (typedMessage != null)
                 {
-                    _attributesAgent.HandleInboundStreamMessage(addressType, message);
-                }
-                else
-                {
-                    if (typedMessage != null)
+                    if (typedMessage.IsApp)
+                    {
+                        _attributesAgent.HandleInboundStreamMessage(addressType, message);   
+                    }
+                    else
                     {
                         _localLiveNode.Handle(typedMessage);
                     }
+                }
+                else
+                {
+                    Logger.Warn($"ClusterSnapshot received invalid raw message '{textMessage}'");
                 }
             }
             else if (addressType.IsApplication)
