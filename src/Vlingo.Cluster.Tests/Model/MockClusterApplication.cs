@@ -30,6 +30,7 @@ namespace Vlingo.Cluster.Tests.Model
             InformNodeLeftClusterCheck = new AtomicInteger(0);
             InformQuorumAchievedCheck = new AtomicInteger(0);
             InformQuorumLostCheck = new AtomicInteger(0);
+            InformResponderCheck = new AtomicInteger(0);
             InformAttributesClientCheck = new AtomicInteger(0);
             InformAttributeSetCreatedCheck = new AtomicInteger(0);
             InformAttributeAddedCheck = new AtomicInteger(0);
@@ -62,6 +63,8 @@ namespace Vlingo.Cluster.Tests.Model
         public AtomicInteger InformQuorumAchievedCheck { get; }
         
         public AtomicInteger InformQuorumLostCheck { get; }
+        
+        public AtomicInteger InformResponderCheck { get; }
   
         public AtomicInteger InformAttributesClientCheck { get; }
         
@@ -90,7 +93,7 @@ namespace Vlingo.Cluster.Tests.Model
 
         public bool IsStopped => false;
 
-        public void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream responder) =>
+        public void HandleApplicationMessage(RawMessage message) =>
             HandleApplicationMessageCheck.IncrementAndGet();
 
         public void InformAllLiveNodes(IEnumerable<Wire.Node.Node> liveNodes, bool isHealthyCluster) =>
@@ -116,6 +119,8 @@ namespace Vlingo.Cluster.Tests.Model
         public void InformQuorumAchieved() => InformQuorumAchievedCheck.IncrementAndGet();
 
         public void InformQuorumLost() => InformQuorumLostCheck.IncrementAndGet();
+        
+        public void InformResponder(IApplicationOutboundStream responder) => InformResponderCheck.IncrementAndGet();
 
         public void InformAttributesClient(IAttributesProtocol client)
         {

@@ -87,6 +87,13 @@ namespace Vlingo.Cluster.Tests.Model
         }
         
         [Fact]
+        public void TestInformResponder()
+        {
+            _broadcaster.InformResponder(null); // production must not be null
+            Assert.Equal(1, Application.InformResponderCheck.Get());
+        }
+        
+        [Fact]
         public void TestInformAttributeSetCreated()
         {
             _broadcaster.InformAttributeSetCreated("test");

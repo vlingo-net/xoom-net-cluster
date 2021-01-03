@@ -48,9 +48,8 @@ namespace Vlingo.Cluster.Model
         {
         }
         
-        public void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream? responder)
-        {
-        }
+        public void HandleApplicationMessage(RawMessage message)
+            => Broadcast(app => app.HandleApplicationMessage(message));
 
         public void InformAllLiveNodes(IEnumerable<Wire.Node.Node> liveNodes, bool isHealthyCluster) =>
             Broadcast(app => app.InformAllLiveNodes(liveNodes, isHealthyCluster));
@@ -77,6 +76,8 @@ namespace Vlingo.Cluster.Model
         public void InformQuorumAchieved() => Broadcast(app => app.InformQuorumAchieved());
 
         public void InformQuorumLost() => Broadcast(app => app.InformQuorumLost());
+        public void InformResponder(IApplicationOutboundStream? responder)
+            => Broadcast(app => app.InformResponder(responder));
 
         public void InformAttributesClient(IAttributesProtocol client) =>
             Broadcast(app => app.InformAttributesClient(client));

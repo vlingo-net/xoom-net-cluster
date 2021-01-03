@@ -17,7 +17,7 @@ namespace Vlingo.Cluster.Model.Application
     
     public interface IClusterApplication : IStartable, IStoppable
     {
-        void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream? responder);
+        void HandleApplicationMessage(RawMessage message);
 
         void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster);
 
@@ -38,6 +38,8 @@ namespace Vlingo.Cluster.Model.Application
         void InformQuorumAchieved();
         
         void InformQuorumLost();
+        
+        void InformResponder(IApplicationOutboundStream? responder);
 
         void InformAttributesClient(IAttributesProtocol client);
         

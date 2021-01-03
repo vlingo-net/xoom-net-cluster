@@ -36,6 +36,7 @@ namespace Vlingo.Cluster.Model
             _broadcaster.RegisterClusterApplication(clusterApplication);
             
             _clusterApplication.Start();
+            _clusterApplication.InformResponder(_communicationsHub.ApplicationOutboundStream);
             
             initializer.Registry.RegisterRegistryInterest(SelfAs<IRegistryInterest>());
 
@@ -112,7 +113,7 @@ namespace Vlingo.Cluster.Model
             }
             else if (addressType.IsApplication)
             {
-                _clusterApplication.HandleApplicationMessage(message, _communicationsHub.ApplicationOutboundStream); // TODO
+                _clusterApplication.HandleApplicationMessage(message); // TODO
             }
             else
             {

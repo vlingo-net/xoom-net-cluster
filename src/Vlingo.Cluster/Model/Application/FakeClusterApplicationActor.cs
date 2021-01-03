@@ -18,6 +18,7 @@ namespace Vlingo.Cluster.Model.Application
     {
         private IAttributesProtocol? _client;
         private readonly Node _localNode;
+        private IApplicationOutboundStream? _responder;
 
         public FakeClusterApplicationActor(Node localNode)
         {
@@ -27,7 +28,7 @@ namespace Vlingo.Cluster.Model.Application
         public override void Start() =>
             Logger.Debug($"APP: ClusterApplication started on node: {_localNode}");
 
-        public override void HandleApplicationMessage(RawMessage message, IApplicationOutboundStream? responder) =>
+        public override void HandleApplicationMessage(RawMessage message) =>
             Logger.Debug($"APP: Received application message: {message.AsTextMessage()}");
 
         public override void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster)
@@ -88,6 +89,12 @@ namespace Vlingo.Cluster.Model.Application
         {
             Logger.Debug("APP: Quorum lost");
             PrintHealthy(false);
+        }
+
+        public override void InformResponder(IApplicationOutboundStream responder)
+        {
+            _responder = responder;
+            Logger.Debug($"APP: Informed of responder: {_responder}");
         }
 
         public override void InformAttributesClient(IAttributesProtocol client)
