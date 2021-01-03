@@ -35,6 +35,8 @@ namespace Vlingo.Cluster.Model.Node
         }
 
         internal bool HasStarted => _startTime > 0;
+        
+        internal bool HasNotStarted => _startTime <= 0;
 
         internal void Clear()
         {

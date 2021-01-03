@@ -147,7 +147,7 @@ namespace Vlingo.Cluster.Model.Node
     
             if (_node.Id.GreaterThan(electId))
             {
-                if (_state != null && !_state.LeaderElectionTracker.HasStarted)
+                if (_state != null && !_state.LeaderElectionTracker.HasNotStarted)
                 {
                     _state.LeaderElectionTracker.Start(true);
                     _outbound.Elect(_configuration.AllGreaterNodes(_node.Id));
@@ -343,7 +343,7 @@ namespace Vlingo.Cluster.Model.Node
 
             if (!_registry.HasLeader)
             {
-                if (_state != null && !_state.LeaderElectionTracker.HasStarted)
+                if (_state != null && !_state.LeaderElectionTracker.HasNotStarted)
                 {
                     _state.LeaderElectionTracker.Start();
                     _outbound.Elect(_configuration.AllGreaterNodes(_node.Id));
