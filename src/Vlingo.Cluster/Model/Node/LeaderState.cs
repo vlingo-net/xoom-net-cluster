@@ -21,15 +21,14 @@ namespace Vlingo.Cluster.Model.Node
         protected internal override void Handle(Directory dir)
         {
             Logger.Debug($"{StateType} {Node.Id} DIRECTORY: {dir}");
-    
+
             if (dir.Id.GreaterThan(Node.Id))
             {
                 // apparently a new bully is taking leadership --
                 // perhaps there was a race for leadership on newly
                 // joined node with higher nodeId
-      
+
                 LiveNodeMaintainer.MergeAllDirectoryEntries(dir.Nodes);
-      
             }
             else
             {

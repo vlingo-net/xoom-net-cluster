@@ -30,16 +30,16 @@ namespace Vlingo.Cluster.Model.Node
             _broadcaster = new RegistryInterestBroadcaster(logger);
             _registry = new SortedDictionary<Id, RegisteredNodeStatus>();
         }
-        
+
         //======================================
         // Registry
         //======================================
-        
+
         public void CleanTimedOutNodes()
         {
             var currentTime = DateTimeHelper.CurrentTimeMillis();
             var liveNodeTimeout = Properties.Instance.ClusterLiveNodeTimeout();
-            
+
             var nodesToKeep = new SortedDictionary<Id, RegisteredNodeStatus>();
 
             foreach (var status in _registry.Values)
@@ -103,7 +103,7 @@ namespace Vlingo.Cluster.Model.Node
         }
 
         public bool IsLeader(Id id)
-        { 
+        {
             if (_registry.TryGetValue(id, out var status))
             {
                 return status.IsLeader;
@@ -139,7 +139,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void MergeAllDirectoryEntries(IEnumerable<Node> leaderRegisteredNodes)
+        public void MergeAllDirectoryEntries(IEnumerable<Wire.Node.Node> leaderRegisteredNodes)
         {
             var result = new SortedSet<MergeResult>();
             var mergedNodes = new SortedDictionary<Id, RegisteredNodeStatus>();
@@ -167,7 +167,7 @@ namespace Vlingo.Cluster.Model.Node
             }
 
             _registry = mergedNodes;
-    
+
             _broadcaster.InformMergedAllDirectoryEntries(LiveNodes, result, IsClusterHealthy());
             _broadcaster.InformAllLiveNodes(LiveNodes, IsClusterHealthy());
         }
@@ -177,7 +177,7 @@ namespace Vlingo.Cluster.Model.Node
             if (_localNode.Id.Equals(leaderNodeId))
             {
                 DeclareLeaderAs(leaderNodeId);
-      
+
                 ConfirmAllLiveNodesByLeader();
             }
             else
@@ -195,7 +195,7 @@ namespace Vlingo.Cluster.Model.Node
       
                 DeclareLeaderAs(leaderNodeId);
             }
-    
+
             _broadcaster.InformCurrentLeader(_registry[leaderNodeId].Node, IsClusterHealthy());
         }
 
@@ -249,7 +249,7 @@ namespace Vlingo.Cluster.Model.Node
         {
             get
             {
-                var quorum = (_configuration.TotalNodes / 2) + 1;
+                var quorum = _configuration.TotalNodes / 2 + 1;
                 return LiveNodes.Count() >= quorum;
             }
         }
@@ -260,7 +260,7 @@ namespace Vlingo.Cluster.Model.Node
         {
             return HasQuorum && HasLeader;
         }
-        
+
         private void DemotePreviousLeader(Id currentLeaderNodeId)
         {
             foreach (var status in _registry.Values)

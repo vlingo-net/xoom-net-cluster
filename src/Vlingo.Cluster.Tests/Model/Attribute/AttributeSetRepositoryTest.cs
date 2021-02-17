@@ -83,12 +83,14 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
             Assert.Equal(AttributeSet.None, _repository.AttributeSetOf("set3"));
         }
         
-        private AttributeSet AttributeSetFixture(string name) {
+        private AttributeSet AttributeSetFixture(string name)
+        {
             var set = AttributeSet.Named(name);
     
             _times = (_times * 2) + 1;
     
-            for (var idx = 0; idx < _times; ++idx) {
+            for (var idx = 0; idx < _times; ++idx)
+            {
                 var current = _times + idx;
       
                 set.AddIfAbsent(Attribute<int>.From($"attr{current}", current));

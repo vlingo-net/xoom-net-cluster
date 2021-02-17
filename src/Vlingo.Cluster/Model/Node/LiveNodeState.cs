@@ -34,47 +34,56 @@ namespace Vlingo.Cluster.Model.Node
             Logger = logger;
         }
         
-        internal protected virtual void Handle(Directory dir) {
+        internal protected virtual void Handle(Directory dir)
+        {
             Logger.Debug($"{StateType} {Node.Id} DIRECTORY: {dir}");
             LiveNodeMaintainer.MergeAllDirectoryEntries(dir.Nodes);
         }
-        
-        internal protected virtual void Handle(Elect elec) {
+
+        protected internal virtual void Handle(Elect elec)
+        {
             Logger.Debug($"{StateType} {Node.Id} ELECT: {elec}");
             LiveNodeMaintainer.EscalateElection(elec.Id);
         }
-        
-        internal protected virtual void Handle(Join join) {
+
+        protected internal virtual void Handle(Join join)
+        {
             Logger.Debug($"{StateType} {Node.Id} JOIN: {join}");
             LiveNodeMaintainer.JoinLocalWith(join.Node);
         }
-        
-        internal protected virtual void Handle(Leader leader) {
+
+        protected internal virtual void Handle(Leader leader)
+        {
             Logger.Debug($"{StateType} {Node.Id} LEADER: {leader}");
             LiveNodeMaintainer.AssertNewLeadership(leader.Id);
         }
-        
-        internal protected virtual void Handle(Leave leave) {
+
+        protected internal virtual void Handle(Leave leave)
+        {
             Logger.Debug($"{StateType} {Node.Id} LEAVE: {leave}");
             LiveNodeMaintainer.DropNode(leave.Id);
         }
-        
-        internal protected virtual void Handle(Ping ping) {
+
+        protected internal virtual void Handle(Ping ping)
+        {
             Logger.Debug($"{StateType} {Node.Id} PING: {ping}");
             LiveNodeMaintainer.ProvidePulseTo(ping.Id);
         }
-        
-        internal protected virtual void Handle(Pulse pulse) {
+
+        protected internal virtual void Handle(Pulse pulse)
+        {
             Logger.Debug($"{StateType} {Node.Id} PULSE: {pulse}");
             LiveNodeMaintainer.UpdateLastHealthIndication(pulse.Id);
         }
-        
-        internal protected virtual void Handle(Split split) {
+
+        protected internal virtual void Handle(Split split)
+        {
             Logger.Debug($"{StateType} {Node.Id} SPLIT: {split}");
             LiveNodeMaintainer.DeclareNodeSplit(split.Id);
         }
-        
-        internal protected virtual void Handle(Vote vote) {
+
+        protected internal virtual void Handle(Vote vote)
+        {
             Logger.Debug($"{StateType} {Node.Id} VOTE: {vote}");
             LiveNodeMaintainer.PlaceVote(vote.Id);
         }
@@ -87,7 +96,8 @@ namespace Vlingo.Cluster.Model.Node
 
         public override string ToString() => $"{GetType().Name}[type={StateType} node={Node}]";
 
-        internal enum Type {
+        internal enum Type
+        {
             Idle,
             Follower,
             Leader

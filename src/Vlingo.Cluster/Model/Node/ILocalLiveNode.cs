@@ -31,7 +31,7 @@ namespace Vlingo.Cluster.Model.Node
         {
             var localLiveNode = stage.ActorFor<ILocalLiveNode>(
                 () => new LocalLiveNodeActor(node, snapshot, registry, outbound, configuration), "local-live-node");
-    
+
             return localLiveNode;
         }
     }

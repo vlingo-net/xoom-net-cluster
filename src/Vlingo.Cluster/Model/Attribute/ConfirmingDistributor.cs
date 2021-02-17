@@ -133,7 +133,8 @@ namespace Vlingo.Cluster.Model.Attribute
             TrackedAttribute tracked,
             ApplicationMessageType type, Node toOriginalSource)
         {
-            switch (type) {
+            switch (type)
+            {
                 case ApplicationMessageType.AddAttribute:
                     var confirmAdd = ConfirmAttribute.From(correlatingMessageId, toOriginalSource, set, tracked, ApplicationMessageType.ConfirmAddAttribute);
                     _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, confirmAdd.ToPayload()), toOriginalSource.Collected);

@@ -59,7 +59,8 @@ namespace Vlingo.Cluster.Model.Node
         public void InformNodeTimedOut(Node node, bool isHealthyCluster) =>
             Broadcast(interest => interest.InformNodeTimedOut(node, isHealthyCluster));
         
-        private void Broadcast(Action<IRegistryInterest> inform) {
+        private void Broadcast(Action<IRegistryInterest> inform)
+        {
             foreach (var interest in _registryInterests)
             {
                 try

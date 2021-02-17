@@ -110,11 +110,13 @@ namespace Vlingo.Cluster.Model.Message
                 return Pulse.From(content);
             }
 
-            if (content.StartsWith(SPLIT)) {
+            if (content.StartsWith(SPLIT))
+            {
                 return Split.From(content);
             }
 
-            if (content.StartsWith(VOTE)) {
+            if (content.StartsWith(VOTE))
+            {
                 return Vote.From(content);
             }
             
@@ -145,8 +147,6 @@ namespace Vlingo.Cluster.Model.Message
 
         public virtual bool IsVote => false;
 
-        protected OperationalMessage(Id id) {
-            Id = id;
-        }
+        protected OperationalMessage(Id id) => Id = id;
     }
 }

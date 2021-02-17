@@ -298,7 +298,8 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
                     () => new OperationalOutboundStreamActor(_localNode, _channelProvider, pool));
         }
         
-        private RawMessage RawMessageFor(Id id, Name name, ApplicationMessage message) {
+        private RawMessage RawMessageFor(Id id, Name name, ApplicationMessage message)
+        {
             var messageBuffer = new MemoryStream(4096);
             var says = ApplicationSays.From(id, name, message.ToPayload());
             MessageConverters.MessageToBytes(says, messageBuffer);

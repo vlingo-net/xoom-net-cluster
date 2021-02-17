@@ -14,29 +14,29 @@ namespace Vlingo.Cluster.Model.Node
     public interface IRegistry
     {
         void CleanTimedOutNodes();
-        
+
         void ConfirmAllLiveNodesByLeader();
-        
+
         bool IsConfirmedByLeader(Id id);
-        
+
         void DeclareLeaderAs(Id id);
-        
+
         void DemoteLeaderOf(Id id);
-        
+
         bool IsLeader(Id id);
-        
+
         bool HasMember(Id id);
-        
+
         void Join(Node node);
-        
+
         void Leave(Id id);
-        
+
         void MergeAllDirectoryEntries(IEnumerable<Node> nodes);
-        
+
         void PromoteElectedLeader(Id leaderNodeId);
-        
+
         void RegisterRegistryInterest(IRegistryInterest interest);
-        
+
         void UpdateLastHealthIndication(Id id);
         
         Node CurrentLeader { get; }

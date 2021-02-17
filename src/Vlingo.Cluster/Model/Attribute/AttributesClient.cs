@@ -78,7 +78,8 @@ namespace Vlingo.Cluster.Model.Attribute
 
         public IEnumerable<AttributeSet> All => _repository.All;
         
-        private AttributesClient(IAttributesAgent agent, AttributeSetRepository repository) {
+        private AttributesClient(IAttributesAgent agent, AttributeSetRepository repository)
+        {
             _agent = agent;
             _repository = repository;
         }

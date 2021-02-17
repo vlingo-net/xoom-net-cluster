@@ -49,11 +49,11 @@ namespace Vlingo.Cluster.Model.Node
 
             DeclareIdle();
         }
-        
+
         //===================================
         // LocalLiveNode
         //===================================
-        
+
         public void Handle(OperationalMessage message)
         {
             if (message.IsDirectory) _state?.Handle((Directory) message);
@@ -78,7 +78,7 @@ namespace Vlingo.Cluster.Model.Node
         //================================================
         //== LiveNodeMaintainer
         //================================================
-        
+
         #region LiveNodeMaintainer
 
         public void AssertNewLeadership(Id assertingNodeId)
@@ -144,7 +144,7 @@ namespace Vlingo.Cluster.Model.Node
         {
             _registry.Join(_node);
             _registry.Join(_configuration.NodeMatching(electId));
-    
+
             if (_node.Id.GreaterThan(electId))
             {
                 if (_state != null && !_state.LeaderElectionTracker.HasNotStarted)
@@ -157,6 +157,7 @@ namespace Vlingo.Cluster.Model.Node
                     DeclareLeadership();
                     return;
                 }
+
                 _outbound.Vote(electId);
             }
         }
@@ -215,7 +216,7 @@ namespace Vlingo.Cluster.Model.Node
             _outbound.Vote(targetNodeId);
             DeclareLeadership();
         }
-        
+
         #endregion
         
         //===================================
@@ -244,7 +245,7 @@ namespace Vlingo.Cluster.Model.Node
         //===================================
         // internal implementation
         //===================================
-        
+
         #region internal implementation
 
         private void CheckHealth()
@@ -258,21 +259,23 @@ namespace Vlingo.Cluster.Model.Node
                 MaintainHealthWithNoQuorum();
             }
         }
-        
-        private void DeclareFollower() {
+
+        private void DeclareFollower()
+        {
             if (_state == null || !_state.IsIdle)
             {
                 Logger.Info($"Cluster follower: {_node}");
-      
+
                 _state = new FollowerState(_node, this, Logger);
             }
         }
-        
-        private void DeclareIdle() {
+
+        private void DeclareIdle()
+        {
             if (_state == null || !_state.IsIdle)
             {
                 Logger.Info($"Cluster idle: {_node}");
-      
+
                 _state = new IdleState(_node, this, Logger);
       
                 if (_registry.CurrentLeader.Equals(_node))
@@ -285,7 +288,7 @@ namespace Vlingo.Cluster.Model.Node
         private void DeclareLeader()
         {
             Logger.Info($"Cluster leader: {_node}");
-            
+
             _state = new LeaderState(_node, this, Logger);
 
             PromoteElectedLeader(_node.Id);
@@ -365,11 +368,10 @@ namespace Vlingo.Cluster.Model.Node
                 // or even rejoin the cluster because it's missing
                 // from the local registry
                 _registry.Join(_node);
-      
+
                 _registry.DeclareLeaderAs(leaderNodeId);
-      
+
                 _registry.ConfirmAllLiveNodesByLeader();
-      
             }
             else
             {
@@ -401,15 +403,16 @@ namespace Vlingo.Cluster.Model.Node
                 _snapshot.QuorumAchieved();
             }
         }
-        
-        private void WatchForQuorumRelinquished() {
+
+        private void WatchForQuorumRelinquished()
+        {
             if (_quorumAchieved)
             {
                 _quorumAchieved = false;
                 _snapshot.QuorumLost();
             }
         }
-        
+
         #endregion
     }
 }

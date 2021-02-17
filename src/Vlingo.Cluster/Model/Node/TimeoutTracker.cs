@@ -11,9 +11,9 @@ namespace Vlingo.Cluster.Model.Node
 {
     internal sealed class TimeoutTracker
     {
-        private bool _cleared = false;
-        private long _startTime = -1L;
         private readonly long _timeout;
+        private bool _cleared;
+        private long _startTime = -1L;
 
         internal TimeoutTracker(long timeout)
         {
@@ -35,7 +35,7 @@ namespace Vlingo.Cluster.Model.Node
         }
 
         internal bool HasStarted => _startTime > 0;
-        
+
         internal bool HasNotStarted => _startTime <= 0;
 
         internal void Clear()
