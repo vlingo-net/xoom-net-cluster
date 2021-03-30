@@ -243,6 +243,8 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
+        public bool IsSingleNodeCluster => _configuration.TotalNodes == 1;
+
         public IEnumerable<Node> LiveNodes => _registry.Values.Select(s => s.Node);
 
         public bool HasQuorum

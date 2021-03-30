@@ -43,6 +43,8 @@ namespace Vlingo.Cluster.Model.Node
         
         bool HasLeader { get; }
         
+        bool IsSingleNodeCluster { get; }
+        
         IEnumerable<Node> LiveNodes { get; }
         
         bool HasQuorum { get; }

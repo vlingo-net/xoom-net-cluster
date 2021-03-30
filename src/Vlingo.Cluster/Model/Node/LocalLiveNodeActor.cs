@@ -47,7 +47,7 @@ namespace Vlingo.Cluster.Model.Node
             _checkHealth = new CheckHealth(_node.Id);
             _cancellable = ScheduleHealthCheck();
 
-            DeclareIdle();
+            StartNode();
         }
 
         //===================================
@@ -393,6 +393,18 @@ namespace Vlingo.Cluster.Model.Node
         {
             return Stage.Scheduler.Schedule(SelfAs<IScheduled<object?>>(), null, TimeSpan.FromMilliseconds(1000L),
                 TimeSpan.FromMilliseconds(Properties.Instance.ClusterHealthCheckInterval()));
+        }
+        
+        private void StartNode()
+        {
+            if (_registry.IsSingleNodeCluster)
+            {
+                DeclareLeader();
+            }
+            else
+            {
+                DeclareIdle();
+            }
         }
 
         private void WatchForQuorumAchievement()
