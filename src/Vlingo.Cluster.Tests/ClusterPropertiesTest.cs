@@ -5,7 +5,6 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using System;
 using Vlingo.Common;
 using Xunit;
 
@@ -14,7 +13,7 @@ namespace Vlingo.Cluster.Tests
     public class ClusterPropertiesTest
     {
         [Fact]
-        public void ShouldConfigureMultiNodeClusterWorks() {
+        public void ShouldConfigureMultiNodeCluster() {
           var properties = ClusterProperties.AllNodes();
 
           // common
@@ -43,7 +42,7 @@ namespace Vlingo.Cluster.Tests
         }
 
         [Fact]
-        public void ShouldConfigureFiveNodeClusterWorks() {
+        public void ShouldConfigureFiveNodeCluster() {
           var properties = ClusterProperties.AllNodes(new AtomicInteger(37370), 5);
 
           // common
@@ -82,7 +81,7 @@ namespace Vlingo.Cluster.Tests
         }
 
         [Fact]
-        public void ShouldConfigureSingleNodeClusterWorks() {
+        public void ShouldConfigureSingleNodeCluster() {
           var properties = ClusterProperties.OneNode();
 
           // common
