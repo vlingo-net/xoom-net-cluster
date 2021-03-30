@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Vlingo.Common;
 
 namespace Vlingo.Cluster.Model
@@ -41,6 +40,14 @@ namespace Vlingo.Cluster.Model
                 return SingleInstance.Value;
             }
         }
+
+        public static Properties OpenWith(Properties properties)
+        {
+            Instance.UpdateCustomProperties(properties);
+            return Instance;
+        }
+
+        public static Properties OpenForTest(Properties properties) => OpenWith(properties);
 
         public int ApplicationBufferSize() => GetInteger("cluster.app.buffer.size", 10240);
 
@@ -220,7 +227,7 @@ namespace Vlingo.Cluster.Model
             return pooledBuffers;
         }
 
-        public int OperationalPort(String nodeName)
+        public int OperationalPort(string nodeName)
         {
             var port = GetInteger(nodeName, "op.port", 0);
 
@@ -307,6 +314,15 @@ namespace Vlingo.Cluster.Model
             foreach (var property in properties)
             {
                 SetProperty(property.Key, property.Value);
+            }
+        }
+        
+        private void UpdateCustomProperties(Properties properties)
+        {
+            foreach (var key in properties.Keys)
+            {
+                var propertyValue = properties.GetProperty(key);
+                SetProperty(key, propertyValue!);
             }
         }
 
