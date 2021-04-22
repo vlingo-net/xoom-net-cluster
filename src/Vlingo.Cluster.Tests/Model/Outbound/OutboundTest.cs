@@ -7,8 +7,7 @@
 
 using System.Collections.Generic;
 using System.IO;
-using Vlingo.Common;
-using Vlingo.Common.Pool;
+using Vlingo.Xoom.Common.Pool;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
 using Xunit;

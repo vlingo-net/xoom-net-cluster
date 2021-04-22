@@ -8,7 +8,7 @@
 using Vlingo.Actors;
 using Vlingo.Cluster.Model.Application;
 using Vlingo.Cluster.Model.Outbound;
-using Vlingo.Common;
+using Vlingo.Xoom.Common;
 using Vlingo.Wire.Fdx.Inbound;
 
 namespace Vlingo.Cluster.Model.Attribute

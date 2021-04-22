@@ -7,8 +7,7 @@
 
 using Vlingo.Actors;
 using Vlingo.Cluster.Model.Outbound;
-using Vlingo.Common;
-using Vlingo.Common.Pool;
+using Vlingo.Xoom.Common.Pool;
 using Vlingo.Wire.Fdx.Inbound;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;

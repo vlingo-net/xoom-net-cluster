@@ -8,7 +8,7 @@
 using System.IO;
 using System.Text;
 using Vlingo.Cluster.Model.Message;
-using Vlingo.Common;
+using Vlingo.Xoom.Common;
 using Vlingo.Wire.Channel;
 using Vlingo.Wire.Message;
 
@@ -16,14 +16,14 @@ namespace Vlingo.Cluster.Tests.Model.Message
 {
     public class MessageFixtures
     {
-        private static AtomicInteger _nextPortNumber = new AtomicInteger(27270);
+        private static readonly AtomicInteger NextPortNumber = new AtomicInteger(27270);
         
         public static short DefaultNodeId => 1;
         
         public static string DefaultNodeName => "node1";
-        public static string[] OpAddresses => new [] { "", $"localhost:{_nextPortNumber.IncrementAndGet()}", $"localhost:{_nextPortNumber.IncrementAndGet()}", $"localhost:{_nextPortNumber.IncrementAndGet()}" };
+        public static string[] OpAddresses => new [] { "", $"localhost:{NextPortNumber.IncrementAndGet()}", $"localhost:{NextPortNumber.IncrementAndGet()}", $"localhost:{NextPortNumber.IncrementAndGet()}" };
         
-        public static string[] AppAddresses => new [] { "", $"localhost:{_nextPortNumber.IncrementAndGet()}", $"localhost:{_nextPortNumber.IncrementAndGet()}", $"localhost:{_nextPortNumber.IncrementAndGet()}" };
+        public static string[] AppAddresses => new [] { "", $"localhost:{NextPortNumber.IncrementAndGet()}", $"localhost:{NextPortNumber.IncrementAndGet()}", $"localhost:{NextPortNumber.IncrementAndGet()}" };
         
 
         public static string DirectoryAsText(int id1, int id2, int id3)

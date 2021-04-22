@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Vlingo.Common;
+using Vlingo.Xoom.Common;
 
 namespace Vlingo.Cluster.Model
 {

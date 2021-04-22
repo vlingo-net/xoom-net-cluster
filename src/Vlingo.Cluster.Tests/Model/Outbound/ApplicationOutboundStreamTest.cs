@@ -7,10 +7,8 @@
 
 using System.Collections.Generic;
 using System.IO;
-using Vlingo.Actors;
 using Vlingo.Actors.TestKit;
-using Vlingo.Common;
-using Vlingo.Common.Pool;
+using Vlingo.Xoom.Common.Pool;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;

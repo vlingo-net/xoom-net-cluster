@@ -7,15 +7,13 @@
 
 using System.IO;
 using System.Linq;
-using Vlingo.Actors;
 using Vlingo.Actors.TestKit;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Cluster.Model.Attribute.Message;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Cluster.Tests.Model.Outbound;
-using Vlingo.Common;
-using Vlingo.Common.Pool;
+using Vlingo.Xoom.Common.Pool;
 using Vlingo.Wire.Fdx.Inbound;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;

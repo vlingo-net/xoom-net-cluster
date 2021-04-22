@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using Vlingo.Cluster.Model.Application;
 using Vlingo.Cluster.Model.Attribute;
-using Vlingo.Common;
+using Vlingo.Xoom.Common;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;

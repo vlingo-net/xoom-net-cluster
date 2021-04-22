@@ -8,7 +8,7 @@
 using System;
 using System.Text;
 using Vlingo.Cluster.Model;
-using Vlingo.Common;
+using Vlingo.Xoom.Common;
 
 namespace Vlingo.Cluster
 {
