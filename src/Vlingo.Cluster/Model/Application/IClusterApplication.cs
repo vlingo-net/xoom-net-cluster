@@ -6,10 +6,10 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
-using Vlingo.Actors;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Cluster.Model.Application
 {

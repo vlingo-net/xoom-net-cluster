@@ -7,10 +7,10 @@
 
 using System.Collections.Generic;
 using System.IO;
-using Vlingo.Actors.TestKit;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
+using Vlingo.Xoom.Actors.TestKit;
 
 namespace Vlingo.Cluster.Tests.Model.Outbound
 {

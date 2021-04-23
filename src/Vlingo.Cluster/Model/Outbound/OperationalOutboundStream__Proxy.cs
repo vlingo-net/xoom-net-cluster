@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-using Vlingo.Actors;
 using Vlingo.Cluster.Model.Message;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Cluster.Model.Outbound
 {

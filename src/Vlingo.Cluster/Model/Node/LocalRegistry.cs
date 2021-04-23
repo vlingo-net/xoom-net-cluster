@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Vlingo.Actors;
+using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Common;
 
 namespace Vlingo.Cluster.Model.Node
@@ -139,7 +139,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void MergeAllDirectoryEntries(IEnumerable<Wire.Node.Node> leaderRegisteredNodes)
+        public void MergeAllDirectoryEntries(IEnumerable<Node> leaderRegisteredNodes)
         {
             var result = new SortedSet<MergeResult>();
             var mergedNodes = new SortedDictionary<Id, RegisteredNodeStatus>();

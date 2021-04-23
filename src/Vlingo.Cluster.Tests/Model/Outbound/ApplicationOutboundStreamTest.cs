@@ -7,11 +7,11 @@
 
 using System.Collections.Generic;
 using System.IO;
-using Vlingo.Actors.TestKit;
 using Vlingo.Xoom.Common.Pool;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
+using Vlingo.Xoom.Actors.TestKit;
 using Xunit;
 using Xunit.Abstractions;
 

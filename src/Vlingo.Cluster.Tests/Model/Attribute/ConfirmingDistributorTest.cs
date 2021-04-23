@@ -6,7 +6,6 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Linq;
-using Vlingo.Actors.TestKit;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Cluster.Model.Attribute.Message;
 using Vlingo.Cluster.Model.Message;
@@ -15,6 +14,7 @@ using Vlingo.Cluster.Tests.Model.Outbound;
 using Vlingo.Xoom.Common.Pool;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Message;
+using Vlingo.Xoom.Actors.TestKit;
 using Xunit;
 using Xunit.Abstractions;
 

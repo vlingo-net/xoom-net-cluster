@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using System.Threading;
-using Vlingo.Actors;
 using Vlingo.Cluster.Model.Application;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Cluster.Model.Message;
@@ -15,6 +14,7 @@ using Vlingo.Cluster.Model.Node;
 using Vlingo.Wire.Fdx.Inbound;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Cluster.Model
 {   

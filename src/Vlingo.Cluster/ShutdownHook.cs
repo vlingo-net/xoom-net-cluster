@@ -7,8 +7,8 @@
 
 using System;
 using System.Threading;
-using Vlingo.Actors;
 using Vlingo.Cluster.Model;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Cluster
 {

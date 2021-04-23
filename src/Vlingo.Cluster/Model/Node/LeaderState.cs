@@ -5,8 +5,8 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using Vlingo.Actors;
 using Vlingo.Cluster.Model.Message;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Cluster.Model.Node
 {

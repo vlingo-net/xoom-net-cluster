@@ -7,14 +7,14 @@
 
 using System;
 using System.Collections.Generic;
-using Vlingo.Actors;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Outbound;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Cluster.Model.Node
 {
     using Vlingo.Wire.Node;
-    using Common;
+    using Xoom.Common;
     
     public sealed class LocalLiveNodeActor : Actor, ILocalLiveNode, ILiveNodeMaintainer, IScheduled<object>
     {
@@ -175,7 +175,7 @@ namespace Vlingo.Cluster.Model.Node
             Synchronize(joiningNode);
         }
 
-        public void JoinLocalWith(Wire.Node.Node remoteNode)
+        public void JoinLocalWith(Node remoteNode)
         {
             Join(_node);
             Join(remoteNode);

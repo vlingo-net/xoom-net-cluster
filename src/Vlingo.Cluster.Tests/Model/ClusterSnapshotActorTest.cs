@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using Vlingo.Actors;
 using Vlingo.Cluster.Model;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Node;

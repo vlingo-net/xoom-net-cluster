@@ -5,11 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using Vlingo.Actors;
 using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Wire.Fdx.Inbound;
 using Vlingo.Wire.Fdx.Outbound;
 using Vlingo.Wire.Node;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Cluster.Model
 {

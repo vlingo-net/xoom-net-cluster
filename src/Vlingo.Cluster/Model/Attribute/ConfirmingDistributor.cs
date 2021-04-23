@@ -8,11 +8,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Vlingo.Actors;
 using Vlingo.Cluster.Model.Application;
 using Vlingo.Cluster.Model.Attribute.Message;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Outbound;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
@@ -24,7 +24,7 @@ namespace Vlingo.Cluster.Model.Attribute
         private readonly Confirmables _confirmables;
   
         private readonly IEnumerable<Node> _allOtherNodes;
-        private ILogger _logger;
+        private readonly ILogger _logger;
         private readonly Node _node;
         private readonly IOperationalOutboundStream _outbound;
 

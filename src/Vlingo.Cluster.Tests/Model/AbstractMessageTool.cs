@@ -6,11 +6,11 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.IO;
-using Vlingo.Actors.Plugin.Logging.Console;
 using Vlingo.Cluster.Model;
 using Vlingo.Wire.Channel;
 using Vlingo.Wire.Message;
 using Vlingo.Wire.Node;
+using Vlingo.Xoom.Actors.Plugin.Logging.Console;
 
 namespace Vlingo.Cluster.Tests.Model
 {

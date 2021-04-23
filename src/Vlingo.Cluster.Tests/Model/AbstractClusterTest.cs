@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using Vlingo.Actors.TestKit;
 using Vlingo.Xoom.Common;
 using Vlingo.Wire.Node;
+using Vlingo.Xoom.Actors.TestKit;
 using Xunit;
 using Xunit.Abstractions;
 

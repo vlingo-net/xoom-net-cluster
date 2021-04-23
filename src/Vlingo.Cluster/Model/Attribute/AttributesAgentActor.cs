@@ -6,12 +6,12 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
-using Vlingo.Actors;
 using Vlingo.Cluster.Model.Application;
 using Vlingo.Cluster.Model.Attribute.Message;
 using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Xoom.Common;
 using Vlingo.Wire.Message;
+using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
