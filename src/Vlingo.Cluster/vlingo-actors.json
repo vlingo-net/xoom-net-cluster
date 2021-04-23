@@ -6,17 +6,17 @@
       "consoleLogger": true
     },
     "pooledCompletes": {
-      "classname": "Vlingo.Actors.Plugin.Completes.PooledCompletesPlugin",
+      "classname": "Vlingo.Xoom.Actors.Plugin.Completes.PooledCompletesPlugin",
       "pool": 10
     },
     "queueMailbox": {
-      "classname": "Vlingo.Actors.Plugin.Mailbox.ConcurrentQueue.ConcurrentQueueMailboxPlugin",
+      "classname": "Vlingo.Xoom.Actors.Plugin.Mailbox.ConcurrentQueue.ConcurrentQueueMailboxPlugin",
       "defaultMailbox": true,
       "numberOfDispatchersFactor": 1.5,
       "dispatcherThrottlingCount": 10
     },
     "consoleLogger": {
-      "classname": "Vlingo.Actors.Plugin.Logging.Console.ConsoleLoggerPlugin",
+      "classname": "Vlingo.Xoom.Actors.Plugin.Logging.Console.ConsoleLoggerPlugin",
       "name": "vlingo-net/wire",
       "defaultLogger": true
     }
