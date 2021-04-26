@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using Vlingo.Cluster.Model.Application;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Xoom.Common;
-using Vlingo.Wire.Fdx.Outbound;
-using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
+using Vlingo.Xoom.Wire.Fdx.Outbound;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Tests.Model
 {   
@@ -96,7 +96,7 @@ namespace Vlingo.Cluster.Tests.Model
         public void HandleApplicationMessage(RawMessage message) =>
             HandleApplicationMessageCheck.IncrementAndGet();
 
-        public void InformAllLiveNodes(IEnumerable<Wire.Node.Node> liveNodes, bool isHealthyCluster) =>
+        public void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster) =>
             AllLiveNodes.IncrementAndGet();
 
         public void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading) =>

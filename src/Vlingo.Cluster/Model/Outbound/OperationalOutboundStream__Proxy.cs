@@ -9,11 +9,10 @@ using System;
 using System.Collections.Generic;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Outbound
 {
-    using Vlingo.Wire.Node;
-
     public class OperationalOutboundStream__Proxy : IOperationalOutboundStream
     {
         private const string CloseRepresentation1 = "Close(Id)";
@@ -65,7 +64,7 @@ namespace Vlingo.Cluster.Model.Outbound
             }
         }
 
-        public void Application(ApplicationSays says, IEnumerable<Node> unconfirmedNodes)
+        public void Application(ApplicationSays says, IEnumerable<Xoom.Wire.Node.Node> unconfirmedNodes)
         {
             if (!_actor.IsStopped)
             {
@@ -86,7 +85,7 @@ namespace Vlingo.Cluster.Model.Outbound
             }
         }
 
-        public void Directory(IEnumerable<Node> allLiveNodes)
+        public void Directory(IEnumerable<Xoom.Wire.Node.Node> allLiveNodes)
         {
             if (!_actor.IsStopped)
             {
@@ -107,7 +106,7 @@ namespace Vlingo.Cluster.Model.Outbound
             }
         }
 
-        public void Elect(IEnumerable<Node> allGreaterNodes)
+        public void Elect(IEnumerable<Xoom.Wire.Node.Node> allGreaterNodes)
         {
             if (!_actor.IsStopped)
             {

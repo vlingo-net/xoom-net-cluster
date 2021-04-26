@@ -8,18 +8,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Vlingo.Wire.Message;
+using Vlingo.Xoom.Wire.Message;
 
 namespace Vlingo.Cluster.Model.Message
 {
-    using Vlingo.Wire.Node;
-    
     public class OperationalMessageCache
     {
         private readonly Dictionary<string, RawMessage> _messages;
-        private readonly Node _node;
+        private readonly Xoom.Wire.Node.Node _node;
 
-        public OperationalMessageCache(Node node)
+        public OperationalMessageCache(Xoom.Wire.Node.Node node)
         {
             _messages = new Dictionary<string, RawMessage>();
             _node = node;

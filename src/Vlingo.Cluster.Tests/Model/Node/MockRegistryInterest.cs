@@ -10,8 +10,6 @@ using Vlingo.Cluster.Model.Node;
 
 namespace Vlingo.Cluster.Tests.Model.Node
 {
-    using Vlingo.Wire.Node;
-    
     public class MockRegistryInterest : IRegistryInterest
     {
         public int InformAllLiveNodesCheck { get; private set; }
@@ -32,17 +30,17 @@ namespace Vlingo.Cluster.Tests.Model.Node
         
         public int InformNodeTimedOutCheck { get; private set; }
         
-        public IEnumerable<Node> LiveNodes { get; private set; }
+        public IEnumerable<Xoom.Wire.Node.Node> LiveNodes { get; private set; }
         
         public IEnumerable<MergeResult> MergeResults { get; private set; }
 
-        public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster) => ++InformAllLiveNodesCheck;
+        public void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster) => ++InformAllLiveNodesCheck;
 
-        public void InformConfirmedByLeader(Node node, bool isHealthyCluster) => ++InformConfirmedByLeaderCheck;
+        public void InformConfirmedByLeader(Xoom.Wire.Node.Node node, bool isHealthyCluster) => ++InformConfirmedByLeaderCheck;
 
-        public void InformCurrentLeader(Node node, bool isHealthyCluster) => ++InformCurrentLeaderCheck;
+        public void InformCurrentLeader(Xoom.Wire.Node.Node node, bool isHealthyCluster) => ++InformCurrentLeaderCheck;
 
-        public void InformMergedAllDirectoryEntries(IEnumerable<Node> liveNodes, IEnumerable<MergeResult> mergeResults, bool isHealthyCluster)
+        public void InformMergedAllDirectoryEntries(IEnumerable<Xoom.Wire.Node.Node> liveNodes, IEnumerable<MergeResult> mergeResults, bool isHealthyCluster)
         {
             LiveNodes = liveNodes;
             MergeResults = mergeResults;
@@ -50,14 +48,14 @@ namespace Vlingo.Cluster.Tests.Model.Node
             ++InformMergedAllDirectoryEntriesCheck;
         }
 
-        public void InformLeaderDemoted(Node node, bool isHealthyCluster) => ++InformLeaderDemotedCheck;
+        public void InformLeaderDemoted(Xoom.Wire.Node.Node node, bool isHealthyCluster) => ++InformLeaderDemotedCheck;
 
-        public void InformNodeIsHealthy(Node node, bool isHealthyCluster) => ++InformNodeIsHealthyCheck;
+        public void InformNodeIsHealthy(Xoom.Wire.Node.Node node, bool isHealthyCluster) => ++InformNodeIsHealthyCheck;
 
-        public void InformNodeJoinedCluster(Node node, bool isHealthyCluster) => ++InformNodeJoinedClusterCheck;
+        public void InformNodeJoinedCluster(Xoom.Wire.Node.Node node, bool isHealthyCluster) => ++InformNodeJoinedClusterCheck;
 
-        public void InformNodeLeftCluster(Node node, bool isHealthyCluster) => ++InformNodeLeftClusterCheck;
+        public void InformNodeLeftCluster(Xoom.Wire.Node.Node node, bool isHealthyCluster) => ++InformNodeLeftClusterCheck;
 
-        public void InformNodeTimedOut(Node node, bool isHealthyCluster) => ++InformNodeTimedOutCheck;
+        public void InformNodeTimedOut(Xoom.Wire.Node.Node node, bool isHealthyCluster) => ++InformNodeTimedOutCheck;
     }
 }

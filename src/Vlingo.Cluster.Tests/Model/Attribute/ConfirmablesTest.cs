@@ -8,22 +8,21 @@
 using System.Linq;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Cluster.Model.Attribute.Message;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Vlingo.Cluster.Tests.Model.Attribute
 {
-    using Vlingo.Wire.Node;
-    
     public class ConfirmablesTest : AbstractClusterTest
     {
-        private Confirmables _consumables;
-        private Node _localNode;
-        private Id _localNodeId;
-        private Node _remoteNode2;
-        private Node _remoteNode3;
-        private AttributeSet _set;
-        private TrackedAttribute _tracked;
+        private readonly Confirmables _consumables;
+        private readonly Xoom.Wire.Node.Node _localNode;
+        private readonly Id _localNodeId;
+        private readonly Xoom.Wire.Node.Node _remoteNode2;
+        private readonly Xoom.Wire.Node.Node _remoteNode3;
+        private readonly AttributeSet _set;
+        private readonly TrackedAttribute _tracked;
 
         [Fact]
         public void TestCreateConfirmables()

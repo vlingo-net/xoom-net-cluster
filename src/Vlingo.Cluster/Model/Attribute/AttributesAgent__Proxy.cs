@@ -7,13 +7,12 @@
 
 using System;
 using Vlingo.Xoom.Common;
-using Vlingo.Wire.Message;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
-    using Vlingo.Wire.Node;
-    
     public class AttributesAgent__Proxy : IAttributesAgent
     {
         private const string RepresentationConclude0 = "Conclude()";
@@ -120,7 +119,7 @@ namespace Vlingo.Cluster.Model.Attribute
             }
         }
 
-        public void Synchronize(Node node)
+        public void Synchronize(Xoom.Wire.Node.Node node)
         {
             if (!_actor.IsStopped)
             {

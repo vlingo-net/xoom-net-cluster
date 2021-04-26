@@ -8,15 +8,13 @@
 using System.Collections.Generic;
 using System.IO;
 using Vlingo.Xoom.Common.Pool;
-using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Vlingo.Cluster.Tests.Model.Outbound
 {
-    using Vlingo.Wire.Fdx.Outbound;
-    
     public class OutboundTest : AbstractClusterTest
     {
         private static string _message1 = "Message1";
@@ -25,7 +23,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
   
         private readonly MockManagedOutboundChannelProvider _channelProvider;
         private readonly ConsumerByteBufferPool _pool;
-        private readonly Outbound _outbound;
+        private readonly Xoom.Wire.Fdx.Outbound.Outbound _outbound;
 
         [Fact]
         public void TestBroadcast()
@@ -87,7 +85,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
             var rawMessage2 = BuildRawMessageBuffer(buffer, _message2);
             var rawMessage3 = BuildRawMessageBuffer(buffer, _message3);
 
-            var selectNodes = new List<Wire.Node.Node>();
+            var selectNodes = new List<Xoom.Wire.Node.Node>();
             selectNodes.Add(Config.NodeMatching(Id.Of(3)));
             
             _outbound.Broadcast(selectNodes, rawMessage1);
@@ -154,7 +152,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
         {
             _pool = new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(10), Properties.OperationalBufferSize());
             _channelProvider = new MockManagedOutboundChannelProvider(Id.Of(1), Config);
-            _outbound = new Outbound(_channelProvider, new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(10), 10_000));
+            _outbound = new Xoom.Wire.Fdx.Outbound.Outbound(_channelProvider, new ConsumerByteBufferPool(ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(10), 10_000));
         }
     }
 }

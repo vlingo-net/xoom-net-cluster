@@ -7,22 +7,21 @@
 
 using System.IO;
 using Vlingo.Cluster.Model.Message;
-using Vlingo.Wire.Channel;
-using Vlingo.Wire.Message;
+using Vlingo.Xoom.Wire.Channel;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 
 namespace Vlingo.Cluster.Tests.Model.Message
 {
-    using Vlingo.Wire.Node;
-    
     public class RawMessageBuilderTest
     {
         private readonly MemoryStream _buffer;
         private readonly RawMessageBuilder _builder;
         private readonly Join _join;
         private readonly Leader _leader;
-        private readonly Node _node1;
-        private readonly Node _node2;
+        private readonly Xoom.Wire.Node.Node _node1;
+        private readonly Xoom.Wire.Node.Node _node2;
 
         [Fact]
         public void TestOneInboundMessage()
@@ -65,8 +64,8 @@ namespace Vlingo.Cluster.Tests.Model.Message
         {
             _buffer = new MemoryStream(1000);
             _builder = new RawMessageBuilder(1000);
-            _node1 = Node.With(Id.Of(1), Name.Of("node1"), Host.Of("localhost"), 37371, 37372);
-            _node2 = Node.With(Id.Of(2), Name.Of("node2"), Host.Of("localhost"), 37373, 37374);
+            _node1 = Xoom.Wire.Node.Node.With(Id.Of(1), Name.Of("node1"), Host.Of("localhost"), 37371, 37372);
+            _node2 = Xoom.Wire.Node.Node.With(Id.Of(2), Name.Of("node2"), Host.Of("localhost"), 37373, 37374);
             _join = new Join(_node1);
             _leader = new Leader(_node2.Id);
         }

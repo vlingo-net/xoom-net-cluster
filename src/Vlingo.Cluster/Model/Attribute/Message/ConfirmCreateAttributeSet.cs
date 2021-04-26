@@ -9,11 +9,9 @@ using System.Text;
 
 namespace Vlingo.Cluster.Model.Attribute.Message
 {
-    using Vlingo.Wire.Node;
-    
     public sealed class ConfirmCreateAttributeSet : ApplicationMessage
     {        
-        public ConfirmCreateAttributeSet(string? correlatingMessageId, Node node, AttributeSet set)
+        public ConfirmCreateAttributeSet(string? correlatingMessageId, Xoom.Wire.Node.Node node, AttributeSet set)
             : base(
                 correlatingMessageId,
                 ApplicationMessageType.ConfirmCreateAttributeSet,

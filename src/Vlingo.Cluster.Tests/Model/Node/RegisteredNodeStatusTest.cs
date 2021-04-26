@@ -7,12 +7,11 @@
 
 using Vlingo.Cluster.Model.Node;
 using Vlingo.Xoom.Common;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 
 namespace Vlingo.Cluster.Tests.Model.Node
 {
-    using Vlingo.Wire.Node;
-    
     public class RegisteredNodeStatusTest
     {
         [Fact]
@@ -22,7 +21,7 @@ namespace Vlingo.Cluster.Tests.Model.Node
             var name1 = new Name("name1");
             var opAddress1 = new Address(Host.Of("localhost"), 11111, AddressType.Op);
             var appAddress1 = new Address(Host.Of("localhost"), 11112, AddressType.App);
-            var node1 = new Node(id1, name1, opAddress1, appAddress1);
+            var node1 = new Xoom.Wire.Node.Node(id1, name1, opAddress1, appAddress1);
             
             var status = new RegisteredNodeStatus(node1, true, true);
             
@@ -41,7 +40,7 @@ namespace Vlingo.Cluster.Tests.Model.Node
             var name1 = new Name("name1");
             var opAddress1 = new Address(Host.Of("localhost"), 11111, AddressType.Op);
             var appAddress1 = new Address(Host.Of("localhost"), 11112, AddressType.App);
-            var node1 = new Node(id1, name1, opAddress1, appAddress1);
+            var node1 = new Xoom.Wire.Node.Node(id1, name1, opAddress1, appAddress1);
 
             var status = new RegisteredNodeStatus(node1, true, true);
     

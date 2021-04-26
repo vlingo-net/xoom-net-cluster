@@ -7,13 +7,11 @@
 
 namespace Vlingo.Cluster.Model.Attribute.Message
 {
-    using Vlingo.Wire.Node;
-    
     public sealed class RemoveAttribute : AttributeMessage
     {
-        public static RemoveAttribute From(Node node, AttributeSet set, TrackedAttribute tracked) => new RemoveAttribute(node, set, tracked);
+        public static RemoveAttribute From(Xoom.Wire.Node.Node node, AttributeSet set, TrackedAttribute tracked) => new RemoveAttribute(node, set, tracked);
 
-        public RemoveAttribute(Node node, AttributeSet set, TrackedAttribute tracked) : base(node, set, tracked, ApplicationMessageType.RemoveAttribute)
+        public RemoveAttribute(Xoom.Wire.Node.Node node, AttributeSet set, TrackedAttribute tracked) : base(node, set, tracked, ApplicationMessageType.RemoveAttribute)
         {
         }
     }

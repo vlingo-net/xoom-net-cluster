@@ -7,20 +7,19 @@
 
 using System.Collections.Generic;
 using Vlingo.Cluster.Model.Attribute;
-using Vlingo.Wire.Fdx.Outbound;
-using Vlingo.Wire.Message;
+using Vlingo.Xoom.Wire.Fdx.Outbound;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Application
 {
-    using Vlingo.Wire.Node;
-    
     public abstract class ClusterApplicationAdapter : ClusterApplicationActor, IClusterApplication
     {
         public override bool IsStopped => false;
 
         public abstract void HandleApplicationMessage(RawMessage message);
 
-        public abstract void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster);
+        public abstract void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster);
 
         public abstract void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading);
 

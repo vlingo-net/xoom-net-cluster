@@ -6,12 +6,11 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
-using Vlingo.Wire.Message;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Message
 {
-    using Vlingo.Wire.Node;
-    
     internal class OperationalMessagePartsBuilder
     {
         internal static string PayloadFrom(string content)
@@ -48,9 +47,9 @@ namespace Vlingo.Cluster.Model.Message
             return saysId;
         }
 
-        internal static IEnumerable<Node> NodesFrom(string content) => MessagePartsBuilder.NodesFrom(content);
+        internal static IEnumerable<Xoom.Wire.Node.Node> NodesFrom(string content) => MessagePartsBuilder.NodesFrom(content);
 
-        internal static Node NodeFrom(string content) => MessagePartsBuilder.NodeFrom(content);
+        internal static Xoom.Wire.Node.Node NodeFrom(string content) => MessagePartsBuilder.NodeFrom(content);
 
         internal static Id IdFrom(string content) => MessagePartsBuilder.IdFrom(content);
 

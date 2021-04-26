@@ -9,28 +9,27 @@ using System.Collections.Generic;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Xoom.Common.Pool;
-using Vlingo.Wire.Fdx.Outbound;
-using Vlingo.Wire.Message;
 using Vlingo.Xoom.Actors.TestKit;
+using Vlingo.Xoom.Wire.Fdx.Outbound;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Vlingo.Cluster.Tests.Model.Outbound
 {
-    using Vlingo.Wire.Node;
-    
     public class OperationalOutboundStreamTest : AbstractClusterTest
     {
         private readonly MockManagedOutboundChannelProvider _channelProvider;
         private readonly Id _localNodeId;
-        private readonly Node _localNode;
+        private readonly Xoom.Wire.Node.Node _localNode;
         private readonly TestActor<IOperationalOutboundStream> _outboundStream;
         private readonly TestWorld _world;
 
         [Fact]
         public void TestDirectory()
         {
-            _outboundStream.Actor.Directory(new HashSet<Node>(Config.AllNodes));
+            _outboundStream.Actor.Directory(new HashSet<Xoom.Wire.Node.Node>(Config.AllNodes));
 
             foreach (var channel in AllTargetChannels())
             {

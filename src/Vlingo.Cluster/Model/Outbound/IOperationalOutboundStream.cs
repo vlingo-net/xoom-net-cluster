@@ -7,23 +7,22 @@
 
 using System.Collections.Generic;
 using Vlingo.Cluster.Model.Message;
-using Vlingo.Wire.Fdx.Outbound;
-using Vlingo.Wire.Message;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Fdx.Outbound;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Outbound
 {
-    using Vlingo.Wire.Node;
-    
     public interface IOperationalOutboundStream : IStoppable
     {
         void Close(Id id);
         
-        void Application(ApplicationSays says, IEnumerable<Node> unconfirmedNodes);
+        void Application(ApplicationSays says, IEnumerable<Xoom.Wire.Node.Node> unconfirmedNodes);
         
-        void Directory(IEnumerable<Node> allLiveNodes);
+        void Directory(IEnumerable<Xoom.Wire.Node.Node> allLiveNodes);
         
-        void Elect(IEnumerable<Node> allGreaterNodes);
+        void Elect(IEnumerable<Xoom.Wire.Node.Node> allGreaterNodes);
         
         void Join();
         
@@ -50,7 +49,7 @@ namespace Vlingo.Cluster.Model.Outbound
     {
         public static IOperationalOutboundStream Instance(
             Stage stage,
-            Node node,
+            Xoom.Wire.Node.Node node,
             IManagedOutboundChannelProvider provider,
             ConsumerByteBufferPool byteBufferPool)
         {

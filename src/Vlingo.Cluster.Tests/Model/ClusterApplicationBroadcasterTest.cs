@@ -6,7 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Cluster.Model;
-using Vlingo.Wire.Node;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -14,7 +14,7 @@ namespace Vlingo.Cluster.Tests.Model
 {
     public class ClusterApplicationBroadcasterTest : AbstractClusterTest
     {
-        private ClusterApplicationBroadcaster _broadcaster;
+        private readonly ClusterApplicationBroadcaster _broadcaster;
 
         [Fact]
         public void TestInformAllLiveNodes()

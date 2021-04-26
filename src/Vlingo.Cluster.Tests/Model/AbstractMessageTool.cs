@@ -7,10 +7,10 @@
 
 using System.IO;
 using Vlingo.Cluster.Model;
-using Vlingo.Wire.Channel;
-using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
 using Vlingo.Xoom.Actors.Plugin.Logging.Console;
+using Vlingo.Xoom.Wire.Channel;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Tests.Model
 {

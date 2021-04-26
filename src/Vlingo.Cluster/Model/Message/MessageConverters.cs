@@ -7,8 +7,8 @@
 
 using System.IO;
 using System.Text;
-using Vlingo.Wire.Channel;
-using Vlingo.Wire.Message;
+using Vlingo.Xoom.Wire.Channel;
+using Vlingo.Xoom.Wire.Message;
 
 namespace Vlingo.Cluster.Model.Message
 {

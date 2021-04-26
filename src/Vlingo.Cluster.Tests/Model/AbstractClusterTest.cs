@@ -8,8 +8,8 @@
 using System;
 using System.Collections.Generic;
 using Vlingo.Xoom.Common;
-using Vlingo.Wire.Node;
 using Vlingo.Xoom.Actors.TestKit;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -90,7 +90,7 @@ namespace Vlingo.Cluster.Tests.Model
 
         public virtual void Dispose() => TestWorld?.Terminate();
 
-        protected Wire.Node.Node NextNodeWith(int nodeNumber) => Wire.Node.Node.With(Id.Of(nodeNumber),
+        protected Xoom.Wire.Node.Node NextNodeWith(int nodeNumber) => Xoom.Wire.Node.Node.With(Id.Of(nodeNumber),
             Name.Of($"node{nodeNumber}"), Host.Of("localhost"), NextPortToUse(), NextPortToUse());
 
         private int NextPortToUse() => PortToUse.GetAndIncrement();

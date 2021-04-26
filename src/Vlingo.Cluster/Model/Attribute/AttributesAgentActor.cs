@@ -10,25 +10,24 @@ using Vlingo.Cluster.Model.Application;
 using Vlingo.Cluster.Model.Attribute.Message;
 using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Xoom.Common;
-using Vlingo.Wire.Message;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
-    using Vlingo.Wire.Node;
-    
     public sealed class AttributesAgentActor : Actor, IAttributesAgent
     {
         private readonly AttributesClient _client;
         private readonly IConfiguration _configuration;
         private readonly IConfirmationInterest _confirmationInterest;
         private readonly ConfirmingDistributor _confirmingDistributor;
-        private readonly Node _node;
+        private readonly Xoom.Wire.Node.Node _node;
         private readonly RemoteAttributeRequestHandler _remoteRequestHandler;
         private readonly AttributeSetRepository _repository;
 
         public AttributesAgentActor(
-            Node node,
+            Xoom.Wire.Node.Node node,
             IClusterApplication application,
             IOperationalOutboundStream outbound,
             IConfiguration configuration) : this(node, application, outbound, configuration, new NoOpConfirmationInterest(configuration))
@@ -36,7 +35,7 @@ namespace Vlingo.Cluster.Model.Attribute
         }
         
         public AttributesAgentActor(
-            Node node,
+            Xoom.Wire.Node.Node node,
             IClusterApplication application,
             IOperationalOutboundStream outbound,
             IConfiguration configuration,
@@ -149,7 +148,7 @@ namespace Vlingo.Cluster.Model.Attribute
         //=========================================
         #region NodeSynchronizer
         
-        public void Synchronize(Node nodeToSynchronize)
+        public void Synchronize(Xoom.Wire.Node.Node nodeToSynchronize)
         {
             if (!_node.Equals(nodeToSynchronize))
             {

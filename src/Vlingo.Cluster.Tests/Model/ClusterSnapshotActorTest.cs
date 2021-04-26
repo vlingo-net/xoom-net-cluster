@@ -10,9 +10,9 @@ using System.IO;
 using Vlingo.Cluster.Model;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Node;
-using Vlingo.Wire.Fdx.Inbound;
-using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
+using Vlingo.Xoom.Wire.Fdx.Inbound;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -20,15 +20,15 @@ namespace Vlingo.Cluster.Tests.Model
 {
     public class ClusterSnapshotActorTest : AbstractClusterTest
     {
-        private RawMessage _opMessage;
-        private ClusterSnapshotInitializer _intializer;
+        private readonly RawMessage _opMessage;
+        private readonly ClusterSnapshotInitializer _initializer;
 
         [Fact]
         public void TestClusterSnapshot()
         {
             var snapshot =
                 TestWorld.ActorFor<IClusterSnapshot>(
-                    () => new ClusterSnapshotActor(_intializer, Application));
+                    () => new ClusterSnapshotActor(_initializer, Application));
             
             snapshot.Actor.QuorumAchieved();
             Assert.Equal(1, Application.InformQuorumAchievedCheck.Get());
@@ -42,7 +42,7 @@ namespace Vlingo.Cluster.Tests.Model
         {
             var control =
                 TestWorld.ActorFor<IClusterSnapshotControl>(
-                    () => new ClusterSnapshotActor(_intializer, Application));
+                    () => new ClusterSnapshotActor(_initializer, Application));
             
             control.Actor.ShutDown();
             Assert.Equal(1, Application.StopCheck.Get());
@@ -53,7 +53,7 @@ namespace Vlingo.Cluster.Tests.Model
         {
             var inboundStreamInterest =
                 TestWorld.ActorFor<IInboundStreamInterest>(
-                    () => new ClusterSnapshotActor(_intializer, Application));
+                    () => new ClusterSnapshotActor(_initializer, Application));
             
             inboundStreamInterest.Actor.HandleInboundStreamMessage(AddressType.Op, _opMessage);
             Assert.Equal(0, Application.HandleApplicationMessageCheck.Get());
@@ -68,7 +68,7 @@ namespace Vlingo.Cluster.Tests.Model
         {
             var registryInterest =
                 TestWorld.ActorFor<IRegistryInterest>(
-                    () => new ClusterSnapshotActor(_intializer, Application));
+                    () => new ClusterSnapshotActor(_initializer, Application));
 
             registryInterest.Actor.InformAllLiveNodes(Config.AllNodes, true);
             Assert.Equal(1, Application.AllLiveNodes.Get());
@@ -79,7 +79,7 @@ namespace Vlingo.Cluster.Tests.Model
             registryInterest.Actor.InformCurrentLeader(Config.NodeMatching(Id.Of(3)), true);
             Assert.Equal(1, Application.InformLeaderElectedCheck.Get());
     
-            var nodes = new List<Vlingo.Wire.Node.Node>();
+            var nodes = new List<Xoom.Wire.Node.Node>();
             nodes.Add(Config.NodeMatching(Id.Of(3)));
             var mergeResult = new List<MergeResult>();
             mergeResult.Add(new MergeResult(Config.NodeMatching(Id.Of(2)), true));
@@ -106,7 +106,7 @@ namespace Vlingo.Cluster.Tests.Model
 
         public ClusterSnapshotActorTest(ITestOutputHelper output) : base(output)
         {
-            _intializer = new ClusterSnapshotInitializer("node1", Properties, TestWorld.DefaultLogger);
+            _initializer = new ClusterSnapshotInitializer("node1", Properties, TestWorld.DefaultLogger);
     
             var messageBuffer = new MemoryStream(4096);
             var pulse = new Pulse(Id.Of(1));

@@ -7,19 +7,18 @@
 
 using System.Collections.Generic;
 using Vlingo.Cluster.Model.Attribute;
-using Vlingo.Wire.Fdx.Outbound;
-using Vlingo.Wire.Message;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Fdx.Outbound;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Application
 {
-    using Vlingo.Wire.Node;
-    
     public interface IClusterApplication : IStartable, IStoppable
     {
         void HandleApplicationMessage(RawMessage message);
 
-        void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster);
+        void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster);
 
         void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading);
         
@@ -56,7 +55,7 @@ namespace Vlingo.Cluster.Model.Application
 
     public static class ClusterApplicationFactory
     {
-        public static IClusterApplication Instance(World world, Node node)
+        public static IClusterApplication Instance(World world, Xoom.Wire.Node.Node node)
         {
             var clusterApplicationActor = Properties.Instance.ClusterApplicationType();
             var applicationStage = world.StageNamed(Properties.Instance.ClusterApplicationStageName());

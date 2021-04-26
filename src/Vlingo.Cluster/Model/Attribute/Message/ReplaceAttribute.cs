@@ -7,13 +7,11 @@
 
 namespace Vlingo.Cluster.Model.Attribute.Message
 {
-    using Vlingo.Wire.Node;
-    
     public sealed class ReplaceAttribute: AttributeMessage
     {
-        public static ReplaceAttribute From(Node node, AttributeSet set, TrackedAttribute tracked) => new ReplaceAttribute(node, set, tracked);
+        public static ReplaceAttribute From(Xoom.Wire.Node.Node node, AttributeSet set, TrackedAttribute tracked) => new ReplaceAttribute(node, set, tracked);
 
-        public ReplaceAttribute(Node node, AttributeSet set, TrackedAttribute tracked) : base(node, set, tracked, ApplicationMessageType.ReplaceAttribute)
+        public ReplaceAttribute(Xoom.Wire.Node.Node node, AttributeSet set, TrackedAttribute tracked) : base(node, set, tracked, ApplicationMessageType.ReplaceAttribute)
         {
         }
     }

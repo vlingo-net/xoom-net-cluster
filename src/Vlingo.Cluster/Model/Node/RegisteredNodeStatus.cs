@@ -9,16 +9,14 @@ using Vlingo.Xoom.Common;
 
 namespace Vlingo.Cluster.Model.Node
 {
-    using Vlingo.Wire.Node;
-    
     public class RegisteredNodeStatus
     {
         private bool _confirmedByLeader;
         private long _lastHealthIndication;
         private bool _leader;
-        private readonly Node _node;
+        private readonly Xoom.Wire.Node.Node _node;
 
-        public RegisteredNodeStatus(Node node, bool isLeader, bool confirmedByLeader)
+        public RegisteredNodeStatus(Xoom.Wire.Node.Node node, bool isLeader, bool confirmedByLeader)
         {
             _node = node;
             _leader = isLeader;
@@ -46,6 +44,6 @@ namespace Vlingo.Cluster.Model.Node
 
         public long LastHealthIndication => _lastHealthIndication;
 
-        public Node Node => _node;
+        public Xoom.Wire.Node.Node Node => _node;
     }
 }

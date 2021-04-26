@@ -7,8 +7,8 @@
 
 using System.Collections.Generic;
 using Vlingo.Cluster.Tests.Model.Node;
-using Vlingo.Wire.Fdx.Outbound;
-using Vlingo.Wire.Node;
+using Vlingo.Xoom.Wire.Fdx.Outbound;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Tests.Model.Outbound
 {
@@ -16,7 +16,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
     {
         private readonly Dictionary<Id, IManagedOutboundChannel> _allChannels = new Dictionary<Id, IManagedOutboundChannel>();
         private readonly IConfiguration _configuration;
-        private Id _localNodeId;
+        private readonly Id _localNodeId;
 
         public MockManagedOutboundChannelProvider(Id localNodeId, IConfiguration configuration)
         {
@@ -31,7 +31,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
 
         public IManagedOutboundChannel ChannelFor(Id id) => _allChannels[id];
 
-        public IReadOnlyDictionary<Id, IManagedOutboundChannel> ChannelsFor(IEnumerable<Wire.Node.Node> nodes)
+        public IReadOnlyDictionary<Id, IManagedOutboundChannel> ChannelsFor(IEnumerable<Xoom.Wire.Node.Node> nodes)
         {
             var others = new Dictionary<Id, IManagedOutboundChannel>();
 

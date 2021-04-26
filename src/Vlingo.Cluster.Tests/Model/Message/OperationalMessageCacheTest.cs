@@ -6,18 +6,17 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Cluster.Model.Message;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 
 namespace Vlingo.Cluster.Tests.Model.Message
 {
-    using Vlingo.Wire.Node;
-    
     public class OperationalMessageCacheTest
     {
         [Fact]
         public void TestCachedMessages()
         {
-            var node1 = Node.With(Id.Of(2), Name.Of("node2"), Host.Of("localhost"), 37373, 37374);
+            var node1 = Xoom.Wire.Node.Node.With(Id.Of(2), Name.Of("node2"), Host.Of("localhost"), 37373, 37374);
             var cache = new OperationalMessageCache(node1);
             
             var elect = cache.CachedRawMessage(OperationalMessage.ELECT);
@@ -45,7 +44,7 @@ namespace Vlingo.Cluster.Tests.Model.Message
         [Fact]
         public void TestNonCachedMessages()
         {
-            var node1 = Node.With(Id.Of(2), Name.Of("node2"), Host.Of("localhost"), 37373, 37374);
+            var node1 = Xoom.Wire.Node.Node.With(Id.Of(2), Name.Of("node2"), Host.Of("localhost"), 37373, 37374);
             var cache = new OperationalMessageCache(node1);
             
             bool caught;

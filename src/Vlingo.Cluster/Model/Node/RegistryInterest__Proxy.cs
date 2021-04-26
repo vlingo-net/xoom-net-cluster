@@ -11,8 +11,6 @@ using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Cluster.Model.Node
 {
-    using Vlingo.Wire.Node;
-
     public class RegistryInterest__Proxy : IRegistryInterest
     {
         private const string InformAllLiveNodesRepresentation1 = "InformAllLiveNodes(IEnumerable<Node>, bool)";
@@ -37,7 +35,7 @@ namespace Vlingo.Cluster.Model.Node
             _mailbox = mailbox;
         }
 
-        public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster)
+        public void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -58,7 +56,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformConfirmedByLeader(Node node, bool isHealthyCluster)
+        public void InformConfirmedByLeader(Xoom.Wire.Node.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -79,7 +77,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformCurrentLeader(Node node, bool isHealthyCluster)
+        public void InformCurrentLeader(Xoom.Wire.Node.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -100,7 +98,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformMergedAllDirectoryEntries(IEnumerable<Node> liveNodes, IEnumerable<MergeResult> mergeResults,
+        public void InformMergedAllDirectoryEntries(IEnumerable<Xoom.Wire.Node.Node> liveNodes, IEnumerable<MergeResult> mergeResults,
             bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
@@ -123,7 +121,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformLeaderDemoted(Node node, bool isHealthyCluster)
+        public void InformLeaderDemoted(Xoom.Wire.Node.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -144,7 +142,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformNodeIsHealthy(Node node, bool isHealthyCluster)
+        public void InformNodeIsHealthy(Xoom.Wire.Node.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -165,7 +163,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformNodeJoinedCluster(Node node, bool isHealthyCluster)
+        public void InformNodeJoinedCluster(Xoom.Wire.Node.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -186,7 +184,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformNodeLeftCluster(Node node, bool isHealthyCluster)
+        public void InformNodeLeftCluster(Xoom.Wire.Node.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -207,7 +205,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformNodeTimedOut(Node node, bool isHealthyCluster)
+        public void InformNodeTimedOut(Xoom.Wire.Node.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {

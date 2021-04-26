@@ -6,8 +6,8 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Cluster.Model.Attribute.Message;
-using Vlingo.Wire.Node;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Attribute
 {

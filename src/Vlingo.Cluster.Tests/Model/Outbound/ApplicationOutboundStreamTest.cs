@@ -8,10 +8,10 @@
 using System.Collections.Generic;
 using System.IO;
 using Vlingo.Xoom.Common.Pool;
-using Vlingo.Wire.Fdx.Outbound;
-using Vlingo.Wire.Message;
-using Vlingo.Wire.Node;
 using Vlingo.Xoom.Actors.TestKit;
+using Vlingo.Xoom.Wire.Fdx.Outbound;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 using Xunit.Abstractions;
 

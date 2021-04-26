@@ -8,13 +8,12 @@
 using Vlingo.Cluster.Model.Application;
 using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Xoom.Common;
-using Vlingo.Wire.Fdx.Inbound;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Fdx.Inbound;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
-    using Vlingo.Wire.Node;
-    
     public interface IAttributesAgent : IAttributesCommands, INodeSynchronizer, IInboundStreamInterest, IScheduled<object>, IStoppable
     {
     }
@@ -23,7 +22,7 @@ namespace Vlingo.Cluster.Model.Attribute
     {
         public static IAttributesAgent Instance(
             Stage stage,
-            Node node,
+            Xoom.Wire.Node.Node node,
             IClusterApplication application,
             IOperationalOutboundStream outbound,
             IConfiguration configuration)

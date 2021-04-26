@@ -9,13 +9,11 @@ using System.Text;
 
 namespace Vlingo.Cluster.Model.Attribute.Message
 {
-    using Vlingo.Wire.Node;
-    
     public sealed class RemoveAttributeSet : ApplicationMessage
     {
-        public static RemoveAttributeSet From(Node node, AttributeSet set) => new RemoveAttributeSet(node, set);
+        public static RemoveAttributeSet From(Xoom.Wire.Node.Node node, AttributeSet set) => new RemoveAttributeSet(node, set);
         
-        public RemoveAttributeSet(Node node, AttributeSet set)
+        public RemoveAttributeSet(Xoom.Wire.Node.Node node, AttributeSet set)
             : base(
                 NoCorrelatingMessageId,
                 ApplicationMessageType.RemoveAttributeSet,

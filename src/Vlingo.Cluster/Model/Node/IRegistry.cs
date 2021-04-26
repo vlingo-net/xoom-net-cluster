@@ -6,11 +6,10 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Node
 {
-    using Vlingo.Wire.Node;
-    
     public interface IRegistry
     {
         void CleanTimedOutNodes();
@@ -27,11 +26,11 @@ namespace Vlingo.Cluster.Model.Node
 
         bool HasMember(Id id);
 
-        void Join(Node node);
+        void Join(Xoom.Wire.Node.Node node);
 
         void Leave(Id id);
 
-        void MergeAllDirectoryEntries(IEnumerable<Node> nodes);
+        void MergeAllDirectoryEntries(IEnumerable<Xoom.Wire.Node.Node> nodes);
 
         void PromoteElectedLeader(Id leaderNodeId);
 
@@ -39,13 +38,13 @@ namespace Vlingo.Cluster.Model.Node
 
         void UpdateLastHealthIndication(Id id);
         
-        Node CurrentLeader { get; }
+        Xoom.Wire.Node.Node CurrentLeader { get; }
         
         bool HasLeader { get; }
         
         bool IsSingleNodeCluster { get; }
         
-        IEnumerable<Node> LiveNodes { get; }
+        IEnumerable<Xoom.Wire.Node.Node> LiveNodes { get; }
         
         bool HasQuorum { get; }
     }

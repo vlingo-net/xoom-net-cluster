@@ -9,20 +9,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Common;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Node
 {
-    using Vlingo.Wire.Node;
-    
     public sealed class LocalRegistry : IRegistry
     {
         private readonly RegistryInterestBroadcaster _broadcaster;
-        private readonly Node _localNode;
+        private readonly Xoom.Wire.Node.Node _localNode;
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
         private SortedDictionary<Id, RegisteredNodeStatus> _registry;
 
-        public LocalRegistry(Node localNode, IConfiguration confirguration, ILogger logger)
+        public LocalRegistry(Xoom.Wire.Node.Node localNode, IConfiguration confirguration, ILogger logger)
         {
             _localNode = localNode;
             _configuration = confirguration;
@@ -114,7 +113,7 @@ namespace Vlingo.Cluster.Model.Node
 
         public bool HasMember(Id id) => _registry.ContainsKey(id);
 
-        public void Join(Node node)
+        public void Join(Xoom.Wire.Node.Node node)
         {
             if (!HasMember(node.Id))
             {
@@ -139,7 +138,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void MergeAllDirectoryEntries(IEnumerable<Node> leaderRegisteredNodes)
+        public void MergeAllDirectoryEntries(IEnumerable<Xoom.Wire.Node.Node> leaderRegisteredNodes)
         {
             var result = new SortedSet<MergeResult>();
             var mergedNodes = new SortedDictionary<Id, RegisteredNodeStatus>();
@@ -211,7 +210,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public Node CurrentLeader
+        public Xoom.Wire.Node.Node CurrentLeader
         {
             get
             {
@@ -223,7 +222,7 @@ namespace Vlingo.Cluster.Model.Node
                     }
                 }
 
-                return Node.NoNode;
+                return Xoom.Wire.Node.Node.NoNode;
             }
         }
 
@@ -245,7 +244,7 @@ namespace Vlingo.Cluster.Model.Node
 
         public bool IsSingleNodeCluster => _configuration.TotalNodes == 1;
 
-        public IEnumerable<Node> LiveNodes => _registry.Values.Select(s => s.Node);
+        public IEnumerable<Xoom.Wire.Node.Node> LiveNodes => _registry.Values.Select(s => s.Node);
 
         public bool HasQuorum
         {

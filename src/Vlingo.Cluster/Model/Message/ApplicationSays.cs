@@ -6,7 +6,7 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
-using Vlingo.Wire.Node;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Message
 {

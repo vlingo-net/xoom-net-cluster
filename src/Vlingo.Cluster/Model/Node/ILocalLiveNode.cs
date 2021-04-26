@@ -8,11 +8,10 @@
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Node
 {
-    using Vlingo.Wire.Node;
-    
     public interface ILocalLiveNode : IStoppable
     {
         void Handle(OperationalMessage message);
@@ -23,7 +22,7 @@ namespace Vlingo.Cluster.Model.Node
     {
         public static ILocalLiveNode Instance(
             Stage stage,
-            Node node,
+            Xoom.Wire.Node.Node node,
             IClusterSnapshot snapshot,
             IRegistry registry,
             IOperationalOutboundStream outbound,

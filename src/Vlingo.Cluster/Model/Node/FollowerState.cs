@@ -9,11 +9,9 @@ using Vlingo.Xoom.Actors;
 
 namespace Vlingo.Cluster.Model.Node
 {
-    using Vlingo.Wire.Node;
-    
     internal sealed class FollowerState : LiveNodeState
     {
-        internal FollowerState(Node node, ILiveNodeMaintainer liveNodeMaintainer, ILogger logger) : base(node, liveNodeMaintainer, Type.Follower, logger)
+        internal FollowerState(Xoom.Wire.Node.Node node, ILiveNodeMaintainer liveNodeMaintainer, ILogger logger) : base(node, liveNodeMaintainer, Type.Follower, logger)
         {
         }
     }

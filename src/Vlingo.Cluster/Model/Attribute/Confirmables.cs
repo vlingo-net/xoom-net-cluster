@@ -14,22 +14,20 @@ using Vlingo.Xoom.Common;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
-    using Vlingo.Wire.Node;
-    
     internal sealed class Confirmables
     {
-        private List<Node> _allOtherNodes;
-        private List<Confirmable> _expectedConfirmables;
-        private Node _node;
+        private readonly List<Xoom.Wire.Node.Node> _allOtherNodes;
+        private readonly List<Confirmable> _expectedConfirmables;
+        private readonly Xoom.Wire.Node.Node _node;
 
-        internal Confirmables(Node node, IEnumerable<Node> allOtherNodes)
+        internal Confirmables(Xoom.Wire.Node.Node node, IEnumerable<Xoom.Wire.Node.Node> allOtherNodes)
         {
             _node = node;
-            _allOtherNodes = new List<Node>(allOtherNodes);
+            _allOtherNodes = new List<Xoom.Wire.Node.Node>(allOtherNodes);
             _expectedConfirmables = new List<Confirmable>();
         }
 
-        internal void Confirm(string? trackingId, Node node)
+        internal void Confirm(string? trackingId, Xoom.Wire.Node.Node node)
         {
             var confirmable = ConfirmableOf(trackingId);
             confirmable.Confirm(node);
@@ -54,9 +52,9 @@ namespace Vlingo.Cluster.Model.Attribute
 
         internal Confirmable Unconfirmed(ApplicationMessage message) => UnconfirmedFor(message, _allOtherNodes);
 
-        internal Confirmable UnconfirmedFor(ApplicationMessage message, IEnumerable<Node> nodes)
+        internal Confirmable UnconfirmedFor(ApplicationMessage message, IEnumerable<Xoom.Wire.Node.Node> nodes)
         {
-            var allOtherNodes = nodes as Node[] ?? nodes.ToArray();
+            var allOtherNodes = nodes as Xoom.Wire.Node.Node[] ?? nodes.ToArray();
             if (allOtherNodes.Contains(_node))
             {
                 throw new Exception();
@@ -80,9 +78,9 @@ namespace Vlingo.Cluster.Model.Attribute
             private long _createdOn;
             private ApplicationMessage? _message;
             private readonly string _trackingId;
-            private Dictionary<Node, int> _unconfirmedNodes;
+            private Dictionary<Xoom.Wire.Node.Node, int> _unconfirmedNodes;
             
-            internal Confirmable(ApplicationMessage message, IEnumerable<Node> allOtherNodes)
+            internal Confirmable(ApplicationMessage message, IEnumerable<Xoom.Wire.Node.Node> allOtherNodes)
             {
                 _message = message;
                 _unconfirmedNodes = AllUnconfirmedFor(allOtherNodes);
@@ -96,7 +94,7 @@ namespace Vlingo.Cluster.Model.Attribute
                 
                 if (targetTime < DateTimeHelper.CurrentTimeMillis())
                 {
-                    var allUnconfirmed = new Dictionary<Node, int>(_unconfirmedNodes.Count);
+                    var allUnconfirmed = new Dictionary<Xoom.Wire.Node.Node, int>(_unconfirmedNodes.Count);
 
                     foreach (var node in _unconfirmedNodes.Keys)
                     {
@@ -115,13 +113,13 @@ namespace Vlingo.Cluster.Model.Attribute
                 return false;
             }
 
-            internal void Confirm(Node node) => _unconfirmedNodes.Remove(node);
+            internal void Confirm(Xoom.Wire.Node.Node node) => _unconfirmedNodes.Remove(node);
 
             internal bool HasUnconfirmedNodes => _unconfirmedNodes.Any();
 
             internal ApplicationMessage? Message => _message;
 
-            internal IEnumerable<Node> UnconfirmedNodes => _unconfirmedNodes.Keys;
+            internal IEnumerable<Xoom.Wire.Node.Node> UnconfirmedNodes => _unconfirmedNodes.Keys;
 
             internal string TrackingId => _trackingId;
 
@@ -155,15 +153,15 @@ namespace Vlingo.Cluster.Model.Attribute
             private Confirmable()
             {
                 _message = null;
-                _unconfirmedNodes = new Dictionary<Node, int>();
+                _unconfirmedNodes = new Dictionary<Xoom.Wire.Node.Node, int>();
                 _createdOn = 0L;
                 _trackingId = "";
             }
             
-            private Dictionary<Node, int> AllUnconfirmedFor(IEnumerable<Node> allOtherNodes)
+            private Dictionary<Xoom.Wire.Node.Node, int> AllUnconfirmedFor(IEnumerable<Xoom.Wire.Node.Node> allOtherNodes)
             {
-                var otherNodes = allOtherNodes as Node[] ?? allOtherNodes.ToArray();
-                var allUnconfirmed = new Dictionary<Node, int>(otherNodes.Count());
+                var otherNodes = allOtherNodes as Xoom.Wire.Node.Node[] ?? allOtherNodes.ToArray();
+                var allUnconfirmed = new Dictionary<Xoom.Wire.Node.Node, int>(otherNodes.Count());
                 foreach (var node in otherNodes)
                 {
                     allUnconfirmed.Add(node, 0);

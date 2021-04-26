@@ -8,20 +8,19 @@
 using System.Collections.Generic;
 using System.IO;
 using Vlingo.Cluster.Model.Message;
-using Vlingo.Wire.Channel;
+using Vlingo.Xoom.Wire.Channel;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 using Directory = Vlingo.Cluster.Model.Message.Directory;
 
 namespace Vlingo.Cluster.Tests.Model.Message
 {
-    using Vlingo.Wire.Message;
-    using Vlingo.Wire.Node;
-    
     public class OperationalMessageGenerationTest
     {
-        private static int _bytes = 4096;
-        private MemoryStream _expectedBuffer = new MemoryStream(_bytes);
-        private MemoryStream _messageBuffer = new MemoryStream(_bytes);
+        private static readonly int _bytes = 4096;
+        private readonly MemoryStream _expectedBuffer = new MemoryStream(_bytes);
+        private readonly MemoryStream _messageBuffer = new MemoryStream(_bytes);
 
         [Fact]
         public void TestGenerateApplicationSaidMessage()
@@ -45,18 +44,18 @@ namespace Vlingo.Cluster.Tests.Model.Message
             var opAddresses = new [] { "", "localhost:37371", "localhost:37373", "localhost:37375" };
             var appAddresses = new [] { "", "localhost:37372", "localhost:37374", "localhost:37376" };
 
-            var nodeEntries = new List<Node>();
-            nodeEntries.Add(new Node(
+            var nodeEntries = new List<Xoom.Wire.Node.Node>();
+            nodeEntries.Add(new Xoom.Wire.Node.Node(
                 Id.Of(1),
                 new Name("node1"),
                 Address.From(opAddresses[1], AddressType.Op),
                 Address.From(appAddresses[1], AddressType.App)));
-            nodeEntries.Add(new Node(
+            nodeEntries.Add(new Xoom.Wire.Node.Node(
                 Id.Of(2),
                 new Name("node2"),
                 Address.From(opAddresses[2], AddressType.Op),
                 Address.From(appAddresses[2], AddressType.App)));
-            nodeEntries.Add(new Node(
+            nodeEntries.Add(new Xoom.Wire.Node.Node(
                 Id.Of(3),
                 new Name("node3"),
                 Address.From(opAddresses[3], AddressType.Op),
@@ -90,7 +89,7 @@ namespace Vlingo.Cluster.Tests.Model.Message
         [Fact]
         public void TestGenerateJoinMessge()
         {
-            var join = new Join(new Node(
+            var join = new Join(new Xoom.Wire.Node.Node(
                 Id.Of(1),
                 new Name("node1"),
                 Address.From("localhost:37371", AddressType.Op),

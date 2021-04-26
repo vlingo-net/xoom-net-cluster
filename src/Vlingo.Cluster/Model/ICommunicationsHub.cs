@@ -6,10 +6,10 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using Vlingo.Cluster.Model.Outbound;
-using Vlingo.Wire.Fdx.Inbound;
-using Vlingo.Wire.Fdx.Outbound;
-using Vlingo.Wire.Node;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Fdx.Inbound;
+using Vlingo.Xoom.Wire.Fdx.Outbound;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model
 {
@@ -17,7 +17,7 @@ namespace Vlingo.Cluster.Model
     {
         void Close();
 
-        void Open(Stage stage, Wire.Node.Node node, IInboundStreamInterest interest, IConfiguration configuration);
+        void Open(Stage stage, Xoom.Wire.Node.Node node, IInboundStreamInterest interest, IConfiguration configuration);
 
         IInboundStream? ApplicationInboundStream { get; }
 

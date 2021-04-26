@@ -7,20 +7,19 @@
 
 using System.Collections.Generic;
 using Vlingo.Cluster.Model.Attribute;
-using Vlingo.Wire.Fdx.Outbound;
-using Vlingo.Wire.Message;
+using Vlingo.Xoom.Wire.Fdx.Outbound;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Application
 {
-    using Vlingo.Wire.Node;
-    
     public class FakeClusterApplicationActor : ClusterApplicationAdapter
     {
         private IAttributesProtocol? _client;
-        private readonly Node _localNode;
+        private readonly Xoom.Wire.Node.Node _localNode;
         private IApplicationOutboundStream? _responder;
 
-        public FakeClusterApplicationActor(Node localNode)
+        public FakeClusterApplicationActor(Xoom.Wire.Node.Node localNode)
         {
             _localNode = localNode;
         }
@@ -31,7 +30,7 @@ namespace Vlingo.Cluster.Model.Application
         public override void HandleApplicationMessage(RawMessage message) =>
             Logger.Debug($"APP: Received application message: {message.AsTextMessage()}");
 
-        public override void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster)
+        public override void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster)
         {
             foreach (var id in liveNodes)
             {

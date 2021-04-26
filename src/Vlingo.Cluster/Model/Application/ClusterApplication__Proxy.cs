@@ -8,14 +8,13 @@
 using System;
 using System.Collections.Generic;
 using Vlingo.Cluster.Model.Attribute;
-using Vlingo.Wire.Fdx.Outbound;
-using Vlingo.Wire.Message;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Fdx.Outbound;
+using Vlingo.Xoom.Wire.Message;
+using Vlingo.Xoom.Wire.Node;
 
 namespace Vlingo.Cluster.Model.Application
 {
-    using Vlingo.Wire.Node;
-    
     public class ClusterApplication__Proxy : IClusterApplication
     {
         private const string HandleApplicationMessageRepresentation1 =
@@ -75,7 +74,7 @@ namespace Vlingo.Cluster.Model.Application
             }
         }
 
-        public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster)
+        public void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {

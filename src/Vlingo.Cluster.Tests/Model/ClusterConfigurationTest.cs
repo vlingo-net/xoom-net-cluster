@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Vlingo.Wire.Node;
+using Vlingo.Xoom.Wire.Node;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -22,7 +22,7 @@ namespace Vlingo.Cluster.Tests.Model
             
             Assert.Equal(3, all.Count);
 
-            var nodes = new List<Wire.Node.Node>();
+            var nodes = new List<Xoom.Wire.Node.Node>();
             nodes.Add(NextNodeWith(1));
             nodes.Add(NextNodeWith(2));
             nodes.Add(NextNodeWith(3));
@@ -76,11 +76,11 @@ namespace Vlingo.Cluster.Tests.Model
         [Fact]
         public void TestConfiguredNodeMatching()
         {
-            Assert.Equal(Wire.Node.Node.NoNode, Config.NodeMatching(Id.Of(0)));
+            Assert.Equal(Xoom.Wire.Node.Node.NoNode, Config.NodeMatching(Id.Of(0)));
             Assert.Equal("node1", Config.NodeMatching(Id.Of(1)).Name.Value);
             Assert.Equal("node2", Config.NodeMatching(Id.Of(2)).Name.Value);
             Assert.Equal("node3", Config.NodeMatching(Id.Of(3)).Name.Value);
-            Assert.Equal(Wire.Node.Node.NoNode, Config.NodeMatching(Id.Of(4)));
+            Assert.Equal(Xoom.Wire.Node.Node.NoNode, Config.NodeMatching(Id.Of(4)));
         }
 
         [Fact]

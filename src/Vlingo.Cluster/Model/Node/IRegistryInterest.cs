@@ -9,25 +9,24 @@ using System.Collections.Generic;
 
 namespace Vlingo.Cluster.Model.Node
 {
-    using Vlingo.Wire.Node;
     public interface IRegistryInterest
     {
-        void InformAllLiveNodes(IEnumerable<Node> liveNodes,  bool isHealthyCluster);
+        void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes,  bool isHealthyCluster);
         
-        void InformConfirmedByLeader(Node node,  bool isHealthyCluster);
+        void InformConfirmedByLeader(Xoom.Wire.Node.Node node,  bool isHealthyCluster);
         
-        void InformCurrentLeader(Node node,  bool isHealthyCluster);
+        void InformCurrentLeader(Xoom.Wire.Node.Node node,  bool isHealthyCluster);
         
-        void InformMergedAllDirectoryEntries(IEnumerable<Node> liveNodes,  IEnumerable<MergeResult> mergeResults,  bool isHealthyCluster);
+        void InformMergedAllDirectoryEntries(IEnumerable<Xoom.Wire.Node.Node> liveNodes,  IEnumerable<MergeResult> mergeResults,  bool isHealthyCluster);
         
-        void InformLeaderDemoted(Node node,  bool isHealthyCluster);
+        void InformLeaderDemoted(Xoom.Wire.Node.Node node,  bool isHealthyCluster);
         
-        void InformNodeIsHealthy(Node node,  bool isHealthyCluster);
+        void InformNodeIsHealthy(Xoom.Wire.Node.Node node,  bool isHealthyCluster);
         
-        void InformNodeJoinedCluster(Node node,  bool isHealthyCluster);
+        void InformNodeJoinedCluster(Xoom.Wire.Node.Node node,  bool isHealthyCluster);
         
-        void InformNodeLeftCluster(Node node,  bool isHealthyCluster);
+        void InformNodeLeftCluster(Xoom.Wire.Node.Node node,  bool isHealthyCluster);
         
-        void InformNodeTimedOut(Node node,  bool isHealthyCluster);
+        void InformNodeTimedOut(Xoom.Wire.Node.Node node,  bool isHealthyCluster);
     }
 }
