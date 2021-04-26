@@ -7,7 +7,7 @@
 
 using Vlingo.Cluster.Model.Attribute.Message;
 using Vlingo.Xoom.Actors;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
@@ -15,14 +15,9 @@ namespace Vlingo.Cluster.Model.Attribute
     {
         private readonly ILogger _logger;
 
-        public NoOpConfirmationInterest(IConfiguration configuration)
-        {
-            _logger = configuration.Logger;
-        }
-        
-        public void Confirm(Id confirmingNodeId, string? attributeSetName, string? attributeName, ApplicationMessageType type)
-        {
+        public NoOpConfirmationInterest(IConfiguration configuration) => _logger = configuration.Logger;
+
+        public void Confirm(Id confirmingNodeId, string? attributeSetName, string? attributeName, ApplicationMessageType type) => 
             _logger.Debug($"ATTR CONFIRMATION: NODE: {confirmingNodeId.Value} SET: {attributeSetName} ATTR: {attributeName} TYPE: {type}");
-        }
     }
 }

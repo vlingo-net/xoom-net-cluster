@@ -7,11 +7,13 @@
 
 using Vlingo.Xoom.Actors;
 
-namespace Vlingo.Cluster.Model.Node
+namespace Vlingo.Cluster.Model.Nodes
 {
+    using Xoom.Wire.Nodes;
+
     internal sealed class FollowerState : LiveNodeState
     {
-        internal FollowerState(Xoom.Wire.Node.Node node, ILiveNodeMaintainer liveNodeMaintainer, ILogger logger) : base(node, liveNodeMaintainer, Type.Follower, logger)
+        internal FollowerState(Node node, ILiveNodeMaintainer liveNodeMaintainer, ILogger logger) : base(node, liveNodeMaintainer, Type.Follower, logger)
         {
         }
     }

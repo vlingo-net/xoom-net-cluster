@@ -8,7 +8,7 @@
 using System.Linq;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Cluster.Model.Attribute.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -17,10 +17,10 @@ namespace Vlingo.Cluster.Tests.Model.Attribute
     public class ConfirmablesTest : AbstractClusterTest
     {
         private readonly Confirmables _consumables;
-        private readonly Xoom.Wire.Node.Node _localNode;
+        private readonly Node _localNode;
         private readonly Id _localNodeId;
-        private readonly Xoom.Wire.Node.Node _remoteNode2;
-        private readonly Xoom.Wire.Node.Node _remoteNode3;
+        private readonly Node _remoteNode2;
+        private readonly Node _remoteNode3;
         private readonly AttributeSet _set;
         private readonly TrackedAttribute _tracked;
 

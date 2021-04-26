@@ -11,7 +11,7 @@ using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Fdx.Outbound;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model.Application
 {
@@ -74,7 +74,7 @@ namespace Vlingo.Cluster.Model.Application
             }
         }
 
-        public void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster)
+        public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {

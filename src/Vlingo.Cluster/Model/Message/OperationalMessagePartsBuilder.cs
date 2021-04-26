@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model.Message
 {
@@ -47,9 +47,9 @@ namespace Vlingo.Cluster.Model.Message
             return saysId;
         }
 
-        internal static IEnumerable<Xoom.Wire.Node.Node> NodesFrom(string content) => MessagePartsBuilder.NodesFrom(content);
+        internal static IEnumerable<Node> NodesFrom(string content) => MessagePartsBuilder.NodesFrom(content);
 
-        internal static Xoom.Wire.Node.Node NodeFrom(string content) => MessagePartsBuilder.NodeFrom(content);
+        internal static Node NodeFrom(string content) => MessagePartsBuilder.NodeFrom(content);
 
         internal static Id IdFrom(string content) => MessagePartsBuilder.IdFrom(content);
 

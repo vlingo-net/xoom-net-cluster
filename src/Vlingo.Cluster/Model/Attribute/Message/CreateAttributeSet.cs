@@ -9,11 +9,13 @@ using System.Text;
 
 namespace Vlingo.Cluster.Model.Attribute.Message
 {
+    using Xoom.Wire.Nodes;
+
     public sealed class CreateAttributeSet : ApplicationMessage
     {
-        public static CreateAttributeSet From(Xoom.Wire.Node.Node node, AttributeSet set) => new CreateAttributeSet(node, set);
+        public static CreateAttributeSet From(Node node, AttributeSet set) => new CreateAttributeSet(node, set);
         
-        public CreateAttributeSet(Xoom.Wire.Node.Node node, AttributeSet set)
+        public CreateAttributeSet(Node node, AttributeSet set)
             : base(
                 NoCorrelatingMessageId,
                 ApplicationMessageType.CreateAttributeSet,

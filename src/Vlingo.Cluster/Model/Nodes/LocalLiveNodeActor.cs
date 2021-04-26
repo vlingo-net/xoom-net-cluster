@@ -10,19 +10,18 @@ using System.Collections.Generic;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Xoom.Actors;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Common;
+using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Cluster.Model.Node
+namespace Vlingo.Cluster.Model.Nodes
 {
-    using Xoom.Common;
-    
     public sealed class LocalLiveNodeActor : Actor, ILocalLiveNode, ILiveNodeMaintainer, IScheduled<object>
     {
         private readonly ICancellable _cancellable;
         private readonly CheckHealth _checkHealth;
         private readonly IConfiguration _configuration;
         private LiveNodeState? _state;
-        private readonly Xoom.Wire.Node.Node _node;
+        private readonly Node _node;
         private readonly List<INodeSynchronizer> _nodeSynchronizers;
         private readonly IOperationalOutboundStream _outbound;
         private bool _quorumAchieved;
@@ -31,7 +30,7 @@ namespace Vlingo.Cluster.Model.Node
         private readonly IRegistry _registry;
 
         public LocalLiveNodeActor(
-            Xoom.Wire.Node.Node node,
+            Node node,
             IClusterSnapshot snapshot,
             IRegistry registry,
             IOperationalOutboundStream outbound,
@@ -162,7 +161,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void Join(Xoom.Wire.Node.Node joiningNode)
+        public void Join(Node joiningNode)
         {
             _registry.Join(joiningNode);
             _outbound.Open(joiningNode.Id);
@@ -175,13 +174,13 @@ namespace Vlingo.Cluster.Model.Node
             Synchronize(joiningNode);
         }
 
-        public void JoinLocalWith(Xoom.Wire.Node.Node remoteNode)
+        public void JoinLocalWith(Node remoteNode)
         {
             Join(_node);
             Join(remoteNode);
         }
 
-        public void MergeAllDirectoryEntries(IEnumerable<Xoom.Wire.Node.Node> nodes) => _registry.MergeAllDirectoryEntries(nodes); 
+        public void MergeAllDirectoryEntries(IEnumerable<Node> nodes) => _registry.MergeAllDirectoryEntries(nodes); 
 
         public void OvertakeLeadership(Id leaderNodeId) => DeclareFollower();
 
@@ -201,7 +200,7 @@ namespace Vlingo.Cluster.Model.Node
 
         public void ProvidePulseTo(Id id) => _outbound.Pulse(id);
         
-        public void Synchronize(Xoom.Wire.Node.Node node)
+        public void Synchronize(Node node)
         {
             foreach (var syncher in _nodeSynchronizers)
             {

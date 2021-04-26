@@ -9,6 +9,8 @@ using System.Text;
 
 namespace Vlingo.Cluster.Model.Attribute.Message
 {
+    using Xoom.Wire.Nodes;
+
     public abstract class AttributeMessage : ApplicationMessage
     {
         public string? AttributeSetName { get; }
@@ -43,13 +45,13 @@ namespace Vlingo.Cluster.Model.Attribute.Message
             return builder.ToString();
         }
 
-        protected AttributeMessage(Xoom.Wire.Node.Node node, AttributeSet set, TrackedAttribute tracked, ApplicationMessageType type)
+        protected AttributeMessage(Node node, AttributeSet set, TrackedAttribute tracked, ApplicationMessageType type)
             : this(NoCorrelatingMessageId, node, set, tracked, type)
         {
             
         }
         
-        protected AttributeMessage(string? correlatingMessageId, Xoom.Wire.Node.Node node, AttributeSet set, TrackedAttribute tracked, ApplicationMessageType type)
+        protected AttributeMessage(string? correlatingMessageId, Node node, AttributeSet set, TrackedAttribute tracked, ApplicationMessageType type)
             : base(correlatingMessageId, type, TrackingIdFor(node, type, tracked.Id))
         {
             AttributeSetName = set.Name;

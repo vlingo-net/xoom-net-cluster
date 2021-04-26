@@ -12,12 +12,14 @@ using Vlingo.Xoom.Wire.Message;
 
 namespace Vlingo.Cluster.Model.Message
 {
+    using Xoom.Wire.Nodes;
+
     public class OperationalMessageCache
     {
         private readonly Dictionary<string, RawMessage> _messages;
-        private readonly Xoom.Wire.Node.Node _node;
+        private readonly Node _node;
 
-        public OperationalMessageCache(Xoom.Wire.Node.Node node)
+        public OperationalMessageCache(Node node)
         {
             _messages = new Dictionary<string, RawMessage>();
             _node = node;

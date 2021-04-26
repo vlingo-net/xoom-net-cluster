@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using Vlingo.Cluster.Model.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 
 namespace Vlingo.Cluster.Tests.Model.Message
@@ -34,18 +34,18 @@ namespace Vlingo.Cluster.Tests.Model.Message
                 ++index;
             }
 
-            var nodeEntries = new HashSet<Xoom.Wire.Node.Node>();
-            nodeEntries.Add(new Xoom.Wire.Node.Node(
+            var nodeEntries = new HashSet<Node>();
+            nodeEntries.Add(new Node(
                 Id.Of(1),
                 new Name("node1"),
                 Address.From(MessageFixtures.OpAddresses[1], AddressType.Op),
                 Address.From(MessageFixtures.AppAddresses[1], AddressType.App)));
-            nodeEntries.Add(new Xoom.Wire.Node.Node(
+            nodeEntries.Add(new Node(
                 Id.Of(2),
                 new Name("node2"),
                 Address.From(MessageFixtures.OpAddresses[2], AddressType.Op),
                 Address.From(MessageFixtures.AppAddresses[2], AddressType.App)));
-            nodeEntries.Add(new Xoom.Wire.Node.Node(
+            nodeEntries.Add(new Node(
                 Id.Of(3),
                 new Name("node3"),
                 Address.From(MessageFixtures.OpAddresses[3], AddressType.Op),
@@ -78,7 +78,7 @@ namespace Vlingo.Cluster.Tests.Model.Message
             var join = OperationalMessage.MessageFrom(MessageFixtures.JoinAsText());
             Assert.True(join.IsJoin);
             var expectedNode =
-                new Xoom.Wire.Node.Node(
+                new Node(
                     Id.Of(1),
                     new Name("node1"),
                     Address.From("localhost:37371", AddressType.Op),

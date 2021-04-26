@@ -7,7 +7,7 @@
 
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Cluster.Model.Attribute.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Tests.Model.Attribute
 {

@@ -10,11 +10,11 @@ using System.Threading;
 using Vlingo.Cluster.Model.Application;
 using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Cluster.Model.Message;
-using Vlingo.Cluster.Model.Node;
+using Vlingo.Cluster.Model.Nodes;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Fdx.Inbound;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model
 {   
@@ -25,7 +25,7 @@ namespace Vlingo.Cluster.Model
         private readonly ClusterApplicationBroadcaster _broadcaster;
         private readonly ICommunicationsHub _communicationsHub;
         private readonly ILocalLiveNode _localLiveNode;
-        private readonly Xoom.Wire.Node.Node _localNode;
+        private readonly Node _localNode;
 
         public ClusterSnapshotActor(ClusterSnapshotInitializer initializer, IClusterApplication clusterApplication)
         {
@@ -125,16 +125,16 @@ namespace Vlingo.Cluster.Model
         // RegistryInterest
         //=========================================
 
-        public void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster) =>
+        public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster) =>
             _broadcaster.InformAllLiveNodes(liveNodes, isHealthyCluster);
 
-        public void InformConfirmedByLeader(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformConfirmedByLeader(Node node, bool isHealthyCluster) =>
             _broadcaster.InformNodeIsHealthy(node.Id, isHealthyCluster);
 
-        public void InformCurrentLeader(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformCurrentLeader(Node node, bool isHealthyCluster) =>
             _broadcaster.InformLeaderElected(node.Id, isHealthyCluster, node.Id.Equals(_localNode.Id));
 
-        public void InformMergedAllDirectoryEntries(IEnumerable<Xoom.Wire.Node.Node> liveNodes, IEnumerable<MergeResult> mergeResults, bool isHealthyCluster)
+        public void InformMergedAllDirectoryEntries(IEnumerable<Node> liveNodes, IEnumerable<MergeResult> mergeResults, bool isHealthyCluster)
         {
             foreach (var mergeResult in mergeResults)
             {
@@ -149,19 +149,19 @@ namespace Vlingo.Cluster.Model
             }
         }
 
-        public void InformLeaderDemoted(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformLeaderDemoted(Node node, bool isHealthyCluster) =>
             _broadcaster.InformLeaderLost(node.Id, isHealthyCluster);
 
-        public void InformNodeIsHealthy(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformNodeIsHealthy(Node node, bool isHealthyCluster) =>
             _broadcaster.InformNodeIsHealthy(node.Id, isHealthyCluster);
 
-        public void InformNodeJoinedCluster(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformNodeJoinedCluster(Node node, bool isHealthyCluster) =>
             _broadcaster.InformNodeJoinedCluster(node.Id, isHealthyCluster);
 
-        public void InformNodeLeftCluster(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformNodeLeftCluster(Node node, bool isHealthyCluster) =>
             _broadcaster.InformNodeLeftCluster(node.Id, isHealthyCluster);
 
-        public void InformNodeTimedOut(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformNodeTimedOut(Node node, bool isHealthyCluster) =>
             _broadcaster.InformNodeLeftCluster(node.Id, isHealthyCluster);
         
         private void Pause()

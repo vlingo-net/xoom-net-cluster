@@ -5,9 +5,9 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-using Vlingo.Cluster.Model.Node;
+using Vlingo.Cluster.Model.Nodes;
 using Vlingo.Xoom.Actors;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model
 {
@@ -15,7 +15,7 @@ namespace Vlingo.Cluster.Model
     {
         private readonly ICommunicationsHub _communicationsHub;
         private readonly IConfiguration _configuration;
-        private readonly Xoom.Wire.Node.Node _localNode;
+        private readonly Node _localNode;
         private readonly Id _localNodeId;
         private readonly IRegistry _registry;
 
@@ -32,7 +32,7 @@ namespace Vlingo.Cluster.Model
 
         internal IConfiguration Configuration => _configuration;
 
-        public Xoom.Wire.Node.Node LocalNode => _localNode;
+        public Node LocalNode => _localNode;
 
         public Id LocalNodeId => _localNodeId;
 

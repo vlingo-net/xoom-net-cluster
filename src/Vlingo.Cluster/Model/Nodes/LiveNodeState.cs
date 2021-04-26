@@ -8,20 +8,22 @@
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Xoom.Actors;
 
-namespace Vlingo.Cluster.Model.Node
+namespace Vlingo.Cluster.Model.Nodes
 {
+    using Xoom.Wire.Nodes;
+
     internal abstract class LiveNodeState
     {
         protected readonly ILiveNodeMaintainer LiveNodeMaintainer;
         protected readonly ILogger Logger;
         protected readonly Type StateType;
-        protected readonly Xoom.Wire.Node.Node Node;
+        protected readonly Node Node;
         
         internal TimeoutTracker NoQuorumTracker => new TimeoutTracker(Properties.Instance.ClusterQuorumTimeout());
         internal TimeoutTracker LeaderElectionTracker => new TimeoutTracker(Properties.Instance.ClusterHeartbeatInterval());
 
         internal LiveNodeState(
-            Xoom.Wire.Node.Node node,
+            Node node,
             ILiveNodeMaintainer liveNodeMaintainer,
             Type stateType,
             ILogger logger)

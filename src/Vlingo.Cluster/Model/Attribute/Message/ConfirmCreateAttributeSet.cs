@@ -11,7 +11,7 @@ namespace Vlingo.Cluster.Model.Attribute.Message
 {
     public sealed class ConfirmCreateAttributeSet : ApplicationMessage
     {        
-        public ConfirmCreateAttributeSet(string? correlatingMessageId, Xoom.Wire.Node.Node node, AttributeSet set)
+        public ConfirmCreateAttributeSet(string? correlatingMessageId, Xoom.Wire.Nodes.Node node, AttributeSet set)
             : base(
                 correlatingMessageId,
                 ApplicationMessageType.ConfirmCreateAttributeSet,

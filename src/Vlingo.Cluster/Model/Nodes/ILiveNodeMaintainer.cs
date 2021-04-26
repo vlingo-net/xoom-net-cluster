@@ -6,9 +6,9 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Cluster.Model.Node
+namespace Vlingo.Cluster.Model.Nodes
 {
     public interface ILiveNodeMaintainer : INodeSynchronizer
     {
@@ -22,11 +22,11 @@ namespace Vlingo.Cluster.Model.Node
         
         void EscalateElection(Id id);
         
-        void Join(Xoom.Wire.Node.Node node);
+        void Join(Node node);
         
-        void JoinLocalWith(Xoom.Wire.Node.Node remoteNode);
+        void JoinLocalWith(Node remoteNode);
         
-        void MergeAllDirectoryEntries(IEnumerable<Xoom.Wire.Node.Node> nodes);
+        void MergeAllDirectoryEntries(IEnumerable<Node> nodes);
         
         void OvertakeLeadership(Id leaderNodeId);
         

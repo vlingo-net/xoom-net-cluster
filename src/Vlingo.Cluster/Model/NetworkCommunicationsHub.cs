@@ -11,7 +11,7 @@ using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Fdx.Inbound;
 using Vlingo.Xoom.Wire.Fdx.Outbound;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model
 {
@@ -33,7 +33,7 @@ namespace Vlingo.Cluster.Model
             _applicationOutboundStream?.Stop();
         }
 
-        public void Open(Stage stage, Xoom.Wire.Node.Node node, IInboundStreamInterest interest, IConfiguration configuration)
+        public void Open(Stage stage, Node node, IInboundStreamInterest interest, IConfiguration configuration)
         {
             _operationalInboundStream =
                 InboundStreamFactory.Instance(

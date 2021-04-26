@@ -8,14 +8,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model.Message
 {
     public sealed class Directory : OperationalMessage
     {
         private readonly Name _name;
-        private readonly List<Xoom.Wire.Node.Node> _nodes;
+        private readonly List<Node> _nodes;
         
         public static Directory From(string content)
         {
@@ -26,7 +26,7 @@ namespace Vlingo.Cluster.Model.Message
             return new Directory(id, name, nodes);
         }
 
-        public Directory(Id id, Name name, IEnumerable<Xoom.Wire.Node.Node> nodes) : base(id)
+        public Directory(Id id, Name name, IEnumerable<Node> nodes) : base(id)
         {
             _name = name;
             _nodes = nodes
@@ -55,7 +55,7 @@ namespace Vlingo.Cluster.Model.Message
             }
         }
 
-        public IEnumerable<Xoom.Wire.Node.Node> Nodes => _nodes;
+        public IEnumerable<Node> Nodes => _nodes;
         
         public Name Name => _name;
 

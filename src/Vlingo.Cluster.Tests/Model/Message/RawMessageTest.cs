@@ -10,7 +10,7 @@ using System.IO;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Xoom.Wire.Channel;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -94,7 +94,7 @@ namespace Vlingo.Cluster.Tests.Model.Message
         public void TestPut()
         {
             var buffer = new MemoryStream(1000);
-            var node1 = Xoom.Wire.Node.Node.With(Id.Of(1), Name.Of("node1"), Host.Of("localhost"), 37371, 37372);
+            var node1 = Node.With(Id.Of(1), Name.Of("node1"), Host.Of("localhost"), 37371, 37372);
             var join = new Join(node1);
             MessageConverters.MessageToBytes(join, buffer);
             var message = new RawMessage(1000);

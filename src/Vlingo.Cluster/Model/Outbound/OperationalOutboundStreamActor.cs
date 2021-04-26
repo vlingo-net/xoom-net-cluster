@@ -10,7 +10,7 @@ using Vlingo.Cluster.Model.Message;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Fdx.Outbound;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model.Outbound
 {
@@ -18,10 +18,10 @@ namespace Vlingo.Cluster.Model.Outbound
     {
         
         private readonly OperationalMessageCache _cache;
-        private readonly Xoom.Wire.Node.Node _node;
+        private readonly Node _node;
         private readonly Xoom.Wire.Fdx.Outbound.Outbound _outbound;
 
-        public OperationalOutboundStreamActor(Xoom.Wire.Node.Node node, IManagedOutboundChannelProvider provider, ConsumerByteBufferPool byteBufferPool)
+        public OperationalOutboundStreamActor(Node node, IManagedOutboundChannelProvider provider, ConsumerByteBufferPool byteBufferPool)
         {
             _node = node;
             _outbound = new Xoom.Wire.Fdx.Outbound.Outbound(provider, byteBufferPool);
@@ -35,7 +35,7 @@ namespace Vlingo.Cluster.Model.Outbound
 
         public void Close(Id id) => _outbound.Close(id);
 
-        public void Application(ApplicationSays says, IEnumerable<Xoom.Wire.Node.Node> unconfirmedNodes)
+        public void Application(ApplicationSays says, IEnumerable<Node> unconfirmedNodes)
         {
             var buffer = _outbound.PooledByteBuffer();
             MessageConverters.MessageToBytes(says, buffer.AsStream());
@@ -45,7 +45,7 @@ namespace Vlingo.Cluster.Model.Outbound
             _outbound.Broadcast(unconfirmedNodes, _outbound.BytesFrom(message, buffer));
         }
 
-        public void Directory(IEnumerable<Xoom.Wire.Node.Node> allLiveNodes)
+        public void Directory(IEnumerable<Node> allLiveNodes)
         {
             var dir = new Directory(_node.Id, _node.Name, allLiveNodes);
             
@@ -57,7 +57,7 @@ namespace Vlingo.Cluster.Model.Outbound
             _outbound.Broadcast(_outbound.BytesFrom(message, buffer));
         }
 
-        public void Elect(IEnumerable<Xoom.Wire.Node.Node> allGreaterNodes) =>
+        public void Elect(IEnumerable<Node> allGreaterNodes) =>
             _outbound.Broadcast(allGreaterNodes, _cache.CachedRawMessage(OperationalMessage.ELECT));
 
         public void Join() => _outbound.Broadcast(_cache.CachedRawMessage(OperationalMessage.JOIN));

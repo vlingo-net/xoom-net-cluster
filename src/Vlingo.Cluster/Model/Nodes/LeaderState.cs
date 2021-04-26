@@ -8,11 +8,13 @@
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Xoom.Actors;
 
-namespace Vlingo.Cluster.Model.Node
+namespace Vlingo.Cluster.Model.Nodes
 {
+    using Xoom.Wire.Nodes;
+
     internal sealed class LeaderState : LiveNodeState
     {
-        internal LeaderState(Xoom.Wire.Node.Node node, ILiveNodeMaintainer liveNodeMaintainer, ILogger logger) : base(node, liveNodeMaintainer, Type.Leader, logger)
+        internal LeaderState(Node node, ILiveNodeMaintainer liveNodeMaintainer, ILogger logger) : base(node, liveNodeMaintainer, Type.Leader, logger)
         {
         }
 

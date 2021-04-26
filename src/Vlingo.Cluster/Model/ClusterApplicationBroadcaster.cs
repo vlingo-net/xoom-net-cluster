@@ -12,7 +12,7 @@ using Vlingo.Cluster.Model.Attribute;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Fdx.Outbound;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model
 {
@@ -51,7 +51,7 @@ namespace Vlingo.Cluster.Model
         public void HandleApplicationMessage(RawMessage message)
             => Broadcast(app => app.HandleApplicationMessage(message));
 
-        public void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster) =>
+        public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster) =>
             Broadcast(app => app.InformAllLiveNodes(liveNodes, isHealthyCluster));
 
         public void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading) =>

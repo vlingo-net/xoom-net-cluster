@@ -9,10 +9,10 @@ using System.Collections.Generic;
 using System.IO;
 using Vlingo.Cluster.Model;
 using Vlingo.Cluster.Model.Message;
-using Vlingo.Cluster.Model.Node;
+using Vlingo.Cluster.Model.Nodes;
 using Vlingo.Xoom.Wire.Fdx.Inbound;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -79,7 +79,7 @@ namespace Vlingo.Cluster.Tests.Model
             registryInterest.Actor.InformCurrentLeader(Config.NodeMatching(Id.Of(3)), true);
             Assert.Equal(1, Application.InformLeaderElectedCheck.Get());
     
-            var nodes = new List<Xoom.Wire.Node.Node>();
+            var nodes = new List<Node>();
             nodes.Add(Config.NodeMatching(Id.Of(3)));
             var mergeResult = new List<MergeResult>();
             mergeResult.Add(new MergeResult(Config.NodeMatching(Id.Of(2)), true));

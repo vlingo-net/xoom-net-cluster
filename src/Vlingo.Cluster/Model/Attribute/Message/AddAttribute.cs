@@ -5,13 +5,15 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using Vlingo.Xoom.Wire.Nodes;
+
 namespace Vlingo.Cluster.Model.Attribute.Message
 {
     public sealed class AddAttribute : AttributeMessage
     {
-        public static AddAttribute From(Xoom.Wire.Node.Node node, AttributeSet set, TrackedAttribute tracked) => new AddAttribute(node, set, tracked);
+        public static AddAttribute From(Node node, AttributeSet set, TrackedAttribute tracked) => new AddAttribute(node, set, tracked);
 
-        public AddAttribute(Xoom.Wire.Node.Node node, AttributeSet set, TrackedAttribute tracked) : base(node, set, tracked, ApplicationMessageType.AddAttribute)
+        public AddAttribute(Node node, AttributeSet set, TrackedAttribute tracked) : base(node, set, tracked, ApplicationMessageType.AddAttribute)
         {
         }
     }

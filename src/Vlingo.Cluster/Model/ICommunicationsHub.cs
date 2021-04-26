@@ -9,7 +9,7 @@ using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Fdx.Inbound;
 using Vlingo.Xoom.Wire.Fdx.Outbound;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model
 {
@@ -17,7 +17,7 @@ namespace Vlingo.Cluster.Model
     {
         void Close();
 
-        void Open(Stage stage, Xoom.Wire.Node.Node node, IInboundStreamInterest interest, IConfiguration configuration);
+        void Open(Stage stage, Node node, IInboundStreamInterest interest, IConfiguration configuration);
 
         IInboundStream? ApplicationInboundStream { get; }
 

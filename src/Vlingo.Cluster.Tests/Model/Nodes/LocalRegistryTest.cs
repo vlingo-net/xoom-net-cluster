@@ -7,13 +7,13 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Vlingo.Cluster.Model.Node;
+using Vlingo.Cluster.Model.Nodes;
 using Vlingo.Xoom.Common;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Vlingo.Cluster.Tests.Model.Node
+namespace Vlingo.Cluster.Tests.Model.Nodes
 {
     public class LocalRegistryTest : AbstractClusterTest
     {
@@ -178,7 +178,7 @@ namespace Vlingo.Cluster.Tests.Model.Node
         {
             var registry = Join3Nodes();
             
-            var leaderRegisteredNodesToMerge = new List<Xoom.Wire.Node.Node>();
+            var leaderRegisteredNodesToMerge = new List<Node>();
     
             leaderRegisteredNodesToMerge.Add(NodeOf(1));
             leaderRegisteredNodesToMerge.Add(NodeOf(2));
@@ -271,13 +271,13 @@ namespace Vlingo.Cluster.Tests.Model.Node
             return registry;
         }
   
-        private Xoom.Wire.Node.Node NodeOf(int idValue)
+        private Node NodeOf(int idValue)
         {
             var id = Id.Of(idValue);
             var name = new Name($"node{idValue}");
             var opAddress = new Address(Host.Of("localhost"), 1111 + idValue, AddressType.Op);
             var appAddress = new Address(Host.Of("localhost"), 1111 + idValue+1, AddressType.App);
-            var node = new Xoom.Wire.Node.Node(id, name, opAddress, appAddress);
+            var node = new Node(id, name, opAddress, appAddress);
     
             return node;
         }

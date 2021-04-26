@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Xoom.Actors;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model.Outbound
 {
@@ -64,7 +64,7 @@ namespace Vlingo.Cluster.Model.Outbound
             }
         }
 
-        public void Application(ApplicationSays says, IEnumerable<Xoom.Wire.Node.Node> unconfirmedNodes)
+        public void Application(ApplicationSays says, IEnumerable<Node> unconfirmedNodes)
         {
             if (!_actor.IsStopped)
             {
@@ -85,7 +85,7 @@ namespace Vlingo.Cluster.Model.Outbound
             }
         }
 
-        public void Directory(IEnumerable<Xoom.Wire.Node.Node> allLiveNodes)
+        public void Directory(IEnumerable<Node> allLiveNodes)
         {
             if (!_actor.IsStopped)
             {
@@ -106,7 +106,7 @@ namespace Vlingo.Cluster.Model.Outbound
             }
         }
 
-        public void Elect(IEnumerable<Xoom.Wire.Node.Node> allGreaterNodes)
+        public void Elect(IEnumerable<Node> allGreaterNodes)
         {
             if (!_actor.IsStopped)
             {

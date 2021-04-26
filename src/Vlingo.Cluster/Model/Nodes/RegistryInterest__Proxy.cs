@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using Vlingo.Xoom.Actors;
 
-namespace Vlingo.Cluster.Model.Node
+namespace Vlingo.Cluster.Model.Nodes
 {
     public class RegistryInterest__Proxy : IRegistryInterest
     {
@@ -35,7 +35,7 @@ namespace Vlingo.Cluster.Model.Node
             _mailbox = mailbox;
         }
 
-        public void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster)
+        public void InformAllLiveNodes(IEnumerable<Xoom.Wire.Nodes.Node> liveNodes, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -56,7 +56,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformConfirmedByLeader(Xoom.Wire.Node.Node node, bool isHealthyCluster)
+        public void InformConfirmedByLeader(Xoom.Wire.Nodes.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -77,7 +77,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformCurrentLeader(Xoom.Wire.Node.Node node, bool isHealthyCluster)
+        public void InformCurrentLeader(Xoom.Wire.Nodes.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -98,7 +98,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformMergedAllDirectoryEntries(IEnumerable<Xoom.Wire.Node.Node> liveNodes, IEnumerable<MergeResult> mergeResults,
+        public void InformMergedAllDirectoryEntries(IEnumerable<Xoom.Wire.Nodes.Node> liveNodes, IEnumerable<MergeResult> mergeResults,
             bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
@@ -121,7 +121,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformLeaderDemoted(Xoom.Wire.Node.Node node, bool isHealthyCluster)
+        public void InformLeaderDemoted(Xoom.Wire.Nodes.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -142,7 +142,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformNodeIsHealthy(Xoom.Wire.Node.Node node, bool isHealthyCluster)
+        public void InformNodeIsHealthy(Xoom.Wire.Nodes.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -163,7 +163,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformNodeJoinedCluster(Xoom.Wire.Node.Node node, bool isHealthyCluster)
+        public void InformNodeJoinedCluster(Xoom.Wire.Nodes.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -184,7 +184,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformNodeLeftCluster(Xoom.Wire.Node.Node node, bool isHealthyCluster)
+        public void InformNodeLeftCluster(Xoom.Wire.Nodes.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {
@@ -205,7 +205,7 @@ namespace Vlingo.Cluster.Model.Node
             }
         }
 
-        public void InformNodeTimedOut(Xoom.Wire.Node.Node node, bool isHealthyCluster)
+        public void InformNodeTimedOut(Xoom.Wire.Nodes.Node node, bool isHealthyCluster)
         {
             if (!_actor.IsStopped)
             {

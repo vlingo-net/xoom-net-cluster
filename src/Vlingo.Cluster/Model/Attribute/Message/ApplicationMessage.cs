@@ -7,11 +7,13 @@
 
 namespace Vlingo.Cluster.Model.Attribute.Message
 {
+    using Xoom.Wire.Nodes;
+
     public abstract class ApplicationMessage
     {
         public const string NoCorrelatingMessageId = "-";
         
-        public static string TrackingIdFor(Xoom.Wire.Node.Node node, ApplicationMessageType type, string? trailingId) =>
+        public static string TrackingIdFor(Node node, ApplicationMessageType type, string? trailingId) =>
             $"{node.Name.Value}:{type.ToString()}:{trailingId}";
         
         public abstract string ToPayload();

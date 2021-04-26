@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using Vlingo.Xoom.Common.Pool;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -85,7 +85,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
             var rawMessage2 = BuildRawMessageBuffer(buffer, _message2);
             var rawMessage3 = BuildRawMessageBuffer(buffer, _message3);
 
-            var selectNodes = new List<Xoom.Wire.Node.Node>();
+            var selectNodes = new List<Node>();
             selectNodes.Add(Config.NodeMatching(Id.Of(3)));
             
             _outbound.Broadcast(selectNodes, rawMessage1);

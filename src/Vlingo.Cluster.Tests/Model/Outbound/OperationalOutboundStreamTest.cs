@@ -12,7 +12,7 @@ using Vlingo.Xoom.Common.Pool;
 using Vlingo.Xoom.Actors.TestKit;
 using Vlingo.Xoom.Wire.Fdx.Outbound;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -22,14 +22,14 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
     {
         private readonly MockManagedOutboundChannelProvider _channelProvider;
         private readonly Id _localNodeId;
-        private readonly Xoom.Wire.Node.Node _localNode;
+        private readonly Node _localNode;
         private readonly TestActor<IOperationalOutboundStream> _outboundStream;
         private readonly TestWorld _world;
 
         [Fact]
         public void TestDirectory()
         {
-            _outboundStream.Actor.Directory(new HashSet<Xoom.Wire.Node.Node>(Config.AllNodes));
+            _outboundStream.Actor.Directory(new HashSet<Node>(Config.AllNodes));
 
             foreach (var channel in AllTargetChannels())
             {

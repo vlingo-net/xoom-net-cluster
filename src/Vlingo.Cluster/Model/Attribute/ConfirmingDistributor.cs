@@ -13,7 +13,7 @@ using Vlingo.Cluster.Model.Attribute.Message;
 using Vlingo.Cluster.Model.Message;
 using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Xoom.Actors;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
@@ -22,14 +22,14 @@ namespace Vlingo.Cluster.Model.Attribute
         private readonly IClusterApplication _application;
         private readonly Confirmables _confirmables;
   
-        private readonly IEnumerable<Xoom.Wire.Node.Node> _allOtherNodes;
+        private readonly IEnumerable<Node> _allOtherNodes;
         private readonly ILogger _logger;
-        private readonly Xoom.Wire.Node.Node _node;
+        private readonly Node _node;
         private readonly IOperationalOutboundStream _outbound;
 
         public void DistributeRemove(AttributeSet set) => DistributeRemoveTo(set, _allOtherNodes);
 
-        internal ConfirmingDistributor(IClusterApplication application, Xoom.Wire.Node.Node node, IOperationalOutboundStream outbound, IConfiguration configuration)
+        internal ConfirmingDistributor(IClusterApplication application, Node node, IOperationalOutboundStream outbound, IConfiguration configuration)
         {
             _application = application;
             _node = node;
@@ -40,11 +40,11 @@ namespace Vlingo.Cluster.Model.Attribute
 
         }
 
-        internal void AcknowledgeConfirmation(string? trackingId, Xoom.Wire.Node.Node node) => _confirmables.Confirm(trackingId, node);
+        internal void AcknowledgeConfirmation(string? trackingId, Node node) => _confirmables.Confirm(trackingId, node);
         
         internal void DistributeCreate(AttributeSet set) => DistributeTo(set, _allOtherNodes);
 
-        internal void DistributeTo(AttributeSet set, IEnumerable<Xoom.Wire.Node.Node> nodes)
+        internal void DistributeTo(AttributeSet set, IEnumerable<Node> nodes)
         {
             var create = new CreateAttributeSet(_node, set);
             var confirmable = _confirmables.UnconfirmedFor(create, nodes);
@@ -57,10 +57,10 @@ namespace Vlingo.Cluster.Model.Attribute
             }
         }
 
-        internal void DistributeRemoveTo(AttributeSet set, IEnumerable<Xoom.Wire.Node.Node> nodes)
+        internal void DistributeRemoveTo(AttributeSet set, IEnumerable<Node> nodes)
         {
             // remove attributes first, then the set
-            var allNodes = nodes as Xoom.Wire.Node.Node[] ?? nodes.ToArray();
+            var allNodes = nodes as Node[] ?? nodes.ToArray();
             foreach (var untracked in set.All)
             {
                 DistributeTo(set, untracked, ApplicationMessageType.RemoveAttribute, allNodes);
@@ -79,7 +79,7 @@ namespace Vlingo.Cluster.Model.Attribute
             AttributeSet set,
             TrackedAttribute tracked,
             ApplicationMessageType type,
-            IEnumerable<Xoom.Wire.Node.Node> nodes)
+            IEnumerable<Node> nodes)
         {
             switch (type)
             {
@@ -112,14 +112,14 @@ namespace Vlingo.Cluster.Model.Attribute
             }
         }
 
-        internal void ConfirmCreate(string? correlatingMessageId, AttributeSet set, Xoom.Wire.Node.Node toOriginalSource)
+        internal void ConfirmCreate(string? correlatingMessageId, AttributeSet set, Node toOriginalSource)
         {
             var confirm = new ConfirmCreateAttributeSet(correlatingMessageId, _node, set);
             _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, confirm.ToPayload()), toOriginalSource.Collected);
             _application.InformAttributeSetCreated(set.Name);
         }
         
-        internal void ConfirmRemove(string? correlatingMessageId, AttributeSet set, Xoom.Wire.Node.Node toOriginalSource)
+        internal void ConfirmRemove(string? correlatingMessageId, AttributeSet set, Node toOriginalSource)
         {
             var confirm = new ConfirmRemoveAttributeSet(correlatingMessageId, _node, set);
             _outbound.Application(ApplicationSays.From(_node.Id, _node.Name, confirm.ToPayload()), toOriginalSource.Collected);
@@ -130,7 +130,7 @@ namespace Vlingo.Cluster.Model.Attribute
             string? correlatingMessageId,
             AttributeSet set,
             TrackedAttribute tracked,
-            ApplicationMessageType type, Xoom.Wire.Node.Node toOriginalSource)
+            ApplicationMessageType type, Node toOriginalSource)
         {
             switch (type)
             {
@@ -169,7 +169,7 @@ namespace Vlingo.Cluster.Model.Attribute
             }
         }
         
-        internal void SynchronizeTo(IEnumerable<AttributeSet> sets, Xoom.Wire.Node.Node targetNode)
+        internal void SynchronizeTo(IEnumerable<AttributeSet> sets, Node targetNode)
         {
             var onlyOneTargetNode = targetNode.Collected;
             foreach (var set in sets)
@@ -178,7 +178,7 @@ namespace Vlingo.Cluster.Model.Attribute
             }
         }
 
-        internal IEnumerable<Xoom.Wire.Node.Node> UnconfirmedNodesFor(string trackingId) => _confirmables.ConfirmableOf(trackingId).UnconfirmedNodes;
+        internal IEnumerable<Node> UnconfirmedNodesFor(string trackingId) => _confirmables.ConfirmableOf(trackingId).UnconfirmedNodes;
 
         internal IEnumerable<string> AllTrackingIds => _confirmables.AllTrackingIds;
     }

@@ -9,8 +9,10 @@ using System;
 using System.Collections.Generic;
 using Vlingo.Xoom.Actors;
 
-namespace Vlingo.Cluster.Model.Node
+namespace Vlingo.Cluster.Model.Nodes
 {
+    using Xoom.Wire.Nodes;
+
     public class RegistryInterestBroadcaster : IRegistryInterest
     {
         private readonly ILogger _logger;
@@ -28,33 +30,33 @@ namespace Vlingo.Cluster.Model.Node
         // RegistryInterest
         //========================================
 
-        public void InformAllLiveNodes(IEnumerable<Xoom.Wire.Node.Node> liveNodes, bool isHealthyCluster) =>
+        public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster) =>
             Broadcast(interest => interest.InformAllLiveNodes(liveNodes, isHealthyCluster));
 
-        public void InformConfirmedByLeader(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformConfirmedByLeader(Node node, bool isHealthyCluster) =>
             Broadcast(interest => interest.InformConfirmedByLeader(node, isHealthyCluster));
 
-        public void InformCurrentLeader(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformCurrentLeader(Node node, bool isHealthyCluster) =>
             Broadcast(interest => interest.InformCurrentLeader(node, isHealthyCluster));
 
         public void InformMergedAllDirectoryEntries(
-            IEnumerable<Xoom.Wire.Node.Node> liveNodes,
+            IEnumerable<Node> liveNodes,
             IEnumerable<MergeResult> mergeResults,
             bool isHealthyCluster) => Broadcast(interest => interest.InformMergedAllDirectoryEntries(liveNodes, mergeResults, isHealthyCluster));
 
-        public void InformLeaderDemoted(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformLeaderDemoted(Node node, bool isHealthyCluster) =>
             Broadcast(interest => interest.InformLeaderDemoted(node, isHealthyCluster));
 
-        public void InformNodeIsHealthy(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformNodeIsHealthy(Node node, bool isHealthyCluster) =>
             Broadcast(interest => interest.InformNodeIsHealthy(node, isHealthyCluster));
 
-        public void InformNodeJoinedCluster(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformNodeJoinedCluster(Node node, bool isHealthyCluster) =>
             Broadcast(interest => interest.InformNodeJoinedCluster(node, isHealthyCluster));
 
-        public void InformNodeLeftCluster(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformNodeLeftCluster(Node node, bool isHealthyCluster) =>
             Broadcast(interest => interest.InformNodeLeftCluster(node, isHealthyCluster));
 
-        public void InformNodeTimedOut(Xoom.Wire.Node.Node node, bool isHealthyCluster) =>
+        public void InformNodeTimedOut(Node node, bool isHealthyCluster) =>
             Broadcast(interest => interest.InformNodeTimedOut(node, isHealthyCluster));
         
         private void Broadcast(Action<IRegistryInterest> inform)

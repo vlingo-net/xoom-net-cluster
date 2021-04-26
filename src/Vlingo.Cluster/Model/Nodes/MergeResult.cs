@@ -7,14 +7,16 @@
 
 using System;
 
-namespace Vlingo.Cluster.Model.Node
+namespace Vlingo.Cluster.Model.Nodes
 {
+    using Xoom.Wire.Nodes;
+
     public class MergeResult : IComparable<MergeResult>
     {
         private readonly bool _joined;
-        private readonly Xoom.Wire.Node.Node _node;
+        private readonly Node _node;
 
-        public MergeResult(Xoom.Wire.Node.Node node, bool joined)
+        public MergeResult(Node node, bool joined)
         {
             _node = node;
             _joined = joined;
@@ -24,7 +26,7 @@ namespace Vlingo.Cluster.Model.Node
 
         public bool Left => !_joined;
 
-        public Xoom.Wire.Node.Node Node => _node;
+        public Node Node => _node;
 
         public int CompareTo(MergeResult? other) => _node.CompareTo(other?._node);
     }

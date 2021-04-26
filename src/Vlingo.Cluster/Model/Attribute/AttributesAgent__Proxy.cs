@@ -9,7 +9,7 @@ using System;
 using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Message;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
@@ -119,7 +119,7 @@ namespace Vlingo.Cluster.Model.Attribute
             }
         }
 
-        public void Synchronize(Xoom.Wire.Node.Node node)
+        public void Synchronize(Node node)
         {
             if (!_actor.IsStopped)
             {

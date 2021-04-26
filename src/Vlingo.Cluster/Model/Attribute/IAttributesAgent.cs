@@ -10,7 +10,7 @@ using Vlingo.Cluster.Model.Outbound;
 using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Fdx.Inbound;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Model.Attribute
 {
@@ -22,7 +22,7 @@ namespace Vlingo.Cluster.Model.Attribute
     {
         public static IAttributesAgent Instance(
             Stage stage,
-            Xoom.Wire.Node.Node node,
+            Node node,
             IClusterApplication application,
             IOperationalOutboundStream outbound,
             IConfiguration configuration)

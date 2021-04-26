@@ -6,9 +6,8 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System.Collections.Generic;
-using Vlingo.Cluster.Tests.Model.Node;
 using Vlingo.Xoom.Wire.Fdx.Outbound;
-using Vlingo.Xoom.Wire.Node;
+using Vlingo.Xoom.Wire.Nodes;
 
 namespace Vlingo.Cluster.Tests.Model.Outbound
 {
@@ -31,7 +30,7 @@ namespace Vlingo.Cluster.Tests.Model.Outbound
 
         public IManagedOutboundChannel ChannelFor(Id id) => _allChannels[id];
 
-        public IReadOnlyDictionary<Id, IManagedOutboundChannel> ChannelsFor(IEnumerable<Xoom.Wire.Node.Node> nodes)
+        public IReadOnlyDictionary<Id, IManagedOutboundChannel> ChannelsFor(IEnumerable<Node> nodes)
         {
             var others = new Dictionary<Id, IManagedOutboundChannel>();
 
