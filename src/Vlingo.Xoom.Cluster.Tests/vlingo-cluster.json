@@ -30,7 +30,7 @@
           "buffers": 50
         }
       },
-      "class": "Vlingo.Cluster.Model.Application.FakeClusterApplicationActor",
+      "class": "Vlingo.Xoom.Cluster.Model.Application.FakeClusterApplicationActor",
       "stage": "fake.app.stage"
     },
     "msg": {
