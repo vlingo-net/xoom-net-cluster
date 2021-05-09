@@ -8,13 +8,13 @@ configuration: Release
 skip_commits:
   message: /.*\[ci\-skip\].*/
 before_build:
-  - dotnet restore src/Vlingo.Cluster.sln
+  - dotnet restore src/Vlingo.Xoom.Cluster.sln
 build:
-  project: src/Vlingo.Cluster.sln
+  project: src/Vlingo.Xoom.Cluster.sln
   verbosity: minimal
   publish_nuget: true
 test_script:
-  - dotnet test src/Vlingo.Cluster.Tests
+  - dotnet test src/Vlingo.Xoom.Cluster.Tests
 deploy:
   - provider: NuGet
     api_key:
