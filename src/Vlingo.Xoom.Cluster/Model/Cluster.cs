@@ -15,10 +15,10 @@ namespace Vlingo.Xoom.Cluster.Model
         private static readonly string InternalName = Guid.NewGuid().ToString();
         private static volatile object _syncRoot = new object();
 
-        public static (IClusterSnapshotControl, ILogger) ControlFor(string nodeName)
-            => ControlFor(World.Start("vlingo-cluster"), nodeName);
+        public static Tuple<IClusterSnapshotControl, ILogger> ControlFor(Properties properties, string nodeName)
+            => ControlFor(World.Start("vlingo-cluster"), properties, nodeName);
 
-        public static (IClusterSnapshotControl, ILogger) ControlFor(World world, string nodeName)
+        public static Tuple<IClusterSnapshotControl, ILogger> ControlFor(World world, Properties properties, string nodeName)
         {
             lock (_syncRoot)
             {
@@ -31,7 +31,7 @@ namespace Vlingo.Xoom.Cluster.Model
     
                 world.RegisterDynamic(InternalName, control);
                 
-                return (control, logger);   
+                return new Tuple<IClusterSnapshotControl, ILogger>(control, logger);   
             }
         }
 
