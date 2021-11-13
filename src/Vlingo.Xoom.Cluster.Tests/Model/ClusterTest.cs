@@ -5,6 +5,8 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
+using Vlingo.Xoom.Actors;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -15,7 +17,7 @@ namespace Vlingo.Xoom.Cluster.Tests.Model
         [Fact]
         public void TestClusterSnapshotControl()
         {
-            var (control, _) = Vlingo.Xoom.Cluster.Model.Cluster.ControlFor("node1");
+            var (control, _) = Vlingo.Xoom.Cluster.Model.Cluster.ControlFor(World.StartWithDefaults("test"), Properties, "node1");
 
             Assert.NotNull(control);
         }
