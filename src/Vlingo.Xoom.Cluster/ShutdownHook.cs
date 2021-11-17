@@ -14,10 +14,10 @@ namespace Vlingo.Xoom.Cluster
 {
     internal sealed class ShutdownHook
     {
-        private readonly (IClusterSnapshotControl, ILogger) _control;
+        private readonly Tuple<IClusterSnapshotControl, ILogger> _control;
         private readonly string _nodeName;
 
-        internal ShutdownHook(string nodeName, (IClusterSnapshotControl, ILogger) control)
+        internal ShutdownHook(string nodeName, Tuple<IClusterSnapshotControl, ILogger> control)
         {
             _nodeName = nodeName;
             _control = control;
