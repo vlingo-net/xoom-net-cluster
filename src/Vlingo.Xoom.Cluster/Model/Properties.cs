@@ -41,11 +41,8 @@ namespace Vlingo.Xoom.Cluster.Model
             }
         }
 
-        public static Properties OpenWith(Properties properties)
-        {
-            Instance.UpdateCustomProperties(properties);
-            return Instance;
-        }
+        public static Properties OpenWith(Properties properties) => 
+            properties;
 
         public static Properties OpenForTest(Properties properties) => OpenWith(properties);
 
@@ -314,15 +311,6 @@ namespace Vlingo.Xoom.Cluster.Model
             foreach (var property in properties)
             {
                 SetProperty(property.Key, property.Value);
-            }
-        }
-        
-        private void UpdateCustomProperties(Properties properties)
-        {
-            foreach (var key in properties.Keys)
-            {
-                var propertyValue = properties.GetProperty(key);
-                SetProperty(key, propertyValue!);
             }
         }
 
