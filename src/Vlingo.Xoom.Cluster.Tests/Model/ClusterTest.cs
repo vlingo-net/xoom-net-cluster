@@ -17,7 +17,7 @@ namespace Vlingo.Xoom.Cluster.Tests.Model
         [Fact]
         public void TestClusterSnapshotControl()
         {
-            var (control, _) = Vlingo.Xoom.Cluster.Model.Cluster.ControlFor(World.StartWithDefaults("test"), Properties, "node1");
+            var (control, _) = Vlingo.Xoom.Cluster.Model.Cluster.ControlFor<FakeClusterActor>(World.StartWithDefaults("test"), node => default, Properties, "node1");
 
             Assert.NotNull(control);
         }
@@ -25,5 +25,9 @@ namespace Vlingo.Xoom.Cluster.Tests.Model
         public ClusterTest(ITestOutputHelper output) : base(output)
         {
         }
+    }
+
+    public class FakeClusterActor : Actor
+    {
     }
 }

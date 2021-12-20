@@ -5,7 +5,9 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Cluster.Model.Attribute;
 using Vlingo.Xoom.Wire.Fdx.Outbound;
@@ -55,15 +57,8 @@ namespace Vlingo.Xoom.Cluster.Model.Application
 
     public static class ClusterApplicationFactory
     {
-        public static IClusterApplication Instance(World world, Node node)
-        {
-            var clusterApplicationActor = Properties.Instance.ClusterApplicationType();
-            var applicationStage = world.StageNamed(Properties.Instance.ClusterApplicationStageName());
-            
-            return applicationStage
-                .ActorFor<IClusterApplication>(
-                    Definition.Has(clusterApplicationActor,
-                        Definition.Parameters(node), "cluster-application"));
-        }
+        public static IClusterApplication Instance<TActor>(Stage applicationStage,
+            Expression<Func<TActor>> instantiator) => 
+            applicationStage.ActorFor<IClusterApplication>(Definition.Has(instantiator, "cluster-application"));
     }
 }

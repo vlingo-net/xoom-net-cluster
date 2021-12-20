@@ -6,8 +6,10 @@
 // one at https://mozilla.org/MPL/2.0/.
 
 using System;
+using System.Linq.Expressions;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Cluster.Model;
+using Vlingo.Xoom.Wire.Nodes;
 using Properties = Vlingo.Xoom.Cluster.Model.Properties;
 
 namespace Vlingo.Xoom.Cluster
@@ -20,18 +22,23 @@ namespace Vlingo.Xoom.Cluster
         {
         }
         
-        public static NodeBootstrap Boot(string nodeName) => Boot(nodeName, false);
+        public static NodeBootstrap Boot<TActor>(string nodeName) => Boot<TActor>(nodeName, false);
         
-        public static NodeBootstrap Boot(string nodeName, bool embedded) => Boot(World.Start("xoom-cluster"), nodeName, embedded);
+        public static NodeBootstrap Boot<TActor>(string nodeName, bool embedded) => Boot<TActor>(World.Start("xoom-cluster"), nodeName, embedded);
         
-        public static NodeBootstrap Boot(World world, string nodeName, bool embedded)
-            => Boot(World.Start("xoom-cluster"), Properties.Instance, nodeName, embedded);
+        public static NodeBootstrap Boot<TActor>(World world, string nodeName, bool embedded)
+            => Boot<TActor>(World.Start("xoom-cluster"), node => default!, Properties.Instance, nodeName, embedded);
 
-        public static NodeBootstrap Boot(World world, Properties properties, string nodeName, bool embedded)
+        public static NodeBootstrap Boot<TActor>(
+            World world,
+            Expression<Func<Node, TActor>> instantiator,
+            Properties properties,
+            string nodeName,
+            bool embedded)
         {
             Properties.Instance.ValidateRequired(nodeName);
   
-            var control = Model.Cluster.ControlFor(world, properties, nodeName);
+            var control = Model.Cluster.ControlFor(world, instantiator, properties, nodeName);
   
             var instance = new NodeBootstrap(control, nodeName);
   
