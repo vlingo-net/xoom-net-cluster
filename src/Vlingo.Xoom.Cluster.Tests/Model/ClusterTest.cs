@@ -7,6 +7,7 @@
 
 using System;
 using Vlingo.Xoom.Actors;
+using Vlingo.Xoom.Wire.Nodes;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -17,7 +18,7 @@ namespace Vlingo.Xoom.Cluster.Tests.Model
         [Fact]
         public void TestClusterSnapshotControl()
         {
-            var (control, _) = Vlingo.Xoom.Cluster.Model.Cluster.ControlFor<FakeClusterActor>(World.StartWithDefaults("test"), node => default, Properties, "node1");
+            var (control, _) = Vlingo.Xoom.Cluster.Model.Cluster.ControlFor(World.StartWithDefaults("test"), node => new FakeClusterActor(node), Properties, "node1");
 
             Assert.NotNull(control);
         }
@@ -29,5 +30,8 @@ namespace Vlingo.Xoom.Cluster.Tests.Model
 
     public class FakeClusterActor : Actor
     {
+        public FakeClusterActor(Node node)
+        {
+        }
     }
 }
