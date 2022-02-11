@@ -8,39 +8,38 @@
 using System;
 using Vlingo.Xoom.Actors;
 
-namespace Vlingo.Xoom.Cluster.Model
+namespace Vlingo.Xoom.Cluster.Model;
+
+public class ClusterSnapshotControl__Proxy : IClusterSnapshotControl
 {
-    public class ClusterSnapshotControl__Proxy : IClusterSnapshotControl
+    private const string ShutDownRepresentation1 = "ShutDown()";
+
+    private readonly Actor _actor;
+    private readonly IMailbox _mailbox;
+
+    public ClusterSnapshotControl__Proxy(Actor actor, IMailbox mailbox)
     {
-        private const string ShutDownRepresentation1 = "ShutDown()";
+        _actor = actor;
+        _mailbox = mailbox;
+    }
 
-        private readonly Actor _actor;
-        private readonly IMailbox _mailbox;
-
-        public ClusterSnapshotControl__Proxy(Actor actor, IMailbox mailbox)
+    public void ShutDown()
+    {
+        if (!_actor.IsStopped)
         {
-            _actor = actor;
-            _mailbox = mailbox;
-        }
-
-        public void ShutDown()
-        {
-            if (!_actor.IsStopped)
+            Action<IClusterSnapshotControl> consumer = x => x.ShutDown();
+            if (_mailbox.IsPreallocated)
             {
-                Action<IClusterSnapshotControl> consumer = x => x.ShutDown();
-                if (_mailbox.IsPreallocated)
-                {
-                    _mailbox.Send(_actor, consumer, null, ShutDownRepresentation1);
-                }
-                else
-                {
-                    _mailbox.Send(new LocalMessage<IClusterSnapshotControl>(_actor, consumer, ShutDownRepresentation1));
-                }
+                _mailbox.Send(_actor, consumer, null, ShutDownRepresentation1);
             }
             else
             {
-                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, ShutDownRepresentation1));
+                _mailbox.Send(new LocalMessage<IClusterSnapshotControl>(_actor, consumer, ShutDownRepresentation1));
             }
+        }
+        else
+        {
+            _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, ShutDownRepresentation1));
         }
     }
 }

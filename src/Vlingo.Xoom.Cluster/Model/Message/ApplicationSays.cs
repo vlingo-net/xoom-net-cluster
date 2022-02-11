@@ -8,72 +8,71 @@
 using System;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Message
+namespace Vlingo.Xoom.Cluster.Model.Message;
+
+public sealed class ApplicationSays : OperationalMessage
 {
-    public sealed class ApplicationSays : OperationalMessage
+    public static ApplicationSays From(string content)
     {
-        public static ApplicationSays From(string content)
-        {
-            var id = OperationalMessagePartsBuilder.IdFrom(content);
-            var name = OperationalMessagePartsBuilder.NameFrom(content);
-            var saysId = OperationalMessagePartsBuilder.SaysIdFrom(content);
-            var payload = OperationalMessagePartsBuilder.PayloadFrom(content);
+        var id = OperationalMessagePartsBuilder.IdFrom(content);
+        var name = OperationalMessagePartsBuilder.NameFrom(content);
+        var saysId = OperationalMessagePartsBuilder.SaysIdFrom(content);
+        var payload = OperationalMessagePartsBuilder.PayloadFrom(content);
             
-            return new ApplicationSays(id, name, saysId, payload);
-        }
+        return new ApplicationSays(id, name, saysId, payload);
+    }
         
-        public static ApplicationSays From(Id id, Name name, string? payload) => new ApplicationSays(id, name, payload);
+    public static ApplicationSays From(Id id, Name name, string? payload) => new ApplicationSays(id, name, payload);
         
-        public Name Name { get; }
+    public Name Name { get; }
         
-        public string? Payload { get; }
+    public string? Payload { get; }
         
-        public string? SaysId { get; }
+    public string? SaysId { get; }
 
-        public override bool IsApp => true;
+    public override bool IsApp => true;
 
-        public override bool Equals(object? obj)
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != typeof(ApplicationSays))
         {
-            if (obj == null || obj.GetType() != typeof(ApplicationSays))
-            {
-                return false;
-            }
+            return false;
+        }
 
-            var otherAppSaid = (ApplicationSays) obj;
+        var otherAppSaid = (ApplicationSays) obj;
 
-            if (Payload == null)
-            {
-                return Name.Equals(otherAppSaid.Name);
-            }
+        if (Payload == null)
+        {
+            return Name.Equals(otherAppSaid.Name);
+        }
             
-            return Name.Equals(otherAppSaid.Name) && 
-                   Payload.Equals(otherAppSaid.Payload);
-        }
+        return Name.Equals(otherAppSaid.Name) && 
+               Payload.Equals(otherAppSaid.Payload);
+    }
 
-        public override int GetHashCode()
+    public override int GetHashCode()
+    {
+        if (Payload == null)
         {
-            if (Payload == null)
-            {
-                return 31 * Name.GetHashCode();
-            }
+            return 31 * Name.GetHashCode();
+        }
             
-            return 31 * Name.GetHashCode() + Payload.GetHashCode();
-        }
+        return 31 * Name.GetHashCode() + Payload.GetHashCode();
+    }
 
-        public override string ToString() => $"ApplicationSays[{Id},{Name},{Payload}]";
+    public override string ToString() => $"ApplicationSays[{Id},{Name},{Payload}]";
 
-        private ApplicationSays(Id id, Name name, string? payload) : base(id)
-        {
-            Name = name;
-            Payload = payload;
-            SaysId = Guid.NewGuid().ToString();
-        }
+    private ApplicationSays(Id id, Name name, string? payload) : base(id)
+    {
+        Name = name;
+        Payload = payload;
+        SaysId = Guid.NewGuid().ToString();
+    }
         
-        private ApplicationSays(Id id, Name name, string? saysId, string? payload) : base(id)
-        {
-            Name = name;
-            SaysId = saysId;
-            Payload = payload;
-        }
+    private ApplicationSays(Id id, Name name, string? saysId, string? payload) : base(id)
+    {
+        Name = name;
+        SaysId = saysId;
+        Payload = payload;
     }
 }

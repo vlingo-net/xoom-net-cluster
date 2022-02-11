@@ -7,30 +7,29 @@
 
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Message
+namespace Vlingo.Xoom.Cluster.Model.Message;
+
+public sealed class Ping : OperationalMessage
 {
-    public sealed class Ping : OperationalMessage
+    public static Ping From(string content) =>  new Ping(OperationalMessagePartsBuilder.IdFrom(content));
+        
+    public Ping(Id id) : base(id)
     {
-        public static Ping From(string content) =>  new Ping(OperationalMessagePartsBuilder.IdFrom(content));
-        
-        public Ping(Id id) : base(id)
-        {
-        }
-
-        public override bool IsPing => true;
-        
-        public override bool Equals(object? obj)
-        {
-            if (obj == null || obj.GetType() != typeof(Ping))
-            {
-                return false;
-            }
-
-            return Id.Equals(((Ping) obj).Id);
-        }
-
-        public override int GetHashCode() => 31 * Id.GetHashCode();
-
-        public override string ToString() => $"Ping[{Id}]";
     }
+
+    public override bool IsPing => true;
+        
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != typeof(Ping))
+        {
+            return false;
+        }
+
+        return Id.Equals(((Ping) obj).Id);
+    }
+
+    public override int GetHashCode() => 31 * Id.GetHashCode();
+
+    public override string ToString() => $"Ping[{Id}]";
 }

@@ -7,30 +7,29 @@
 
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Message
+namespace Vlingo.Xoom.Cluster.Model.Message;
+
+public sealed class Leave : OperationalMessage
 {
-    public sealed class Leave : OperationalMessage
+    public static Leave From(string content) =>  new Leave(OperationalMessagePartsBuilder.IdFrom(content));
+        
+    public Leave(Id id) : base(id)
     {
-        public static Leave From(string content) =>  new Leave(OperationalMessagePartsBuilder.IdFrom(content));
-        
-        public Leave(Id id) : base(id)
-        {
-        }
-
-        public override bool IsLeave => true;
-        
-        public override bool Equals(object? obj)
-        {
-            if (obj == null || obj.GetType() != typeof(Leave))
-            {
-                return false;
-            }
-
-            return Id.Equals(((Leave) obj).Id);
-        }
-
-        public override int GetHashCode() => 31 * Id.GetHashCode();
-
-        public override string ToString() => $"Leave[{Id}]";
     }
+
+    public override bool IsLeave => true;
+        
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != typeof(Leave))
+        {
+            return false;
+        }
+
+        return Id.Equals(((Leave) obj).Id);
+    }
+
+    public override int GetHashCode() => 31 * Id.GetHashCode();
+
+    public override string ToString() => $"Leave[{Id}]";
 }

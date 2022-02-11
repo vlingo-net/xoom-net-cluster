@@ -7,24 +7,23 @@
 
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Attribute.Message
-{
-    public sealed class ConfirmAttribute : AttributeMessage
-    {
-        public static ConfirmAttribute From(
-            string? correlatingMessageId,
-            Node node,
-            AttributeSet set,
-            TrackedAttribute tracked,
-            ApplicationMessageType type) => new ConfirmAttribute(correlatingMessageId, node, set, tracked, type);
+namespace Vlingo.Xoom.Cluster.Model.Attribute.Message;
 
-        public ConfirmAttribute(
-            string? correlatingMessageId,
-            Node node,
-            AttributeSet set,
-            TrackedAttribute tracked,
-            ApplicationMessageType type) : base(correlatingMessageId, node, set, tracked, type)
-        {
-        }
+public sealed class ConfirmAttribute : AttributeMessage
+{
+    public static ConfirmAttribute From(
+        string? correlatingMessageId,
+        Node node,
+        AttributeSet set,
+        TrackedAttribute tracked,
+        ApplicationMessageType type) => new ConfirmAttribute(correlatingMessageId, node, set, tracked, type);
+
+    public ConfirmAttribute(
+        string? correlatingMessageId,
+        Node node,
+        AttributeSet set,
+        TrackedAttribute tracked,
+        ApplicationMessageType type) : base(correlatingMessageId, node, set, tracked, type)
+    {
     }
 }

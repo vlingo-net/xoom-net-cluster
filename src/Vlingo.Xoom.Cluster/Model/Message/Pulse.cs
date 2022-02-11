@@ -7,30 +7,29 @@
 
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Message
+namespace Vlingo.Xoom.Cluster.Model.Message;
+
+public sealed class Pulse : OperationalMessage
 {
-    public sealed class Pulse : OperationalMessage
+    public static Pulse From(string content) =>  new Pulse(OperationalMessagePartsBuilder.IdFrom(content));
+        
+    public Pulse(Id id) : base(id)
     {
-        public static Pulse From(string content) =>  new Pulse(OperationalMessagePartsBuilder.IdFrom(content));
-        
-        public Pulse(Id id) : base(id)
-        {
-        }
-
-        public override bool IsPulse => true;
-        
-        public override bool Equals(object? obj)
-        {
-            if (obj == null || obj.GetType() != typeof(Pulse))
-            {
-                return false;
-            }
-
-            return Id.Equals(((Pulse) obj).Id);
-        }
-
-        public override int GetHashCode() => 31 * Id.GetHashCode();
-
-        public override string ToString() => $"Pulse[{Id}]";
     }
+
+    public override bool IsPulse => true;
+        
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != typeof(Pulse))
+        {
+            return false;
+        }
+
+        return Id.Equals(((Pulse) obj).Id);
+    }
+
+    public override int GetHashCode() => 31 * Id.GetHashCode();
+
+    public override string ToString() => $"Pulse[{Id}]";
 }

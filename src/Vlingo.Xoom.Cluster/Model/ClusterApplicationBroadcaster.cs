@@ -14,101 +14,100 @@ using Vlingo.Xoom.Wire.Fdx.Outbound;
 using Vlingo.Xoom.Wire.Message;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model
+namespace Vlingo.Xoom.Cluster.Model;
+
+internal class ClusterApplicationBroadcaster : IClusterApplication
 {
-    internal class ClusterApplicationBroadcaster : IClusterApplication
+    private readonly List<IClusterApplication> _clusterApplications;
+    private readonly ILogger _logger;
+
+    internal ClusterApplicationBroadcaster(ILogger logger)
     {
-        private readonly List<IClusterApplication> _clusterApplications;
-        private readonly ILogger _logger;
+        _logger = logger;
+        _clusterApplications = new List<IClusterApplication>();
+    }
 
-        internal ClusterApplicationBroadcaster(ILogger logger)
-        {
-            _logger = logger;
-            _clusterApplications = new List<IClusterApplication>();
-        }
-
-        public void RegisterClusterApplication(IClusterApplication clusterApplication) =>
-            _clusterApplications.Add(clusterApplication);
+    public void RegisterClusterApplication(IClusterApplication clusterApplication) =>
+        _clusterApplications.Add(clusterApplication);
             
-        //========================================
-        // ClusterApplication
-        //========================================
+    //========================================
+    // ClusterApplication
+    //========================================
         
-        public bool IsStopped => false;
+    public bool IsStopped => false;
         
-        public void Start()
-        {
-        }
+    public void Start()
+    {
+    }
         
-        public void Conclude()
-        {
-        }
+    public void Conclude()
+    {
+    }
 
-        public void Stop()
-        {
-        }
+    public void Stop()
+    {
+    }
         
-        public void HandleApplicationMessage(RawMessage message)
-            => Broadcast(app => app.HandleApplicationMessage(message));
+    public void HandleApplicationMessage(RawMessage message)
+        => Broadcast(app => app.HandleApplicationMessage(message));
 
-        public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster) =>
-            Broadcast(app => app.InformAllLiveNodes(liveNodes, isHealthyCluster));
+    public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster) =>
+        Broadcast(app => app.InformAllLiveNodes(liveNodes, isHealthyCluster));
 
-        public void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading) =>
-            Broadcast(app => app.InformLeaderElected(leaderId, isHealthyCluster, isLocalNodeLeading));
+    public void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading) =>
+        Broadcast(app => app.InformLeaderElected(leaderId, isHealthyCluster, isLocalNodeLeading));
 
-        public void InformLeaderLost(Id lostLeaderId, bool isHealthyCluster) =>
-            Broadcast(app => app.InformLeaderLost(lostLeaderId, isHealthyCluster));
+    public void InformLeaderLost(Id lostLeaderId, bool isHealthyCluster) =>
+        Broadcast(app => app.InformLeaderLost(lostLeaderId, isHealthyCluster));
 
-        public void InformLocalNodeShutDown(Id nodeId) => Broadcast(app => app.InformLocalNodeShutDown(nodeId));
+    public void InformLocalNodeShutDown(Id nodeId) => Broadcast(app => app.InformLocalNodeShutDown(nodeId));
 
-        public void InformLocalNodeStarted(Id nodeId) => Broadcast(app => app.InformLocalNodeStarted(nodeId));
+    public void InformLocalNodeStarted(Id nodeId) => Broadcast(app => app.InformLocalNodeStarted(nodeId));
 
-        public void InformNodeIsHealthy(Id nodeId, bool isHealthyCluster) =>
-            Broadcast(app => app.InformNodeIsHealthy(nodeId, isHealthyCluster));
+    public void InformNodeIsHealthy(Id nodeId, bool isHealthyCluster) =>
+        Broadcast(app => app.InformNodeIsHealthy(nodeId, isHealthyCluster));
 
-        public void InformNodeJoinedCluster(Id nodeId, bool isHealthyCluster) =>
-            Broadcast(app => app.InformNodeJoinedCluster(nodeId, isHealthyCluster));
+    public void InformNodeJoinedCluster(Id nodeId, bool isHealthyCluster) =>
+        Broadcast(app => app.InformNodeJoinedCluster(nodeId, isHealthyCluster));
 
-        public void InformNodeLeftCluster(Id nodeId, bool isHealthyCluster) =>
-            Broadcast(app => app.InformNodeLeftCluster(nodeId, isHealthyCluster));
+    public void InformNodeLeftCluster(Id nodeId, bool isHealthyCluster) =>
+        Broadcast(app => app.InformNodeLeftCluster(nodeId, isHealthyCluster));
 
-        public void InformQuorumAchieved() => Broadcast(app => app.InformQuorumAchieved());
+    public void InformQuorumAchieved() => Broadcast(app => app.InformQuorumAchieved());
 
-        public void InformQuorumLost() => Broadcast(app => app.InformQuorumLost());
-        public void InformResponder(IApplicationOutboundStream? responder)
-            => Broadcast(app => app.InformResponder(responder));
+    public void InformQuorumLost() => Broadcast(app => app.InformQuorumLost());
+    public void InformResponder(IApplicationOutboundStream? responder)
+        => Broadcast(app => app.InformResponder(responder));
 
-        public void InformAttributesClient(IAttributesProtocol client) =>
-            Broadcast(app => app.InformAttributesClient(client));
+    public void InformAttributesClient(IAttributesProtocol client) =>
+        Broadcast(app => app.InformAttributesClient(client));
 
-        public void InformAttributeSetCreated(string? attributeSetName) =>
-            Broadcast(app => app.InformAttributeSetCreated(attributeSetName));
+    public void InformAttributeSetCreated(string? attributeSetName) =>
+        Broadcast(app => app.InformAttributeSetCreated(attributeSetName));
 
-        public void InformAttributeAdded(string attributeSetName, string? attributeName) =>
-            Broadcast(app => app.InformAttributeAdded(attributeSetName, attributeName));
+    public void InformAttributeAdded(string attributeSetName, string? attributeName) =>
+        Broadcast(app => app.InformAttributeAdded(attributeSetName, attributeName));
 
-        public void InformAttributeRemoved(string attributeSetName, string? attributeName) =>
-            Broadcast(app => app.InformAttributeRemoved(attributeSetName, attributeName));
+    public void InformAttributeRemoved(string attributeSetName, string? attributeName) =>
+        Broadcast(app => app.InformAttributeRemoved(attributeSetName, attributeName));
 
-        public void InformAttributeSetRemoved(string? attributeSetName) =>
-            Broadcast(app => app.InformAttributeSetRemoved(attributeSetName));
+    public void InformAttributeSetRemoved(string? attributeSetName) =>
+        Broadcast(app => app.InformAttributeSetRemoved(attributeSetName));
 
-        public void InformAttributeReplaced(string attributeSetName, string? attributeName) =>
-            Broadcast(app => app.InformAttributeReplaced(attributeSetName, attributeName));
+    public void InformAttributeReplaced(string attributeSetName, string? attributeName) =>
+        Broadcast(app => app.InformAttributeReplaced(attributeSetName, attributeName));
 
-        private void Broadcast(Action<IClusterApplication> inform)
+    private void Broadcast(Action<IClusterApplication> inform)
+    {
+        foreach (var app in _clusterApplications)
         {
-            foreach (var app in _clusterApplications)
+            try
             {
-                try
-                {
-                    inform(app);
-                }
-                catch (Exception e)
-                {
-                    _logger.Error($"Cannot inform because: {e.Message}", e);
-                }
+                inform(app);
+            }
+            catch (Exception e)
+            {
+                _logger.Error($"Cannot inform because: {e.Message}", e);
             }
         }
     }

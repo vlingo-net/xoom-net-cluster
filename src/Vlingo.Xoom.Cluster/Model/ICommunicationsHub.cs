@@ -11,22 +11,21 @@ using Vlingo.Xoom.Wire.Fdx.Inbound;
 using Vlingo.Xoom.Wire.Fdx.Outbound;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model
+namespace Vlingo.Xoom.Cluster.Model;
+
+public interface ICommunicationsHub
 {
-    public interface ICommunicationsHub
-    {
-        void Close();
+    void Close();
 
-        void Open(Stage stage, Node node, IInboundStreamInterest interest, IConfiguration configuration);
+    void Open(Stage stage, Node node, IInboundStreamInterest interest, IConfiguration configuration);
 
-        IInboundStream? ApplicationInboundStream { get; }
+    IInboundStream? ApplicationInboundStream { get; }
 
-        IApplicationOutboundStream? ApplicationOutboundStream { get; }
+    IApplicationOutboundStream? ApplicationOutboundStream { get; }
 
-        IInboundStream? OperationalInboundStream { get; }
+    IInboundStream? OperationalInboundStream { get; }
         
-        IOperationalOutboundStream? OperationalOutboundStream { get; }
+    IOperationalOutboundStream? OperationalOutboundStream { get; }
 
-        void Start();
-    }
+    void Start();
 }

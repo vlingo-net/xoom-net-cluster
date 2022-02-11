@@ -8,81 +8,80 @@
 using Vlingo.Xoom.Cluster.Model.Attribute.Message;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Attribute
+namespace Vlingo.Xoom.Cluster.Model.Attribute;
+
+internal class RemoteAttributeRequestHandler
 {
-    internal class RemoteAttributeRequestHandler
+    private readonly IConfiguration _configuration;
+    private readonly ConfirmingDistributor _confirmingDistributor;
+    private readonly AttributeSetRepository _repository;
+
+    internal RemoteAttributeRequestHandler(
+        ConfirmingDistributor confirmingDistributor,
+        IConfiguration configuration,
+        AttributeSetRepository repository)
     {
-        private readonly IConfiguration _configuration;
-        private readonly ConfirmingDistributor _confirmingDistributor;
-        private readonly AttributeSetRepository _repository;
+        _confirmingDistributor = confirmingDistributor;
+        _configuration = configuration;
+        _repository = repository;
+    }
 
-        internal RemoteAttributeRequestHandler(
-            ConfirmingDistributor confirmingDistributor,
-            IConfiguration configuration,
-            AttributeSetRepository repository)
+    internal void AddAttribute(ReceivedAttributeMessage request)
+    {
+        var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
+        if (attributeSet.IsNone)
         {
-            _confirmingDistributor = confirmingDistributor;
-            _configuration = configuration;
-            _repository = repository;
+            attributeSet = AttributeSet.Named(request.AttributeSetName);
+            _repository.Add(attributeSet);
         }
-
-        internal void AddAttribute(ReceivedAttributeMessage request)
-        {
-            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
-            if (attributeSet.IsNone)
-            {
-                attributeSet = AttributeSet.Named(request.AttributeSetName);
-                _repository.Add(attributeSet);
-            }
-            var tracked = attributeSet.AddIfAbsent(request.Attribute());
-            _confirmingDistributor.Confirm(request.TrackingId, attributeSet, tracked, request.Type, _configuration.NodeMatching(request.SourceNodeId));
-        }
+        var tracked = attributeSet.AddIfAbsent(request.Attribute());
+        _confirmingDistributor.Confirm(request.TrackingId, attributeSet, tracked, request.Type, _configuration.NodeMatching(request.SourceNodeId));
+    }
         
-        internal void CreateAttributeSet(ReceivedAttributeMessage request)
+    internal void CreateAttributeSet(ReceivedAttributeMessage request)
+    {
+        var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
+        if (attributeSet.IsNone)
         {
-            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
-            if (attributeSet.IsNone)
-            {
-                attributeSet = AttributeSet.Named(request.AttributeSetName);
-                _repository.Add(attributeSet);
-            }
-            _confirmingDistributor.ConfirmCreate(request.TrackingId, attributeSet, _configuration.NodeMatching(request.SourceNodeId));
+            attributeSet = AttributeSet.Named(request.AttributeSetName);
+            _repository.Add(attributeSet);
         }
+        _confirmingDistributor.ConfirmCreate(request.TrackingId, attributeSet, _configuration.NodeMatching(request.SourceNodeId));
+    }
         
-        internal void RemoveAttributeSet(ReceivedAttributeMessage request)
+    internal void RemoveAttributeSet(ReceivedAttributeMessage request)
+    {
+        var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
+        if (attributeSet.IsDefined)
         {
-            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
-            if (attributeSet.IsDefined)
-            {
-                attributeSet = AttributeSet.Named(request.AttributeSetName);
-                _repository.Remove(request.AttributeSetName!);
-            }
-            _confirmingDistributor.ConfirmRemove(request.TrackingId, attributeSet, _configuration.NodeMatching(request.SourceNodeId));
+            attributeSet = AttributeSet.Named(request.AttributeSetName);
+            _repository.Remove(request.AttributeSetName!);
         }
+        _confirmingDistributor.ConfirmRemove(request.TrackingId, attributeSet, _configuration.NodeMatching(request.SourceNodeId));
+    }
         
-        internal void ReplaceAttribute(ReceivedAttributeMessage request)
+    internal void ReplaceAttribute(ReceivedAttributeMessage request)
+    {
+        var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
+        if (attributeSet.IsDefined)
         {
-            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
-            if (attributeSet.IsDefined)
+            var tracked = attributeSet.Replace(request.Attribute());
+            if (tracked.IsPresent) // was both present and replaced
             {
-                var tracked = attributeSet.Replace(request.Attribute());
-                if (tracked.IsPresent) // was both present and replaced
-                {
-                    _confirmingDistributor.Confirm(request.TrackingId, attributeSet, tracked, request.Type, _configuration.NodeMatching(request.SourceNodeId));
-                }
+                _confirmingDistributor.Confirm(request.TrackingId, attributeSet, tracked, request.Type, _configuration.NodeMatching(request.SourceNodeId));
             }
         }
+    }
         
-        internal void RemoveAttribute(ReceivedAttributeMessage request)
+    internal void RemoveAttribute(ReceivedAttributeMessage request)
+    {
+        var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
+        if (attributeSet.IsDefined)
         {
-            var attributeSet = _repository.AttributeSetOf(request.AttributeSetName!);
-            if (attributeSet.IsDefined)
+            var tracked = attributeSet.Remove(request.Attribute());
+            if (tracked.IsPresent) // actually was present, now removed
             {
-                var tracked = attributeSet.Remove(request.Attribute());
-                if (tracked.IsPresent) // actually was present, now removed
-                {
-                    _confirmingDistributor.Confirm(request.TrackingId, attributeSet, tracked, request.Type, _configuration.NodeMatching(request.SourceNodeId));
-                }
+                _confirmingDistributor.Confirm(request.TrackingId, attributeSet, tracked, request.Type, _configuration.NodeMatching(request.SourceNodeId));
             }
         }
     }

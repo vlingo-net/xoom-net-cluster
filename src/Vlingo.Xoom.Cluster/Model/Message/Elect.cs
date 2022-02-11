@@ -7,30 +7,29 @@
 
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Message
+namespace Vlingo.Xoom.Cluster.Model.Message;
+
+public sealed class Elect : OperationalMessage
 {
-    public sealed class Elect : OperationalMessage
-    {
-        public static Elect From(string content) => new Elect(OperationalMessagePartsBuilder.IdFrom(content));
+    public static Elect From(string content) => new Elect(OperationalMessagePartsBuilder.IdFrom(content));
         
-        public Elect(Id id) : base(id)
-        {
-        }
-
-        public override bool IsElect => true;
-
-        public override bool Equals(object? obj)
-        {
-            if (obj == null || obj.GetType() != typeof(Elect))
-            {
-                return false;
-            }
-
-            return Id.Equals(((Elect) obj).Id);
-        }
-
-        public override int GetHashCode() => 31 * Id.GetHashCode();
-
-        public override string ToString() => $"Elect[{Id}]";
+    public Elect(Id id) : base(id)
+    {
     }
+
+    public override bool IsElect => true;
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != typeof(Elect))
+        {
+            return false;
+        }
+
+        return Id.Equals(((Elect) obj).Id);
+    }
+
+    public override int GetHashCode() => 31 * Id.GetHashCode();
+
+    public override string ToString() => $"Elect[{Id}]";
 }

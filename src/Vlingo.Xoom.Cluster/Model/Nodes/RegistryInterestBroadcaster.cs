@@ -10,67 +10,66 @@ using System.Collections.Generic;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Nodes
+namespace Vlingo.Xoom.Cluster.Model.Nodes;
+
+public class RegistryInterestBroadcaster : IRegistryInterest
 {
-    public class RegistryInterestBroadcaster : IRegistryInterest
+    private readonly ILogger _logger;
+    private readonly List<IRegistryInterest> _registryInterests;
+
+    public RegistryInterestBroadcaster(ILogger logger)
     {
-        private readonly ILogger _logger;
-        private readonly List<IRegistryInterest> _registryInterests;
+        _logger = logger;
+        _registryInterests = new List<IRegistryInterest>();
+    }
 
-        public RegistryInterestBroadcaster(ILogger logger)
-        {
-            _logger = logger;
-            _registryInterests = new List<IRegistryInterest>();
-        }
-
-        public void RegisterRegistryInterest(IRegistryInterest interest) => _registryInterests.Add(interest);
+    public void RegisterRegistryInterest(IRegistryInterest interest) => _registryInterests.Add(interest);
         
-        //========================================
-        // RegistryInterest
-        //========================================
+    //========================================
+    // RegistryInterest
+    //========================================
 
-        public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster) =>
-            Broadcast(interest => interest.InformAllLiveNodes(liveNodes, isHealthyCluster));
+    public void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster) =>
+        Broadcast(interest => interest.InformAllLiveNodes(liveNodes, isHealthyCluster));
 
-        public void InformConfirmedByLeader(Node node, bool isHealthyCluster) =>
-            Broadcast(interest => interest.InformConfirmedByLeader(node, isHealthyCluster));
+    public void InformConfirmedByLeader(Node node, bool isHealthyCluster) =>
+        Broadcast(interest => interest.InformConfirmedByLeader(node, isHealthyCluster));
 
-        public void InformCurrentLeader(Node node, bool isHealthyCluster) =>
-            Broadcast(interest => interest.InformCurrentLeader(node, isHealthyCluster));
+    public void InformCurrentLeader(Node node, bool isHealthyCluster) =>
+        Broadcast(interest => interest.InformCurrentLeader(node, isHealthyCluster));
 
-        public void InformMergedAllDirectoryEntries(
-            IEnumerable<Node> liveNodes,
-            IEnumerable<MergeResult> mergeResults,
-            bool isHealthyCluster) => Broadcast(interest => interest.InformMergedAllDirectoryEntries(liveNodes, mergeResults, isHealthyCluster));
+    public void InformMergedAllDirectoryEntries(
+        IEnumerable<Node> liveNodes,
+        IEnumerable<MergeResult> mergeResults,
+        bool isHealthyCluster) => Broadcast(interest => interest.InformMergedAllDirectoryEntries(liveNodes, mergeResults, isHealthyCluster));
 
-        public void InformLeaderDemoted(Node node, bool isHealthyCluster) =>
-            Broadcast(interest => interest.InformLeaderDemoted(node, isHealthyCluster));
+    public void InformLeaderDemoted(Node node, bool isHealthyCluster) =>
+        Broadcast(interest => interest.InformLeaderDemoted(node, isHealthyCluster));
 
-        public void InformNodeIsHealthy(Node node, bool isHealthyCluster) =>
-            Broadcast(interest => interest.InformNodeIsHealthy(node, isHealthyCluster));
+    public void InformNodeIsHealthy(Node node, bool isHealthyCluster) =>
+        Broadcast(interest => interest.InformNodeIsHealthy(node, isHealthyCluster));
 
-        public void InformNodeJoinedCluster(Node node, bool isHealthyCluster) =>
-            Broadcast(interest => interest.InformNodeJoinedCluster(node, isHealthyCluster));
+    public void InformNodeJoinedCluster(Node node, bool isHealthyCluster) =>
+        Broadcast(interest => interest.InformNodeJoinedCluster(node, isHealthyCluster));
 
-        public void InformNodeLeftCluster(Node node, bool isHealthyCluster) =>
-            Broadcast(interest => interest.InformNodeLeftCluster(node, isHealthyCluster));
+    public void InformNodeLeftCluster(Node node, bool isHealthyCluster) =>
+        Broadcast(interest => interest.InformNodeLeftCluster(node, isHealthyCluster));
 
-        public void InformNodeTimedOut(Node node, bool isHealthyCluster) =>
-            Broadcast(interest => interest.InformNodeTimedOut(node, isHealthyCluster));
+    public void InformNodeTimedOut(Node node, bool isHealthyCluster) =>
+        Broadcast(interest => interest.InformNodeTimedOut(node, isHealthyCluster));
         
-        private void Broadcast(Action<IRegistryInterest> inform)
+    private void Broadcast(Action<IRegistryInterest> inform)
+    {
+        foreach (var interest in _registryInterests)
         {
-            foreach (var interest in _registryInterests)
+            try
             {
-                try
-                {
-                    inform(interest);
-                }
-                catch (Exception e)
-                {
-                    _logger.Error($"Cannot inform because: {e.Message}", e);
-                }   
+                inform(interest);
             }
+            catch (Exception e)
+            {
+                _logger.Error($"Cannot inform because: {e.Message}", e);
+            }   
         }
     }
 }

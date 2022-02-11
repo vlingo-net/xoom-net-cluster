@@ -8,60 +8,59 @@
 using System;
 using Vlingo.Xoom.Actors;
 
-namespace Vlingo.Xoom.Cluster.Model
+namespace Vlingo.Xoom.Cluster.Model;
+
+public class ClusterSnapshot__Proxy : IClusterSnapshot
 {
-    public class ClusterSnapshot__Proxy : IClusterSnapshot
+    private const string QuorumAchievedRepresentation1 = "QuorumAchieved()";
+    private const string QuorumLostRepresentation2 = "QuorumLost()";
+
+    private readonly Actor _actor;
+    private readonly IMailbox _mailbox;
+
+    public ClusterSnapshot__Proxy(Actor actor, IMailbox mailbox)
     {
-        private const string QuorumAchievedRepresentation1 = "QuorumAchieved()";
-        private const string QuorumLostRepresentation2 = "QuorumLost()";
+        _actor = actor;
+        _mailbox = mailbox;
+    }
 
-        private readonly Actor _actor;
-        private readonly IMailbox _mailbox;
-
-        public ClusterSnapshot__Proxy(Actor actor, IMailbox mailbox)
+    public void QuorumAchieved()
+    {
+        if (!_actor.IsStopped)
         {
-            _actor = actor;
-            _mailbox = mailbox;
-        }
-
-        public void QuorumAchieved()
-        {
-            if (!_actor.IsStopped)
+            Action<IClusterSnapshot> consumer = x => x.QuorumAchieved();
+            if (_mailbox.IsPreallocated)
             {
-                Action<IClusterSnapshot> consumer = x => x.QuorumAchieved();
-                if (_mailbox.IsPreallocated)
-                {
-                    _mailbox.Send(_actor, consumer, null, QuorumAchievedRepresentation1);
-                }
-                else
-                {
-                    _mailbox.Send(new LocalMessage<IClusterSnapshot>(_actor, consumer, QuorumAchievedRepresentation1));
-                }
+                _mailbox.Send(_actor, consumer, null, QuorumAchievedRepresentation1);
             }
             else
             {
-                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, QuorumAchievedRepresentation1));
+                _mailbox.Send(new LocalMessage<IClusterSnapshot>(_actor, consumer, QuorumAchievedRepresentation1));
             }
         }
-
-        public void QuorumLost()
+        else
         {
-            if (!_actor.IsStopped)
+            _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, QuorumAchievedRepresentation1));
+        }
+    }
+
+    public void QuorumLost()
+    {
+        if (!_actor.IsStopped)
+        {
+            Action<IClusterSnapshot> consumer = x => x.QuorumLost();
+            if (_mailbox.IsPreallocated)
             {
-                Action<IClusterSnapshot> consumer = x => x.QuorumLost();
-                if (_mailbox.IsPreallocated)
-                {
-                    _mailbox.Send(_actor, consumer, null, QuorumLostRepresentation2);
-                }
-                else
-                {
-                    _mailbox.Send(new LocalMessage<IClusterSnapshot>(_actor, consumer, QuorumLostRepresentation2));
-                }
+                _mailbox.Send(_actor, consumer, null, QuorumLostRepresentation2);
             }
             else
             {
-                _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, QuorumLostRepresentation2));
+                _mailbox.Send(new LocalMessage<IClusterSnapshot>(_actor, consumer, QuorumLostRepresentation2));
             }
+        }
+        else
+        {
+            _actor.DeadLetters?.FailedDelivery(new DeadLetter(_actor, QuorumLostRepresentation2));
         }
     }
 }

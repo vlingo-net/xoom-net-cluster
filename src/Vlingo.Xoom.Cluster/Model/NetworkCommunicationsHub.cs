@@ -13,76 +13,75 @@ using Vlingo.Xoom.Wire.Fdx.Outbound;
 using Vlingo.Xoom.Wire.Message;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model
+namespace Vlingo.Xoom.Cluster.Model;
+
+internal class NetworkCommunicationsHub : ICommunicationsHub
 {
-    internal class NetworkCommunicationsHub : ICommunicationsHub
+    private const string AppName = "APP";
+    private const string OpName = "OP";
+        
+    private IInboundStream? _applicationInboundStream;
+    private IApplicationOutboundStream? _applicationOutboundStream;
+    private IInboundStream? _operationalInboundStream;
+    private IOperationalOutboundStream? _operationalOutboundStream;
+        
+    public void Close()
     {
-        private const string AppName = "APP";
-        private const string OpName = "OP";
-        
-        private IInboundStream? _applicationInboundStream;
-        private IApplicationOutboundStream? _applicationOutboundStream;
-        private IInboundStream? _operationalInboundStream;
-        private IOperationalOutboundStream? _operationalOutboundStream;
-        
-        public void Close()
-        {
-            _operationalInboundStream?.Stop();
-            _operationalOutboundStream?.Stop();
-            _applicationInboundStream?.Stop();
-            _applicationOutboundStream?.Stop();
-        }
+        _operationalInboundStream?.Stop();
+        _operationalOutboundStream?.Stop();
+        _applicationInboundStream?.Stop();
+        _applicationOutboundStream?.Stop();
+    }
 
-        public void Open(Stage stage, Node node, IInboundStreamInterest interest, IConfiguration configuration)
-        {
-            _operationalInboundStream =
-                InboundStreamFactory.Instance(
-                    stage,
-                    interest,
-                    node.OperationalAddress.Port,
-                    AddressType.Op,
-                    OpName,
-                    Properties.Instance.OperationalBufferSize(),
-                    Properties.Instance.OperationalInboundProbeInterval());
+    public void Open(Stage stage, Node node, IInboundStreamInterest interest, IConfiguration configuration)
+    {
+        _operationalInboundStream =
+            InboundStreamFactory.Instance(
+                stage,
+                interest,
+                node.OperationalAddress.Port,
+                AddressType.Op,
+                OpName,
+                Properties.Instance.OperationalBufferSize(),
+                Properties.Instance.OperationalInboundProbeInterval());
             
-            _operationalOutboundStream =
-                OperationalOutboundStreamFactory.Instance(
-                    stage,
-                    node,
-                    new ManagedOutboundSocketChannelProvider(node, AddressType.Op, configuration),
-                    new ConsumerByteBufferPool(
-                        ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(Properties.Instance.ApplicationOutgoingPooledBuffers()), 
-                        Properties.Instance.OperationalBufferSize()));
+        _operationalOutboundStream =
+            OperationalOutboundStreamFactory.Instance(
+                stage,
+                node,
+                new ManagedOutboundSocketChannelProvider(node, AddressType.Op, configuration),
+                new ConsumerByteBufferPool(
+                    ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(Properties.Instance.ApplicationOutgoingPooledBuffers()), 
+                    Properties.Instance.OperationalBufferSize()));
             
-            _applicationInboundStream =
-                InboundStreamFactory.Instance(
-                    stage,
-                    interest,
-                    node.ApplicationAddress.Port,
-                    AddressType.App,
-                    AppName,
-                    Properties.Instance.ApplicationBufferSize(),
-                    Properties.Instance.ApplicationInboundProbeInterval());
+        _applicationInboundStream =
+            InboundStreamFactory.Instance(
+                stage,
+                interest,
+                node.ApplicationAddress.Port,
+                AddressType.App,
+                AppName,
+                Properties.Instance.ApplicationBufferSize(),
+                Properties.Instance.ApplicationInboundProbeInterval());
             
-            _applicationOutboundStream =
-                ApplicationOutboundStreamFactory.Instance(
-                    stage,
-                    new ManagedOutboundSocketChannelProvider(node, AddressType.App, configuration),
-                    new ConsumerByteBufferPool(
-                        ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(Properties.Instance.ApplicationOutgoingPooledBuffers()), 
-                        Properties.Instance.ApplicationBufferSize()));
-        }
+        _applicationOutboundStream =
+            ApplicationOutboundStreamFactory.Instance(
+                stage,
+                new ManagedOutboundSocketChannelProvider(node, AddressType.App, configuration),
+                new ConsumerByteBufferPool(
+                    ElasticResourcePool<IConsumerByteBuffer, string>.Config.Of(Properties.Instance.ApplicationOutgoingPooledBuffers()), 
+                    Properties.Instance.ApplicationBufferSize()));
+    }
 
-        public IInboundStream? ApplicationInboundStream => _applicationInboundStream;
+    public IInboundStream? ApplicationInboundStream => _applicationInboundStream;
 
-        public IApplicationOutboundStream? ApplicationOutboundStream => _applicationOutboundStream;
+    public IApplicationOutboundStream? ApplicationOutboundStream => _applicationOutboundStream;
 
-        public IInboundStream? OperationalInboundStream => _operationalInboundStream;
+    public IInboundStream? OperationalInboundStream => _operationalInboundStream;
 
-        public IOperationalOutboundStream? OperationalOutboundStream => _operationalOutboundStream;
+    public IOperationalOutboundStream? OperationalOutboundStream => _operationalOutboundStream;
         
-        public void Start()
-        {
-        }
+    public void Start()
+    {
     }
 }

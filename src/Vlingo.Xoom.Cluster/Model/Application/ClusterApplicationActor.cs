@@ -7,12 +7,11 @@
 
 using Vlingo.Xoom.Actors;
 
-namespace Vlingo.Xoom.Cluster.Model.Application
+namespace Vlingo.Xoom.Cluster.Model.Application;
+
+public abstract class ClusterApplicationActor : Actor
 {
-    public abstract class ClusterApplicationActor : Actor
+    protected ClusterApplicationActor()
     {
-        protected ClusterApplicationActor()
-        {
-        } 
-    }
+    } 
 }

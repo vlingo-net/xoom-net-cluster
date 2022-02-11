@@ -12,25 +12,24 @@ using Vlingo.Xoom.Common;
 using Vlingo.Xoom.Wire.Fdx.Inbound;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Attribute
+namespace Vlingo.Xoom.Cluster.Model.Attribute;
+
+public interface IAttributesAgent : IAttributesCommands, INodeSynchronizer, IInboundStreamInterest, IScheduled<object>, IStoppable
 {
-    public interface IAttributesAgent : IAttributesCommands, INodeSynchronizer, IInboundStreamInterest, IScheduled<object>, IStoppable
-    {
-    }
+}
     
-    public static class AttributesAgentFactory
+public static class AttributesAgentFactory
+{
+    public static IAttributesAgent Instance(
+        Stage stage,
+        Node node,
+        IClusterApplication application,
+        IOperationalOutboundStream outbound,
+        IConfiguration configuration)
     {
-        public static IAttributesAgent Instance(
-            Stage stage,
-            Node node,
-            IClusterApplication application,
-            IOperationalOutboundStream outbound,
-            IConfiguration configuration)
-        {
-            var attributesAgent = stage.ActorFor<IAttributesAgent>(
-                () => new AttributesAgentActor(node, application, outbound, configuration), "attributes-agent");
+        var attributesAgent = stage.ActorFor<IAttributesAgent>(
+            () => new AttributesAgentActor(node, application, outbound, configuration), "attributes-agent");
             
-            return attributesAgent;
-        }
+        return attributesAgent;
     }
 }

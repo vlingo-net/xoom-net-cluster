@@ -8,44 +8,43 @@
 using System.Collections.Generic;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Nodes
+namespace Vlingo.Xoom.Cluster.Model.Nodes;
+
+public interface IRegistry
 {
-    public interface IRegistry
-    {
-        void CleanTimedOutNodes();
+    void CleanTimedOutNodes();
 
-        void ConfirmAllLiveNodesByLeader();
+    void ConfirmAllLiveNodesByLeader();
 
-        bool IsConfirmedByLeader(Id id);
+    bool IsConfirmedByLeader(Id id);
 
-        void DeclareLeaderAs(Id id);
+    void DeclareLeaderAs(Id id);
 
-        void DemoteLeaderOf(Id id);
+    void DemoteLeaderOf(Id id);
 
-        bool IsLeader(Id id);
+    bool IsLeader(Id id);
 
-        bool HasMember(Id id);
+    bool HasMember(Id id);
 
-        void Join(Node node);
+    void Join(Node node);
 
-        void Leave(Id id);
+    void Leave(Id id);
 
-        void MergeAllDirectoryEntries(IEnumerable<Node> nodes);
+    void MergeAllDirectoryEntries(IEnumerable<Node> nodes);
 
-        void PromoteElectedLeader(Id leaderNodeId);
+    void PromoteElectedLeader(Id leaderNodeId);
 
-        void RegisterRegistryInterest(IRegistryInterest interest);
+    void RegisterRegistryInterest(IRegistryInterest interest);
 
-        void UpdateLastHealthIndication(Id id);
+    void UpdateLastHealthIndication(Id id);
         
-        Node CurrentLeader { get; }
+    Node CurrentLeader { get; }
         
-        bool HasLeader { get; }
+    bool HasLeader { get; }
         
-        bool IsSingleNodeCluster { get; }
+    bool IsSingleNodeCluster { get; }
         
-        IEnumerable<Node> LiveNodes { get; }
+    IEnumerable<Node> LiveNodes { get; }
         
-        bool HasQuorum { get; }
-    }
+    bool HasQuorum { get; }
 }

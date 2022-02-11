@@ -11,92 +11,91 @@ using System.IO;
 using Vlingo.Xoom.Wire.Message;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Message
+namespace Vlingo.Xoom.Cluster.Model.Message;
+
+public class OperationalMessageCache
 {
-    public class OperationalMessageCache
+    private readonly Dictionary<string, RawMessage> _messages;
+    private readonly Node _node;
+
+    public OperationalMessageCache(Node node)
     {
-        private readonly Dictionary<string, RawMessage> _messages;
-        private readonly Node _node;
+        _messages = new Dictionary<string, RawMessage>();
+        _node = node;
 
-        public OperationalMessageCache(Node node)
+        CacheValidTypes();
+    }
+
+    public RawMessage CachedRawMessage(string type)
+    {
+        var rawMessage = _messages[type];
+
+        if (rawMessage == null)
         {
-            _messages = new Dictionary<string, RawMessage>();
-            _node = node;
-
-            CacheValidTypes();
+            throw new ArgumentNullException($"Cache does not support type: '{type}'");
         }
 
-        public RawMessage CachedRawMessage(string type)
-        {
-            var rawMessage = _messages[type];
+        return rawMessage;
+    }
 
-            if (rawMessage == null)
-            {
-                throw new ArgumentNullException($"Cache does not support type: '{type}'");
-            }
-
-            return rawMessage;
-        }
-
-        private void CacheValidTypes()
-        {
-            var buffer = new MemoryStream(1000);
+    private void CacheValidTypes()
+    {
+        var buffer = new MemoryStream(1000);
             
-            CacheElect(buffer);
-            CacheJoin(buffer);
-            CacheLeader(buffer);
-            CacheLeave(buffer);
-            CachePing(buffer);
-            CachePulse(buffer);
-            CacheVote(buffer);
-        }
+        CacheElect(buffer);
+        CacheJoin(buffer);
+        CacheLeader(buffer);
+        CacheLeave(buffer);
+        CachePing(buffer);
+        CachePulse(buffer);
+        CacheVote(buffer);
+    }
         
-        private void CacheElect(MemoryStream buffer)
-        {
-            MessageConverters.MessageToBytes(new Elect(_node.Id), buffer);
-            CacheMessagePair(buffer, OperationalMessage.ELECT);
-        }
+    private void CacheElect(MemoryStream buffer)
+    {
+        MessageConverters.MessageToBytes(new Elect(_node.Id), buffer);
+        CacheMessagePair(buffer, OperationalMessage.ELECT);
+    }
         
-        private void CacheJoin(MemoryStream buffer)
-        {
-            MessageConverters.MessageToBytes(new Join(_node), buffer);
-            CacheMessagePair(buffer, OperationalMessage.JOIN);
-        }
+    private void CacheJoin(MemoryStream buffer)
+    {
+        MessageConverters.MessageToBytes(new Join(_node), buffer);
+        CacheMessagePair(buffer, OperationalMessage.JOIN);
+    }
 
-        private void CacheLeader(MemoryStream buffer)
-        {
-            MessageConverters.MessageToBytes(new Leader(_node.Id), buffer);
-            CacheMessagePair(buffer, OperationalMessage.LEADER);
-        }
+    private void CacheLeader(MemoryStream buffer)
+    {
+        MessageConverters.MessageToBytes(new Leader(_node.Id), buffer);
+        CacheMessagePair(buffer, OperationalMessage.LEADER);
+    }
 
-        private void CacheLeave(MemoryStream buffer)
-        {
-            MessageConverters.MessageToBytes(new Leave(_node.Id), buffer);
-            CacheMessagePair(buffer, OperationalMessage.LEAVE);
-        }
+    private void CacheLeave(MemoryStream buffer)
+    {
+        MessageConverters.MessageToBytes(new Leave(_node.Id), buffer);
+        CacheMessagePair(buffer, OperationalMessage.LEAVE);
+    }
 
-        private void CachePing(MemoryStream buffer)
-        {
-            MessageConverters.MessageToBytes(new Ping(_node.Id), buffer);
-            CacheMessagePair(buffer, OperationalMessage.PING);
-        }
+    private void CachePing(MemoryStream buffer)
+    {
+        MessageConverters.MessageToBytes(new Ping(_node.Id), buffer);
+        CacheMessagePair(buffer, OperationalMessage.PING);
+    }
 
-        private void CachePulse(MemoryStream buffer)
-        {
-            MessageConverters.MessageToBytes(new Pulse(_node.Id), buffer);
-            CacheMessagePair(buffer, OperationalMessage.PULSE);
-        }
+    private void CachePulse(MemoryStream buffer)
+    {
+        MessageConverters.MessageToBytes(new Pulse(_node.Id), buffer);
+        CacheMessagePair(buffer, OperationalMessage.PULSE);
+    }
 
-        private void CacheVote(MemoryStream buffer)
-        {
-            MessageConverters.MessageToBytes(new Vote(_node.Id), buffer);
-            CacheMessagePair(buffer, OperationalMessage.VOTE);
-        }
+    private void CacheVote(MemoryStream buffer)
+    {
+        MessageConverters.MessageToBytes(new Vote(_node.Id), buffer);
+        CacheMessagePair(buffer, OperationalMessage.VOTE);
+    }
 
-        private void CacheMessagePair(MemoryStream buffer, string typeKey)
-        {
-            var cachedMessage = _node.Id.Value.ToRawMessage(buffer);
-            _messages.Add(typeKey, cachedMessage);
-        }
+    private void CacheMessagePair(MemoryStream buffer, string typeKey)
+    {
+        var cachedMessage = _node.Id.Value.ToRawMessage(buffer);
+        _messages.Add(typeKey, cachedMessage);
     }
 }

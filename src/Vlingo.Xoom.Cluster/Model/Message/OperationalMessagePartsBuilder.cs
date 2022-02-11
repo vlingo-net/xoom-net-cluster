@@ -9,50 +9,49 @@ using System.Collections.Generic;
 using Vlingo.Xoom.Wire.Message;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Message
+namespace Vlingo.Xoom.Cluster.Model.Message;
+
+internal class OperationalMessagePartsBuilder
 {
-    internal class OperationalMessagePartsBuilder
+    internal static string PayloadFrom(string content)
     {
-        internal static string PayloadFrom(string content)
+        var index1 = content.IndexOf('\n');
+        if (index1 == -1)
         {
-            var index1 = content.IndexOf('\n');
-            if (index1 == -1)
-            {
-                return string.Empty;
-            }
-            
-            var index2 = content.IndexOf('\n', index1 + 1);
-            
-            if (index2 == -1)
-            {
-                return string.Empty;
-            }
-            
-            var payload = content.Substring(index2 + 1);
-
-            return payload;
+            return string.Empty;
         }
-
-        internal static string? SaysIdFrom(string content)
+            
+        var index2 = content.IndexOf('\n', index1 + 1);
+            
+        if (index2 == -1)
         {
-            var parts = content.Split('\n');
-            
-            if (parts.Length < 3)
-            {
-                return string.Empty;
-            }
-            
-            var saysId = MessagePartsBuilder.ParseField(parts[2], "si=");
-
-            return saysId;
+            return string.Empty;
         }
+            
+        var payload = content.Substring(index2 + 1);
 
-        internal static IEnumerable<Node> NodesFrom(string content) => MessagePartsBuilder.NodesFrom(content);
-
-        internal static Node NodeFrom(string content) => MessagePartsBuilder.NodeFrom(content);
-
-        internal static Id IdFrom(string content) => MessagePartsBuilder.IdFrom(content);
-
-        internal static Name NameFrom(string content) => MessagePartsBuilder.NameFrom(content);
+        return payload;
     }
+
+    internal static string? SaysIdFrom(string content)
+    {
+        var parts = content.Split('\n');
+            
+        if (parts.Length < 3)
+        {
+            return string.Empty;
+        }
+            
+        var saysId = MessagePartsBuilder.ParseField(parts[2], "si=");
+
+        return saysId;
+    }
+
+    internal static IEnumerable<Node> NodesFrom(string content) => MessagePartsBuilder.NodesFrom(content);
+
+    internal static Node NodeFrom(string content) => MessagePartsBuilder.NodeFrom(content);
+
+    internal static Id IdFrom(string content) => MessagePartsBuilder.IdFrom(content);
+
+    internal static Name NameFrom(string content) => MessagePartsBuilder.NameFrom(content);
 }

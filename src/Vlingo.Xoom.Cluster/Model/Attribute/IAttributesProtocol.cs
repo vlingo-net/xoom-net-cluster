@@ -5,9 +5,8 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Cluster.Model.Attribute
+namespace Vlingo.Xoom.Cluster.Model.Attribute;
+
+public interface IAttributesProtocol : IAttributesCommands, IAttributesQueries
 {
-    public interface IAttributesProtocol : IAttributesCommands, IAttributesQueries
-    {
-    }
 }

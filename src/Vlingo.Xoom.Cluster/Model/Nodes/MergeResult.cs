@@ -8,25 +8,24 @@
 using System;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Nodes
+namespace Vlingo.Xoom.Cluster.Model.Nodes;
+
+public class MergeResult : IComparable<MergeResult>
 {
-    public class MergeResult : IComparable<MergeResult>
+    private readonly bool _joined;
+    private readonly Node _node;
+
+    public MergeResult(Node node, bool joined)
     {
-        private readonly bool _joined;
-        private readonly Node _node;
-
-        public MergeResult(Node node, bool joined)
-        {
-            _node = node;
-            _joined = joined;
-        }
-
-        public bool Joined => _joined;
-
-        public bool Left => !_joined;
-
-        public Node Node => _node;
-
-        public int CompareTo(MergeResult? other) => _node.CompareTo(other?._node);
+        _node = node;
+        _joined = joined;
     }
+
+    public bool Joined => _joined;
+
+    public bool Left => !_joined;
+
+    public Node Node => _node;
+
+    public int CompareTo(MergeResult? other) => _node.CompareTo(other?._node);
 }

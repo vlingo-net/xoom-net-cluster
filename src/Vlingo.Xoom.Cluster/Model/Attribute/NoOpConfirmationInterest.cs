@@ -9,15 +9,14 @@ using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Cluster.Model.Attribute.Message;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Attribute
+namespace Vlingo.Xoom.Cluster.Model.Attribute;
+
+public class NoOpConfirmationInterest : IConfirmationInterest
 {
-    public class NoOpConfirmationInterest : IConfirmationInterest
-    {
-        private readonly ILogger _logger;
+    private readonly ILogger _logger;
 
-        public NoOpConfirmationInterest(IConfiguration configuration) => _logger = configuration.Logger;
+    public NoOpConfirmationInterest(IConfiguration configuration) => _logger = configuration.Logger;
 
-        public void Confirm(Id confirmingNodeId, string? attributeSetName, string? attributeName, ApplicationMessageType type) => 
-            _logger.Debug($"ATTR CONFIRMATION: NODE: {confirmingNodeId.Value} SET: {attributeSetName} ATTR: {attributeName} TYPE: {type}");
-    }
+    public void Confirm(Id confirmingNodeId, string? attributeSetName, string? attributeName, ApplicationMessageType type) => 
+        _logger.Debug($"ATTR CONFIRMATION: NODE: {confirmingNodeId.Value} SET: {attributeSetName} ATTR: {attributeName} TYPE: {type}");
 }

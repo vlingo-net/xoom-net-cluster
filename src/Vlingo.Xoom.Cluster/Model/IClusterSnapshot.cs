@@ -5,12 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-namespace Vlingo.Xoom.Cluster.Model
-{
-    public interface IClusterSnapshot
-    {
-        void QuorumAchieved();
+namespace Vlingo.Xoom.Cluster.Model;
 
-        void QuorumLost();
-    }
+public interface IClusterSnapshot
+{
+    void QuorumAchieved();
+
+    void QuorumLost();
 }

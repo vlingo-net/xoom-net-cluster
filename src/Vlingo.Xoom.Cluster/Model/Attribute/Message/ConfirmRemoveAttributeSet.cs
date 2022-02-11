@@ -7,37 +7,36 @@
 
 using System.Text;
 
-namespace Vlingo.Xoom.Cluster.Model.Attribute.Message
-{
-    public sealed class ConfirmRemoveAttributeSet : ApplicationMessage
-    {        
-        public ConfirmRemoveAttributeSet(string? correlatingMessageId, Xoom.Wire.Nodes.Node node, AttributeSet set)
-            : base(
-                correlatingMessageId,
-                ApplicationMessageType.ConfirmRemoveAttributeSet,
-                TrackingIdFor(node, ApplicationMessageType.ConfirmRemoveAttributeSet, set.Name))
-        {
-            AttributeSetName = set.Name;
-        }
-        
-        public string? AttributeSetName { get; }
+namespace Vlingo.Xoom.Cluster.Model.Attribute.Message;
 
-        public override string ToPayload()
-        {
-            var builder = new StringBuilder();
+public sealed class ConfirmRemoveAttributeSet : ApplicationMessage
+{        
+    public ConfirmRemoveAttributeSet(string? correlatingMessageId, Xoom.Wire.Nodes.Node node, AttributeSet set)
+        : base(
+            correlatingMessageId,
+            ApplicationMessageType.ConfirmRemoveAttributeSet,
+            TrackingIdFor(node, ApplicationMessageType.ConfirmRemoveAttributeSet, set.Name))
+    {
+        AttributeSetName = set.Name;
+    }
+        
+    public string? AttributeSetName { get; }
+
+    public override string ToPayload()
+    {
+        var builder = new StringBuilder();
             
-            builder
-                .Append(GetType().Name)
-                .Append("\n")
-                .Append(CorrelatingMessageId)
-                .Append("\n")
-                .Append(TrackingId)
-                .Append("\n")
-                .Append(Type.ToString())
-                .Append("\n")
-                .Append(AttributeSetName);
+        builder
+            .Append(GetType().Name)
+            .Append("\n")
+            .Append(CorrelatingMessageId)
+            .Append("\n")
+            .Append(TrackingId)
+            .Append("\n")
+            .Append(Type.ToString())
+            .Append("\n")
+            .Append(AttributeSetName);
     
-            return builder.ToString();
-        }
+        return builder.ToString();
     }
 }

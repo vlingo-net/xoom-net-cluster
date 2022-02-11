@@ -14,51 +14,50 @@ using Vlingo.Xoom.Wire.Fdx.Outbound;
 using Vlingo.Xoom.Wire.Message;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Application
+namespace Vlingo.Xoom.Cluster.Model.Application;
+
+public interface IClusterApplication : IStartable, IStoppable
 {
-    public interface IClusterApplication : IStartable, IStoppable
-    {
-        void HandleApplicationMessage(RawMessage message);
+    void HandleApplicationMessage(RawMessage message);
 
-        void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster);
+    void InformAllLiveNodes(IEnumerable<Node> liveNodes, bool isHealthyCluster);
 
-        void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading);
+    void InformLeaderElected(Id leaderId, bool isHealthyCluster, bool isLocalNodeLeading);
         
-        void InformLeaderLost(Id lostLeaderId, bool isHealthyCluster);
+    void InformLeaderLost(Id lostLeaderId, bool isHealthyCluster);
             
-        void InformLocalNodeShutDown(Id nodeId);
+    void InformLocalNodeShutDown(Id nodeId);
         
-        void InformLocalNodeStarted(Id nodeId);
+    void InformLocalNodeStarted(Id nodeId);
         
-        void InformNodeIsHealthy(Id nodeId, bool isHealthyCluster);
+    void InformNodeIsHealthy(Id nodeId, bool isHealthyCluster);
             
-        void InformNodeJoinedCluster(Id nodeId, bool isHealthyCluster);
+    void InformNodeJoinedCluster(Id nodeId, bool isHealthyCluster);
             
-        void InformNodeLeftCluster(Id nodeId, bool isHealthyCluster);
+    void InformNodeLeftCluster(Id nodeId, bool isHealthyCluster);
             
-        void InformQuorumAchieved();
+    void InformQuorumAchieved();
         
-        void InformQuorumLost();
+    void InformQuorumLost();
         
-        void InformResponder(IApplicationOutboundStream? responder);
+    void InformResponder(IApplicationOutboundStream? responder);
 
-        void InformAttributesClient(IAttributesProtocol client);
+    void InformAttributesClient(IAttributesProtocol client);
         
-        void InformAttributeSetCreated(string? attributeSetName);
+    void InformAttributeSetCreated(string? attributeSetName);
         
-        void InformAttributeAdded(string attributeSetName, string? attributeName);
+    void InformAttributeAdded(string attributeSetName, string? attributeName);
             
-        void InformAttributeRemoved(string attributeSetName, string? attributeName);
+    void InformAttributeRemoved(string attributeSetName, string? attributeName);
             
-        void InformAttributeSetRemoved(string? attributeSetName);
+    void InformAttributeSetRemoved(string? attributeSetName);
         
-        void InformAttributeReplaced(string attributeSetName, string? attributeName);
-    }
+    void InformAttributeReplaced(string attributeSetName, string? attributeName);
+}
 
-    public static class ClusterApplicationFactory
-    {
-        public static IClusterApplication Instance<TActor>(Stage applicationStage,
-            Expression<Func<TActor>> instantiator) => 
-            applicationStage.ActorFor<IClusterApplication>(Definition.Has(instantiator, "cluster-application"));
-    }
+public static class ClusterApplicationFactory
+{
+    public static IClusterApplication Instance<TActor>(Stage applicationStage,
+        Expression<Func<TActor>> instantiator) => 
+        applicationStage.ActorFor<IClusterApplication>(Definition.Has(instantiator, "cluster-application"));
 }

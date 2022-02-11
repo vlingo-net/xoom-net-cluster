@@ -10,40 +10,39 @@ using System.Linq.Expressions;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model
+namespace Vlingo.Xoom.Cluster.Model;
+
+public class Cluster
 {
-    public class Cluster
+    private static readonly string InternalName = Guid.NewGuid().ToString();
+    private static volatile object _syncRoot = new object();
+
+    public static Tuple<IClusterSnapshotControl, ILogger> ControlFor<TActor>(
+        Expression<Func<Node, TActor>> instantiator,
+        Properties properties,
+        string nodeName)
+        => ControlFor(World.Start("xoom-cluster"), instantiator, properties, nodeName);
+
+    public static Tuple<IClusterSnapshotControl, ILogger> ControlFor<TActor>(
+        World world,
+        Expression<Func<Node, TActor>> instantiator,
+        Properties properties,
+        string nodeName)
     {
-        private static readonly string InternalName = Guid.NewGuid().ToString();
-        private static volatile object _syncRoot = new object();
-
-        public static Tuple<IClusterSnapshotControl, ILogger> ControlFor<TActor>(
-            Expression<Func<Node, TActor>> instantiator,
-            Properties properties,
-            string nodeName)
-            => ControlFor(World.Start("xoom-cluster"), instantiator, properties, nodeName);
-
-        public static Tuple<IClusterSnapshotControl, ILogger> ControlFor<TActor>(
-            World world,
-            Expression<Func<Node, TActor>> instantiator,
-            Properties properties,
-            string nodeName)
+        lock (_syncRoot)
         {
-            lock (_syncRoot)
+            if (IsRunningInside(world))
             {
-                if (IsRunningInside(world))
-                {
-                    throw new InvalidOperationException($"Cluster is already running inside World: {world.Name}");
-                }
-
-                var (control, logger) = ClusterSnapshotControlFactory.Instance(world, instantiator, nodeName);
-    
-                world.RegisterDynamic(InternalName, control);
-                
-                return new Tuple<IClusterSnapshotControl, ILogger>(control, logger);   
+                throw new InvalidOperationException($"Cluster is already running inside World: {world.Name}");
             }
-        }
 
-        public static bool IsRunningInside(World world) => world.ResolveDynamic<IClusterSnapshotControl>(InternalName) != null;
+            var (control, logger) = ClusterSnapshotControlFactory.Instance(world, instantiator, nodeName);
+    
+            world.RegisterDynamic(InternalName, control);
+                
+            return new Tuple<IClusterSnapshotControl, ILogger>(control, logger);   
+        }
     }
+
+    public static bool IsRunningInside(World world) => world.ResolveDynamic<IClusterSnapshotControl>(InternalName) != null;
 }

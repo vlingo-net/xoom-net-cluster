@@ -8,34 +8,33 @@
 using System.Collections.Generic;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Nodes
+namespace Vlingo.Xoom.Cluster.Model.Nodes;
+
+public interface ILiveNodeMaintainer : INodeSynchronizer
 {
-    public interface ILiveNodeMaintainer : INodeSynchronizer
-    {
-        void AssertNewLeadership(Id id);
+    void AssertNewLeadership(Id id);
         
-        void DeclareLeadership();
+    void DeclareLeadership();
         
-        void DeclareNodeSplit(Id leaderNodeId);
+    void DeclareNodeSplit(Id leaderNodeId);
         
-        void DropNode(Id id);
+    void DropNode(Id id);
         
-        void EscalateElection(Id id);
+    void EscalateElection(Id id);
         
-        void Join(Node node);
+    void Join(Node node);
         
-        void JoinLocalWith(Node remoteNode);
+    void JoinLocalWith(Node remoteNode);
         
-        void MergeAllDirectoryEntries(IEnumerable<Node> nodes);
+    void MergeAllDirectoryEntries(IEnumerable<Node> nodes);
         
-        void OvertakeLeadership(Id leaderNodeId);
+    void OvertakeLeadership(Id leaderNodeId);
         
-        void PlaceVote(Id voterId);
+    void PlaceVote(Id voterId);
         
-        void ProvidePulseTo(Id id);
+    void ProvidePulseTo(Id id);
         
-        void UpdateLastHealthIndication(Id id);
+    void UpdateLastHealthIndication(Id id);
         
-        void VoteForLocalNode(Id targetNodeId);
-    }
+    void VoteForLocalNode(Id targetNodeId);
 }

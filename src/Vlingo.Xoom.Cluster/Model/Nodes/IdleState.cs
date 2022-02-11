@@ -8,12 +8,11 @@
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Nodes
+namespace Vlingo.Xoom.Cluster.Model.Nodes;
+
+internal sealed class IdleState : LiveNodeState
 {
-    internal sealed class IdleState : LiveNodeState
+    internal IdleState(Node node, ILiveNodeMaintainer liveNodeMaintainer, ILogger logger) : base(node, liveNodeMaintainer, Type.Idle, logger)
     {
-        internal IdleState(Node node, ILiveNodeMaintainer liveNodeMaintainer, ILogger logger) : base(node, liveNodeMaintainer, Type.Idle, logger)
-        {
-        }
     }
 }

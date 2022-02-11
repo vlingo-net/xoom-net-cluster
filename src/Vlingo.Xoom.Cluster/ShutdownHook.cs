@@ -10,41 +10,40 @@ using System.Threading;
 using Vlingo.Xoom.Actors;
 using Vlingo.Xoom.Cluster.Model;
 
-namespace Vlingo.Xoom.Cluster
+namespace Vlingo.Xoom.Cluster;
+
+internal sealed class ShutdownHook
 {
-    internal sealed class ShutdownHook
+    private readonly Tuple<IClusterSnapshotControl, ILogger> _control;
+    private readonly string _nodeName;
+
+    internal ShutdownHook(string nodeName, Tuple<IClusterSnapshotControl, ILogger> control)
     {
-        private readonly Tuple<IClusterSnapshotControl, ILogger> _control;
-        private readonly string _nodeName;
+        _nodeName = nodeName;
+        _control = control;
+    }
 
-        internal ShutdownHook(string nodeName, Tuple<IClusterSnapshotControl, ILogger> control)
+    internal void Register()
+    {
+        AppDomain.CurrentDomain.ProcessExit += (s, e) =>
         {
-            _nodeName = nodeName;
-            _control = control;
-        }
-
-        internal void Register()
-        {
-            AppDomain.CurrentDomain.ProcessExit += (s, e) =>
-            {
-                _control.Item2.Info("\n==========");
-                _control.Item2.Info($"Stopping node: '{_nodeName}' ...");
-                _control.Item1.ShutDown();
-                Pause();
-                _control.Item2.Info($"Stopped node: '{_nodeName}'");
-            };
-        }
+            _control.Item2.Info("\n==========");
+            _control.Item2.Info($"Stopping node: '{_nodeName}' ...");
+            _control.Item1.ShutDown();
+            Pause();
+            _control.Item2.Info($"Stopped node: '{_nodeName}'");
+        };
+    }
         
-        private void Pause()
+    private void Pause()
+    {
+        try
         {
-            try
-            {
-                Thread.Sleep(4000);
-            }
-            catch 
-            {
-                // ignore
-            }
+            Thread.Sleep(4000);
+        }
+        catch 
+        {
+            // ignore
         }
     }
 }

@@ -12,54 +12,53 @@ using Vlingo.Xoom.Cluster.Model;
 using Vlingo.Xoom.Wire.Nodes;
 using Properties = Vlingo.Xoom.Cluster.Model.Properties;
 
-namespace Vlingo.Xoom.Cluster
+namespace Vlingo.Xoom.Cluster;
+
+public sealed class NodeBootstrap
 {
-    public sealed class NodeBootstrap
+    private readonly Tuple<IClusterSnapshotControl, ILogger> _clusterSnapshotControl;
+
+    public static void Main(string[] args)
     {
-        private readonly Tuple<IClusterSnapshotControl, ILogger> _clusterSnapshotControl;
+    }
+        
+    public static NodeBootstrap Boot<TActor>(string nodeName) => Boot<TActor>(nodeName, false);
+        
+    public static NodeBootstrap Boot<TActor>(string nodeName, bool embedded) => Boot<TActor>(World.Start("xoom-cluster"), nodeName, embedded);
+        
+    public static NodeBootstrap Boot<TActor>(World world, string nodeName, bool embedded)
+        => Boot<TActor>(World.Start("xoom-cluster"), node => default!, Properties.Instance, nodeName, embedded);
 
-        public static void Main(string[] args)
+    public static NodeBootstrap Boot<TActor>(
+        World world,
+        Expression<Func<Node, TActor>> instantiator,
+        Properties properties,
+        string nodeName,
+        bool embedded)
+    {
+        Properties.Instance.ValidateRequired(nodeName);
+  
+        var control = Model.Cluster.ControlFor(world, instantiator, properties, nodeName);
+  
+        var instance = new NodeBootstrap(control, nodeName);
+  
+        control.Item2.Info($"Successfully started cluster node: '{nodeName}'");
+  
+        if (!embedded)
         {
-        }
-        
-        public static NodeBootstrap Boot<TActor>(string nodeName) => Boot<TActor>(nodeName, false);
-        
-        public static NodeBootstrap Boot<TActor>(string nodeName, bool embedded) => Boot<TActor>(World.Start("xoom-cluster"), nodeName, embedded);
-        
-        public static NodeBootstrap Boot<TActor>(World world, string nodeName, bool embedded)
-            => Boot<TActor>(World.Start("xoom-cluster"), node => default!, Properties.Instance, nodeName, embedded);
-
-        public static NodeBootstrap Boot<TActor>(
-            World world,
-            Expression<Func<Node, TActor>> instantiator,
-            Properties properties,
-            string nodeName,
-            bool embedded)
-        {
-            Properties.Instance.ValidateRequired(nodeName);
-  
-            var control = Model.Cluster.ControlFor(world, instantiator, properties, nodeName);
-  
-            var instance = new NodeBootstrap(control, nodeName);
-  
-            control.Item2.Info($"Successfully started cluster node: '{nodeName}'");
-  
-            if (!embedded)
-            {
-                control.Item2.Info("==========");
-            }
-
-            return instance;
+            control.Item2.Info("==========");
         }
 
-        public IClusterSnapshotControl ClusterSnapshotControl => _clusterSnapshotControl.Item1;
+        return instance;
+    }
 
-        private NodeBootstrap(Tuple<IClusterSnapshotControl, ILogger> control, string nodeName)
-        {
-            _clusterSnapshotControl = control;
+    public IClusterSnapshotControl ClusterSnapshotControl => _clusterSnapshotControl.Item1;
+
+    private NodeBootstrap(Tuple<IClusterSnapshotControl, ILogger> control, string nodeName)
+    {
+        _clusterSnapshotControl = control;
             
-            var shutdownHook = new ShutdownHook(nodeName, control);
-            shutdownHook.Register();
-        }
+        var shutdownHook = new ShutdownHook(nodeName, control);
+        shutdownHook.Register();
     }
 }

@@ -8,10 +8,9 @@
 using Vlingo.Xoom.Cluster.Model.Attribute.Message;
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Attribute
+namespace Vlingo.Xoom.Cluster.Model.Attribute;
+
+public interface IConfirmationInterest
 {
-    public interface IConfirmationInterest
-    {
-        void Confirm(Id confirmingNodeId, string? attributeSetName, string? attributeName, ApplicationMessageType type);
-    }
+    void Confirm(Id confirmingNodeId, string? attributeSetName, string? attributeName, ApplicationMessageType type);
 }

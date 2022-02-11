@@ -7,14 +7,13 @@
 
 using System.Collections.Generic;
 
-namespace Vlingo.Xoom.Cluster.Model.Attribute
+namespace Vlingo.Xoom.Cluster.Model.Attribute;
+
+public interface IAttributesQueries
 {
-    public interface IAttributesQueries
-    {
-        IEnumerable<AttributeSet> All { get; }
+    IEnumerable<AttributeSet> All { get; }
 
-        IEnumerable<Attribute> AllOf(string attributeSetName);
+    IEnumerable<Attribute> AllOf(string attributeSetName);
 
-        Attribute<T> Attribute<T>(string attributeSetName, string? attributeName);
-    }
+    Attribute<T> Attribute<T>(string attributeSetName, string? attributeName);
 }

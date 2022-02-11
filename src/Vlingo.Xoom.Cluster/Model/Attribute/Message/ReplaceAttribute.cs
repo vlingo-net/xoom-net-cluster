@@ -7,14 +7,13 @@
 
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Attribute.Message
-{
-    public sealed class ReplaceAttribute: AttributeMessage
-    {
-        public static ReplaceAttribute From(Node node, AttributeSet set, TrackedAttribute tracked) => new ReplaceAttribute(node, set, tracked);
+namespace Vlingo.Xoom.Cluster.Model.Attribute.Message;
 
-        public ReplaceAttribute(Node node, AttributeSet set, TrackedAttribute tracked) : base(node, set, tracked, ApplicationMessageType.ReplaceAttribute)
-        {
-        }
+public sealed class ReplaceAttribute: AttributeMessage
+{
+    public static ReplaceAttribute From(Node node, AttributeSet set, TrackedAttribute tracked) => new ReplaceAttribute(node, set, tracked);
+
+    public ReplaceAttribute(Node node, AttributeSet set, TrackedAttribute tracked) : base(node, set, tracked, ApplicationMessageType.ReplaceAttribute)
+    {
     }
 }

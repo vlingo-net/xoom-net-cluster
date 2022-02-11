@@ -7,30 +7,29 @@
 
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Message
+namespace Vlingo.Xoom.Cluster.Model.Message;
+
+public sealed class Split : OperationalMessage
 {
-    public sealed class Split : OperationalMessage
+    public static Split From(string content) =>  new Split(OperationalMessagePartsBuilder.IdFrom(content));
+        
+    public Split(Id id) : base(id)
     {
-        public static Split From(string content) =>  new Split(OperationalMessagePartsBuilder.IdFrom(content));
-        
-        public Split(Id id) : base(id)
-        {
-        }
-
-        public override bool IsSplit => true;
-        
-        public override bool Equals(object? obj)
-        {
-            if (obj == null || obj.GetType() != typeof(Split))
-            {
-                return false;
-            }
-
-            return Id.Equals(((Split) obj).Id);
-        }
-
-        public override int GetHashCode() => 31 * Id.GetHashCode();
-
-        public override string ToString() => $"Split[{Id}]";
     }
+
+    public override bool IsSplit => true;
+        
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != typeof(Split))
+        {
+            return false;
+        }
+
+        return Id.Equals(((Split) obj).Id);
+    }
+
+    public override int GetHashCode() => 31 * Id.GetHashCode();
+
+    public override string ToString() => $"Split[{Id}]";
 }

@@ -7,28 +7,27 @@
 
 using Vlingo.Xoom.Wire.Nodes;
 
-namespace Vlingo.Xoom.Cluster.Model.Message
+namespace Vlingo.Xoom.Cluster.Model.Message;
+
+public sealed class CheckHealth : OperationalMessage
 {
-    public sealed class CheckHealth : OperationalMessage
+    public CheckHealth(Id id) : base(id)
     {
-        public CheckHealth(Id id) : base(id)
-        {
-        }
-
-        public override bool IsCheckHealth => true;
-        
-        public override bool Equals(object? obj)
-        {
-            if (obj == null || obj.GetType() != typeof(CheckHealth))
-            {
-                return false;
-            }
-
-            return Id.Equals(((CheckHealth) obj).Id);
-        }
-
-        public override int GetHashCode() => 31 * Id.GetHashCode();
-
-        public override string ToString() => $"CheckHealth[{Id}]";
     }
+
+    public override bool IsCheckHealth => true;
+        
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != typeof(CheckHealth))
+        {
+            return false;
+        }
+
+        return Id.Equals(((CheckHealth) obj).Id);
+    }
+
+    public override int GetHashCode() => 31 * Id.GetHashCode();
+
+    public override string ToString() => $"CheckHealth[{Id}]";
 }
