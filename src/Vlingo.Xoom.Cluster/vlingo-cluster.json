@@ -47,6 +47,9 @@
         "interval": 2000
       }
     },
+    "heartbeat": {
+      "interval": 7000
+    },
     "live": {
       "node": {
         "timeout": 20000
