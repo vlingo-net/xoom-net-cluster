@@ -25,7 +25,6 @@ public sealed class LocalLiveNodeActor : Actor, ILocalLiveNode, ILiveNodeMaintai
     private readonly List<INodeSynchronizer> _nodeSynchronizers;
     private readonly IOperationalOutboundStream _outbound;
     private bool _quorumAchieved;
-    private readonly ILocalLiveNode _selfLocalLiveNode;
     private readonly IClusterSnapshot _snapshot;
     private readonly IRegistry _registry;
 
@@ -42,7 +41,6 @@ public sealed class LocalLiveNodeActor : Actor, ILocalLiveNode, ILiveNodeMaintai
         _outbound = outbound;
         _configuration = configuration;
         _nodeSynchronizers = new List<INodeSynchronizer>();
-        _selfLocalLiveNode = SelfAs<ILocalLiveNode>();
         _checkHealth = new CheckHealth(_node.Id);
         _cancellable = ScheduleHealthCheck();
 
@@ -224,9 +222,8 @@ public sealed class LocalLiveNodeActor : Actor, ILocalLiveNode, ILiveNodeMaintai
 
     public void IntervalSignal(IScheduled<object> scheduled, object data)
     {
+        Handle(_checkHealth); // refresh lastHealthIndication; prevent timeout for single node scenario
         _registry.CleanTimedOutNodes();
-    
-        _selfLocalLiveNode.Handle(_checkHealth);
     }
         
     //===================================
