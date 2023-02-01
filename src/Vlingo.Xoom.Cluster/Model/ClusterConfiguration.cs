@@ -1,4 +1,4 @@
-// Copyright © 2012-2022 VLINGO LABS. All rights reserved.
+// Copyright © 2012-2023 VLINGO LABS. All rights reserved.
 //
 // This Source Code Form is subject to the terms of the
 // Mozilla Public License, v. 2.0. If a copy of the MPL
@@ -78,7 +78,7 @@ public class ClusterConfiguration : IConfiguration
 
     public IEnumerable<string> AllNodeNames => _nodes.Select(n => n.Name.Value);
 
-    public Id GreatestNodeId => _nodes.Max(n => n.Id);
+    public Id GreatestNodeId => _nodes.Max(n => n.Id)!;
 
     public int TotalNodes => _nodes.Count;
 
@@ -157,7 +157,7 @@ public class ClusterConfiguration : IConfiguration
             var opNodeAddress = Address.From(host, properties.OperationalPort(configuredNodeName), AddressType.Op);
             var appNodeAddress = Address.From(host, properties.ApplicationPort(configuredNodeName), AddressType.App);
                 
-            _nodes.Add(new Node(nodeId, nodeName, opNodeAddress, appNodeAddress));
+            _nodes.Add(new Node(nodeId, nodeName, false, opNodeAddress, appNodeAddress));
         }
     }
 }

@@ -1,4 +1,4 @@
-// Copyright © 2012-2022 VLINGO LABS. All rights reserved.
+// Copyright © 2012-2023 VLINGO LABS. All rights reserved.
 //
 // This Source Code Form is subject to the terms of the
 // Mozilla Public License, v. 2.0. If a copy of the MPL
@@ -277,7 +277,7 @@ namespace Vlingo.Xoom.Cluster.Tests.Model.Nodes
             var name = new Name($"node{idValue}");
             var opAddress = new Address(Host.Of("localhost"), 1111 + idValue, AddressType.Op);
             var appAddress = new Address(Host.Of("localhost"), 1111 + idValue+1, AddressType.App);
-            var node = new Node(id, name, opAddress, appAddress);
+            var node = new Node(id, name, false, opAddress, appAddress);
     
             return node;
         }

@@ -1,4 +1,4 @@
-// Copyright © 2012-2022 VLINGO LABS. All rights reserved.
+// Copyright © 2012-2023 VLINGO LABS. All rights reserved.
 //
 // This Source Code Form is subject to the terms of the
 // Mozilla Public License, v. 2.0. If a copy of the MPL
@@ -48,16 +48,19 @@ namespace Vlingo.Xoom.Cluster.Tests.Model.Message
             nodeEntries.Add(new Node(
                 Id.Of(1),
                 new Name("node1"),
+                false,
                 Address.From(opAddresses[1], AddressType.Op),
                 Address.From(appAddresses[1], AddressType.App)));
             nodeEntries.Add(new Node(
                 Id.Of(2),
                 new Name("node2"),
+                false,
                 Address.From(opAddresses[2], AddressType.Op),
                 Address.From(appAddresses[2], AddressType.App)));
             nodeEntries.Add(new Node(
                 Id.Of(3),
                 new Name("node3"),
+                false,
                 Address.From(opAddresses[3], AddressType.Op),
                 Address.From(appAddresses[3], AddressType.App)));
             var dir = new Directory(Id.Of(1), new Name("node1"), nodeEntries);
@@ -92,6 +95,7 @@ namespace Vlingo.Xoom.Cluster.Tests.Model.Message
             var join = new Join(new Node(
                 Id.Of(1),
                 new Name("node1"),
+                false,
                 Address.From("localhost:37371", AddressType.Op),
                 Address.From("localhost:37372", AddressType.App)));
             MessageConverters.MessageToBytes(join, _messageBuffer);

@@ -1,4 +1,4 @@
-// Copyright © 2012-2022 VLINGO LABS. All rights reserved.
+// Copyright © 2012-2023 VLINGO LABS. All rights reserved.
 //
 // This Source Code Form is subject to the terms of the
 // Mozilla Public License, v. 2.0. If a copy of the MPL
@@ -27,6 +27,8 @@ namespace Vlingo.Xoom.Cluster.Tests.Model.Outbound
                 _allChannels.Add(node.Id, new MockManagedOutboundChannel(node.Id));
             }
         }
+
+        public IManagedOutboundChannel ChannelFor(Node node) => throw new System.NotImplementedException();
 
         public IManagedOutboundChannel ChannelFor(Id id) => _allChannels[id];
 
